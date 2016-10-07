@@ -1,3 +1,24 @@
 <h1>
   {{title}}
 </h1>
+<form>
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+ </form>
+
+ <form class="form-inline">
+  <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
+      <div class="input-group-addon" (click)="d.toggle()" >
+        <img src="img/calendar-icon.svg" style="width: 1.2rem; cursor: pointer;"/>
+      </div>
+    </div>
+  </div>
+</form>
+
+<hr/>
+<pre>Model: {{ model | json }}</pre>
