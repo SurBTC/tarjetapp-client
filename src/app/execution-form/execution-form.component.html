@@ -1,3 +1,61 @@
-<p>
-  execution-form works!
-</p>
+<div class="modal fade" id="executionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="myModalLabel">Crea tu tarjeta</h3>
+      </div>
+      <div class="modal-body">
+        <div class="quotation-confirm">
+
+        </div>
+        <div *ngIf="!quotationConfirmed" class="modal-info">
+          <h3>Estamos confirmando la cotización de tu tarjeta</h3>
+          <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
+
+        </div>
+
+        <div *ngIf="quotationConfirmed && !expired" class="modal-info">
+          <h3>Súper.</h3>
+          <p>Te hemos reservado tu tarjetapp de USD {{destinationAmount}} a ${{sourceAmount | number:'1.0'}} pesos<p>
+          <p>Te quedan {{ expirationObj.mins }}:{{ expirationObj.secs }} para completar los pasos</p>
+        </div>
+
+      <div *ngIf="quotationConfirmed" class="modal-steps">
+
+
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#account" aria-controls="home" role="tab" data-toggle="tab">Ingresa tus datos</a></li>
+          <li role="presentation"><a href="#bank-account" aria-controls="profile" role="tab" data-toggle="tab">Inscribe tu cuenta</a></li>
+          <li role="presentation"><a href="#deposit" aria-controls="messages" role="tab" data-toggle="tab">Realiza la transferencia</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+          <user-form></user-form>
+
+          <bank-form [sourceAmount]="sourceAmount"></bank-form>
+
+          <deposit-form></deposit-form>
+
+        </div>
+
+      </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>

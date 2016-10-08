@@ -1,0 +1,137 @@
+<div role="tabpanel" class="tab-pane active" id="account">
+
+  <form class="form-horizontal" [formGroup]="userForm">
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.firstName.valid || userForm.controls.firstName.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputFirstName">Nombre</label>
+
+            <input type="text" #firstName aria-describedby="firstNameValid" class="form-control" id="inputFirstName" placeholder="Ej: Tomás" [formControl]="userForm.controls.firstName">
+
+            <span id="firstNameValid" class="help-block"
+              [style.visibility]="(userForm.controls.firstName.valid || userForm.controls.firstName.untouched) ? 'hidden':'visible'"
+              >Ingresa tu nombre</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.lastName.valid || userForm.controls.lastName.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputlastName">Apellido</label>
+
+            <input type="text" aria-describedby="lastNameValid" class="form-control" id="inputLastName" placeholder="Ej: Rodríguez" [formControl]="userForm.controls.lastName">
+
+            <span id="lastNameValid" class="help-block"
+              [style.visibility]="(userForm.controls.lastName.valid || userForm.controls.lastName.untouched) ? 'hidden':'visible'"
+              >Ingresa tu apellido</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.email.valid || userForm.controls.email.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputemail">Correo electrónico</label>
+
+            <input type="text" aria-describedby="emailValid" class="form-control" id="inputEmail" placeholder="Ej: t.rogriguez@mi-mail.com" [formControl]="userForm.controls.email">
+
+            <span id="emailValid" class="help-block"
+              [style.visibility]="(userForm.controls.email.valid || userForm.controls.email.untouched) ? 'hidden':'visible'"
+              >Ingresa tu dirección de correo</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputbirthDate">Fecha de nacimiento</label>
+            <div class="input-group date" data-provide="datepicker">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+
+                <input type="text" aria-describedby="birthDateValid" class="form-control" id="inputBirthDate" placeholder="27/01/1990" [formControl]="userForm.controls.birthDate">
+            </div>
+
+            <span id="birthDateValid" class="help-block"
+              [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched) ? 'hidden':'visible'"
+              >Ingresa tu fecha de nacimiento</span>
+          </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-12 col-lg-12">
+      <div class="form-group" [class.has-error]="!(userForm.controls.address.valid || userForm.controls.address.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputaddress">Dirección</label>
+
+            <input type="text" aria-describedby="addressValid" class="form-control" id="inputAddress" placeholder="Pasaje Las Carmelas 2647 depto 23" [formControl]="userForm.controls.address">
+
+            <span id="addressValid" class="help-block"
+              [style.visibility]="(userForm.controls.address.valid || userForm.controls.address.untouched) ? 'hidden':'visible'"
+              >Ingresa tu dirección completa</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.city.valid || userForm.controls.city.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputcity">Ciudad</label>
+
+            <input type="text" aria-describedby="cityValid" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city">
+
+            <span id="cityValid" class="help-block"
+              [style.visibility]="(userForm.controls.city.valid || userForm.controls.city.untouched) ? 'hidden':'visible'"
+              >Ingresa la ciudad en que vives</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.zipCode.valid || userForm.controls.zipCode.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputzipCode">Código Postal</label>
+
+            <input type="text" aria-describedby="zipCodeValid" class="form-control" id="inputZipCode" placeholder="Ej: Santiago" [formControl]="userForm.controls.zipCode">
+
+            <span id="zipCodeValid" class="help-block"
+              [style.visibility]="(userForm.controls.zipCode.valid || userForm.controls.zipCode.untouched) ? 'hidden':'visible'"
+              >Ingresa el código postal de tu dirección</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group" [class.has-error]="!(userForm.controls.phone.valid || userForm.controls.phone.untouched)">
+          <div class="col-md-12">
+            <label class="control-label" for="inputphone">Teléfono</label>
+
+            <input type="text" aria-describedby="phoneValid" class="form-control" id="inputPhone" placeholder="Ej: Santiago" [formControl]="userForm.controls.phone">
+
+            <span id="phoneValid" class="help-block"
+              [style.visibility]="(userForm.controls.phone.valid || userForm.controls.phone.untouched) ? 'hidden':'visible'"
+              >Ingresa tu número de teléfono</span>
+          </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-lg-6">
+      <div class="form-group">
+          <div class="col-md-12">
+            <label class="control-label" for="inputcountry">País</label>
+
+            <input type="text" aria-describedby="countryValid" class="form-control" id="inputCountry" value="Chile" [formControl]="userForm.controls.country">
+
+            <span id="countryValid" class="help-block"
+              [style.visibility]="'hidden'"
+              >-</span>
+          </div>
+      </div>
+    </div>
+
+    <!-- <p class="help-block" style="visibility: hidden;">Example block-level help text here.</p> -->
+
+  </form>
+</div>
