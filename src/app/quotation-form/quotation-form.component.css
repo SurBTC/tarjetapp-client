@@ -1,0 +1,30 @@
+/*.ng-valid[required], .ng-valid.required  {
+  border-left: 5px solid #42A948;
+}*/
+
+.ng-invalid:not(form)  {
+  border: 1px solid #a94442; /* red */
+}
+
+.quotation-form .alert {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.spinner {
+  margin: 0;
+  margin-top: 16px;
+  right: 32%;
+  position: absolute;
+}
+
+.spinner > div {
+  background-color: white;
+}
+
+.spinner-container {
+  position: relative;
+}

@@ -1,0 +1,40 @@
+<form class="quotation-form" [formGroup]="quotationForm" (ngSubmit)="submitForm(quotationForm.value)">
+  <p>Tu tarjeta con</p>
+
+  <div class="destination-amount editable">
+    <input #destinationInput type="text" autocomplete="off" [formControl]="quotationForm.controls.destinationAmount">
+    <label for="destinationAmount">USD</label>
+
+    <div class="validation text-right">
+      <div [style.visibility]="!quotationForm.valid ? 'visible':'hidden'" class="alert alert-danger">
+        Ingresa un monto válido
+      </div>
+    </div>
+  </div>
+
+  <p>te cuesta</p>
+
+  <div class="source-amount read-only">
+    <div [style.visibility]="loading ? 'visible':'hidden'" class="spinner-container">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+    </div>
+
+
+    <input type="text" id="sourceAmount" autocomplete="off" [formControl]="quotationForm.controls.sourceAmount" readonly="readonly">
+    <label for="sourceAmount">CLP</label>
+  </div>
+
+  <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-outline btn-xl page-scroll">
+    Crear tarjeta
+  </button>
+
+  <div [style.visibility]="error ? 'visible':'hidden'" class="general-error">
+    Ups! Estamos teniendo problemas para cotizar tu tarjeta. Por favor intenta más tarde.
+  </div>
+</form>
