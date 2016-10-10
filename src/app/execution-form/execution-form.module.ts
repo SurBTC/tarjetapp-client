@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserFormComponent } from './user-form/user-form.component';
 import { BankFormComponent } from './bank-form/bank-form.component';
 import { DepositFormComponent } from './deposit-form/deposit-form.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -12,6 +13,7 @@ import { DepositFormComponent } from './deposit-form/deposit-form.component';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
+    NgbModule
   ],
   declarations: [
     UserFormComponent,
