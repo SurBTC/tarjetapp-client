@@ -1,11 +1,13 @@
 import { Component, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { NgbDatepickerConfig, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateES_CLParserFormatter } from '../../shared/es_CL-ngb-date-parser'
 
 @Component({
   selector: 'user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css'],
-  providers: []
+  providers: [NgbDateES_CLParserFormatter]
 })
 export class UserFormComponent implements AfterViewInit {
   public dt:Date = new Date();
@@ -14,7 +16,12 @@ export class UserFormComponent implements AfterViewInit {
 
   constructor (
     private fb:FormBuilder,
-    private renderer:Renderer) {
+    private renderer:Renderer,
+    private config:NgbDatepickerConfig) {
+
+    config.startDate = {year: 1990, month: 3}
+
+
 
     let emailRegex = `([a-zA-Z0-9_.]{1}[a-zA-Z0-9_.]*)((@[a-zA-Z]{2}[a-zA-Z]*)[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))`;
     let dateRegex = `^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$`;

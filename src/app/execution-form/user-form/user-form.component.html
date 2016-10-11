@@ -49,10 +49,10 @@
             <label class="control-label" for="inputbirthDate">Fecha de nacimiento</label>
             <div class="input-group date" data-provide="datepicker">
 
-              <div class="input-group-addon" (click)="datePicker.toggle()">
+              <span class="input-group-addon" (click)="datePicker.toggle()">
                 <i class="fa fa-calendar"> </i>
-              </div>
-              <input type="text" aria-describedby="birthDateValid" class="form-control" placeholder="yyyy-mm-dd" name="dp" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker">
+              </span>
+              <input type="text" aria-describedby="birthDateValid" class="form-control" placeholder="Ej: 27-01-1990" name="dp" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker">
             </div>
 
             <span id="birthDateValid" class="help-block"
