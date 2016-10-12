@@ -82,7 +82,7 @@
           <div class="col-md-12">
             <label class="control-label" for="inputcity">Ciudad</label>
 
-            <input type="text" aria-describedby="cityValid" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city">
+            <input type="text" aria-describedby="cityValid" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city" [ngbTypeahead]="search">
 
             <span id="cityValid" class="help-block"
               [style.visibility]="(userForm.controls.city.valid || userForm.controls.city.untouched) ? 'hidden':'visible'"

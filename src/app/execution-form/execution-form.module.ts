@@ -15,7 +15,7 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule
+    NgbModule.forRoot()
   ],
   declarations: [
     UserFormComponent,
