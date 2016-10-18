@@ -1,9 +1,11 @@
 import { Component, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+
 import { NgbDatepickerConfig, NgbDateStruct, NgbTypeaheadConfig, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateES_CLParserFormatter } from '../../shared/es_CL-ngb-date-parser'
 import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
 import { NgbCalendar } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-calendar';
+import { RutValidator } from 'ng2-rut';
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -57,25 +59,24 @@ const cities = [
   selector: 'user-form',
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css'],
-  providers: [
-    NgbDateES_CLParserFormatter,
-  ]
+  providers: [NgbDateES_CLParserFormatter]
 })
 export class UserFormComponent implements AfterViewInit {
-  public dt:Date = new Date();
+
   private userForm: FormGroup;
   @ViewChild('firstName') input: ElementRef;
 
   constructor (
     private fb:FormBuilder,
     private renderer:Renderer,
-    private config:NgbDatepickerConfig) {
+    private config:NgbDatepickerConfig,
+    private rutValidator:RutValidator) {
 
     config.startDate = {year: 1990, month: 3}
 
     let emailRegex = `([a-zA-Z0-9_.]{1}[a-zA-Z0-9_.]*)((@[a-zA-Z]{2}[a-zA-Z]*)[\\\.]([a-zA-Z]{2}|[a-zA-Z]{3}))`;
     let dateRegex = `^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$`;
-    let zipCodeRegex = `[0-9]{6-8}`
+    let zipCodeRegex = `[0-9]{6,8}`
 
     this.userForm = fb.group({
       'firstName': ['', [Validators.required, Validators.minLength(2)]],
@@ -86,12 +87,13 @@ export class UserFormComponent implements AfterViewInit {
       'city': ['', [Validators.required]],
       'zipCode': ['', [Validators.required, Validators.pattern(zipCodeRegex)]],
       'phone': ['', [Validators.required]],
-      'country': [{value: 'Chile', disabled: true}, [Validators.required]]
+      'country': [{value: 'Chile', disabled: true}, [Validators.required]],
+      'rut': ['157356399', [Validators.required]]
     });
   }
 
   ngAfterViewInit () {
-    // Set focus on firstName on modal show
+    // Set focus on firstName on modal show. Requires a slight delay
     setTimeout(() => {
       this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }, 500)
@@ -102,7 +104,7 @@ export class UserFormComponent implements AfterViewInit {
     return text
       .debounceTime(300)
       .distinctUntilChanged()
-      .map(term => term.length < 2 ? []
+      .map(term => term.length < 1 ? []
         : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 10));
   }
 }

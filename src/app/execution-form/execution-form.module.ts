@@ -9,13 +9,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateES_CLParserFormatter } from '../shared/es_CL-ngb-date-parser'
 import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
 
+import { Ng2Rut, RutValidator } from 'ng2-rut';
+
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    Ng2Rut
   ],
   declarations: [
     UserFormComponent,
@@ -28,10 +31,11 @@ import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap'
     DepositFormComponent
   ],
   providers: [
-    { 
-      provide: NgbDateParserFormatter, 
-      useFactory: () => { return new NgbDateES_CLParserFormatter() } 
-    }
+    {
+      provide: NgbDateParserFormatter,
+      useFactory: () => { return new NgbDateES_CLParserFormatter() }
+    },
+    RutValidator,
   ]
 
 })

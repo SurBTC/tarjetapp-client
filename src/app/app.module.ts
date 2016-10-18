@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { QuotationFormComponent } from './quotation-form/quotation-form.component';
 import { ExecutionFormComponent } from './execution-form/execution-form.component';
 import { ExecutionFormModule } from './execution-form/execution-form.module';
@@ -20,7 +19,6 @@ import { ExecutionFormModule } from './execution-form/execution-form.module';
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    NgbModule,
     ExecutionFormModule
   ],
   providers: [],
