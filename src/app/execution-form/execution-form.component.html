@@ -1,8 +1,8 @@
 <div class="modal fade" id="executionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar"><span aria-hidden="true">&times;</span></button>
         <h3 class="modal-title" id="myModalLabel">Crea tu tarjeta</h3>
       </div>
       <div class="modal-body">
@@ -27,29 +27,21 @@
           <p>Te quedan {{ expirationObj.mins }}:{{ expirationObj.secs }} para completar los pasos</p>
         </div>
 
-      <div *ngIf="quotationConfirmed" class="modal-steps">
+        <div *ngIf="quotationConfirmed">
+
+          <!-- Tab panes -->
+          <div>
 
 
+            <user-form></user-form>
 
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#account" aria-controls="home" role="tab" data-toggle="tab">Ingresa tus datos</a></li>
-          <li role="presentation"><a href="#bank-account" aria-controls="profile" role="tab" data-toggle="tab">Inscribe tu cuenta</a></li>
-          <li role="presentation"><a href="#deposit" aria-controls="messages" role="tab" data-toggle="tab">Realiza la transferencia</a></li>
-        </ul>
+            <!-- <bank-form [sourceAmount]="sourceAmount"></bank-form> -->
 
-        <!-- Tab panes -->
-        <div class="tab-content">
+            <!-- <deposit-form></deposit-form> -->
 
-          <user-form></user-form>
-
-          <bank-form [sourceAmount]="sourceAmount"></bank-form>
-
-          <deposit-form></deposit-form>
+          </div>
 
         </div>
-
-      </div>
 
       </div>
       <div class="modal-footer">
