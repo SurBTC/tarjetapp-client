@@ -51,7 +51,8 @@
 
       </div>
 
-      <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched) ? 'hidden':'visible'">Ingresa tu fecha de nacimiento</div>
+      <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.pristine) ? 'hidden':'visible'">Ingresa tu fecha de nacimiento</div>
+      <pre>{{userForm.controls.birthDate.untouched}}</pre>
     </div>
   </div>
   <div class="offset-sm-3 offset-lg-3"></div>
