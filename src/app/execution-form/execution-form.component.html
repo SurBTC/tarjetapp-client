@@ -22,12 +22,15 @@
         </div>
 
         <div class="modal-info">
-         <p *ngIf="state != 'creating'">Estamos reservando tu tarjetapp de <b>{{destinationAmount}} USD</b> a <b>${{sourceAmount | number:'1.0'}} pesos</b>
+          <p *ngIf="state != 'creating'">Estamos reservando tu tarjetapp de <b>{{destinationAmount}} USD</b> a <b>${{sourceAmount | number:'1.0'}} pesos</b>
 
-        <div *ngIf="state != 'creating'" class="alert alert-warning" role="alert">
-          Te quedan sólo <strong>5 minutos</strong> para reservar tu tarjeta.
-        </div>
-          <!-- <p>Te quedan {{ expirationObj.mins }}:{{ expirationObj.secs }} para completar los pasos</p> -->
+          <div *ngIf="(state != 'creating') && (timeLeft.mins <= 5) && (timeLeft.mins >= 1)" class="alert alert-info" role="alert">
+            Te quedan sólo <strong>{{timeLeft.mins}} minutos</strong> para reservar tu tarjeta.
+          </div>
+
+          <div *ngIf="(state != 'creating') && (timeLeft.mins < 1)  && (timeLeft.mins >= 0)" class="alert alert-warning" role="alert">
+            Te queda <strong>menos de 1 minuto</strong> para reservar tu tarjeta.
+          </div>
         </div>
 
         <div *ngIf="quotationConfirmed">

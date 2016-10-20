@@ -8,6 +8,8 @@ import { QuotationFormComponent } from './quotation-form/quotation-form.componen
 import { ExecutionFormComponent } from './execution-form/execution-form.component';
 import { ExecutionFormModule } from './execution-form/execution-form.module';
 
+// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +21,8 @@ import { ExecutionFormModule } from './execution-form/execution-form.module';
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    ExecutionFormModule
+    ExecutionFormModule,
+    // NgbModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

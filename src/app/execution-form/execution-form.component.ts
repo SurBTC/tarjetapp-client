@@ -23,7 +23,7 @@ export class ExecutionFormComponent {
   subscription:Subscription;
 
   expirationDate:Date;
-  expirationObj = {
+  timeLeft = {
     secs: null,
     mins: null
   };
@@ -33,8 +33,9 @@ export class ExecutionFormComponent {
   quotationConfirmed = false;
 
   private greetings = ['Súper', 'Excelente', 'Bien']
-  public currentGreet:string;
-  public state = 'gettingData';
+  private currentGreet:string;
+  private state = 'gettingData';
+  private warningMins = 10;
 
   constructor(
     private amountService:AmountService,
@@ -65,8 +66,9 @@ export class ExecutionFormComponent {
            let timeLeft = this.expirationDate.getTime() - new Date().getTime();
            this.expired = (timeLeft <= 0);
            if (!this.expired) {
-             this.expirationObj.secs = Math.floor(timeLeft/1000);
-             this.expirationObj.mins = Math.floor(this.expirationObj.secs/60);
+             this.timeLeft.secs = Math.floor(timeLeft/1000);
+             this.timeLeft.mins = Math.floor(this.timeLeft.secs/60);
+             console.log(this.timeLeft);
            }
          });
        });
