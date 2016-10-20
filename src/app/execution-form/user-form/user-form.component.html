@@ -45,14 +45,13 @@
       <div class="input-group date">
 
         <div class="input-group-addon" (click)="datePicker.toggle()" style="cursor: pointer;">
-          <i class="fa fa-calendar"> </i>
+          <i class="ion-calendar"> </i>
         </div>
         <input type="text" class="form-control" placeholder="Ej: 27-01-1990" name="dp" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker" (focus)="datePicker.open()">
 
       </div>
 
       <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.pristine) ? 'hidden':'visible'">Ingresa tu fecha de nacimiento</div>
-      <pre>{{userForm.controls.birthDate.untouched}}</pre>
     </div>
   </div>
   <div class="offset-sm-3 offset-lg-3"></div>

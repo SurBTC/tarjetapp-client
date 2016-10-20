@@ -1,9 +1,13 @@
+label {
+	font-size: 0.85em;
+	padding-bottom: 0;
+}
 .form-group {
   margin-bottom: 0;
 }
 
 .form-control-feedback {
-  font-size: 0.85em;
+  font-size: 0.75em;
   text-align: right;
 }
 
