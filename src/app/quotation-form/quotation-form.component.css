@@ -1,10 +1,12 @@
 /*.ng-valid[required], .ng-valid.required  {
   border-left: 5px solid #42A948;
 }*/
-
+/*
 .ng-invalid:not(form)  {
-  border: 1px solid #a94442; /* red */
-}
+  border: 1px solid #a94442;
+}*/
+
+text-align: left;
 
 .quotation-form .alert {
   background-color: transparent;
@@ -27,4 +29,59 @@
 
 .spinner-container {
   position: relative;
+}
+
+input {
+  color: #fff;
+}
+
+button {
+  color: #fff;
+  background-color:#007FFF;
+  border-color:#007FFF;
+}
+
+button:hover {
+  border-color:#FFF;
+}
+
+.quotation-form input {
+  font-size: 50px;
+  text-align: right;
+  max-width: 70%;
+  padding: 2px;
+  border: none;
+}
+
+.quotation-form input:focus {
+  border: 1px solid;
+  border-color: transparent;
+}
+
+.editable input {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 1px solid;
+  border-color: transparent;
+}
+
+.read-only input {
+  background-color: transparent;
+}
+
+/*.quotation-form .btn {
+  background-color: transparent;
+}*/
+
+.quotation-form p {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.quotation-form .btn {
+  width: 70%;
+}
+
+.general-error {
+
+  padding-top: 20px;
 }

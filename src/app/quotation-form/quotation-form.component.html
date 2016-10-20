@@ -6,7 +6,7 @@
     <label for="destinationAmount">USD</label>
 
     <div class="validation text-right">
-      <div [style.visibility]="!quotationForm.valid ? 'visible':'hidden'" class="alert alert-danger">
+      <div [style.visibility]="!quotationForm.valid ? 'visible':'hidden'">
         Ingresa un monto válido
       </div>
     </div>
@@ -30,7 +30,7 @@
     <label for="sourceAmount">CLP</label>
   </div>
 
-  <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-outline btn-xl page-scroll">
+  <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-primary-outline btn-xl page-scroll fadeInUp m-t-3 wow">
     Crear tarjeta
   </button>
 
