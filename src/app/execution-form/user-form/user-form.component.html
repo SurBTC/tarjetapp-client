@@ -1,4 +1,5 @@
 <form [formGroup]="userForm">
+<p class="text-muted">Completa el siguiente formulario con tus datos:</p>
   <div class="col-sm-6 col-lg-6">
     <div class="form-group" [class.has-danger]="!(userForm.controls.firstName.valid || userForm.controls.firstName.untouched)">
       <label class="col-form-label" for="inputFirstName">Nombre</label>
@@ -23,23 +24,13 @@
     <div class="form-group" [class.has-danger]="!(userForm.controls.rut.valid || userForm.controls.rut.untouched)">
       <label class="col-form-label" for="inputRUT">RUT</label>
 
-      <input type="text" #rut class="form-control" id="inputRUT" placeholder="Ej: 12345678-9" [formControl]="userForm.controls.rut" formatRut validateRut>
+      <input type="text" #rut class="form-control" id="inputRUT" placeholder="Ej: 12345678-9" [formControl]="userForm.controls.rut" formatRut>
 
       <div class="form-control-feedback" [style.visibility]="(userForm.controls.rut.valid || userForm.controls.rut.untouched) ? 'hidden':'visible'">Ingresa un RUT válido</div>
     </div>
   </div>
 
   <div class="col-sm-6 col-lg-6">
-    <div class="form-group" [class.has-danger]="!(userForm.controls.email.valid || userForm.controls.email.untouched)">
-      <label class="col-form-label" for="inputemail">Correo electrónico</label>
-
-      <input type="text" class="form-control" id="inputEmail" placeholder="Ej: t.rogriguez@mi-mail.com" [formControl]="userForm.controls.email">
-
-      <div class="form-control-feedback" [style.visibility]="(userForm.controls.email.valid || userForm.controls.email.untouched) ? 'hidden':'visible'">Ingresa una dirección de correo válida</div>
-    </div>
-  </div>
-
-  <div class="col-sm-6 col-lg-6 offset-sm-3 offset-lg-3">
     <div class="form-group" [class.has-danger]="!(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched)">
       <label class="col-form-label" for="inputbirthDate">Fecha de nacimiento</label>
       <div class="input-group date">
@@ -54,13 +45,38 @@
       <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.pristine) ? 'hidden':'visible'">Ingresa tu fecha de nacimiento</div>
     </div>
   </div>
+
+  <div class="col-sm-6 col-lg-6">
+    <div class="form-group" [class.has-danger]="!(userForm.controls.email.valid || userForm.controls.email.untouched)">
+      <label class="col-form-label" for="inputemail">Correo electrónico</label>
+
+      <input type="text" class="form-control" id="inputEmail" placeholder="Ej: t.rodriguez@mi-mail.com" [formControl]="userForm.controls.email" (focus)="datePicker.close()">
+
+      <div class="form-control-feedback" [style.visibility]="(userForm.controls.email.valid || userForm.controls.email.untouched) ? 'hidden':'visible'">Ingresa una dirección de correo válida</div>
+    </div>
+  </div>
+
+   <div class="col-sm-6 col-lg-6">
+    <div class="form-group" [class.has-danger]="!(userForm.controls.phone.valid || userForm.controls.phone.untouched)">
+      <label class="col-form-label" for="inputphone">Teléfono</label>
+      <div class="input-group">
+
+        <div class="input-group-addon">+56</div>
+
+        <input type="text" class="form-control" id="inputPhone" placeholder="Ej: 823715237" [formControl]="userForm.controls.phone">
+
+      </div>
+      <div class="form-control-feedback" [style.visibility]="(userForm.controls.phone.valid || userForm.controls.phone.untouched) ? 'hidden':'visible'">Ingresa tu número de teléfono</div>
+    </div>
+  </div>
+
   <div class="offset-sm-3 offset-lg-3"></div>
 
   <div class="col-sm-12 col-lg-12">
     <div class="form-group" [class.has-danger]="!(userForm.controls.address.valid || userForm.controls.address.untouched)">
       <label class="col-form-label" for="inputaddress">Dirección</label>
 
-      <input type="text" class="form-control" id="inputAddress" placeholder="Pasaje Las Carmelas 2647 depto 23" [formControl]="userForm.controls.address" (focus)="datePicker.close()">
+      <input type="text" class="form-control" id="inputAddress" placeholder="Ej: Pasaje Las Carmelas 2647 depto 23" [formControl]="userForm.controls.address">
 
       <div class="form-control-feedback" [style.visibility]="(userForm.controls.address.valid || userForm.controls.address.untouched) ? 'hidden':'visible'">Ingresa tu dirección completa</div>
     </div>
@@ -86,21 +102,9 @@
     </div>
   </div>
 
-  <div class="col-sm-6 col-lg-6">
-    <div class="form-group" [class.has-danger]="!(userForm.controls.phone.valid || userForm.controls.phone.untouched)">
-      <label class="col-form-label" for="inputphone">Teléfono</label>
-      <div class="input-group">
+ 
 
-        <div class="input-group-addon">+56</div>
-
-        <input type="text" class="form-control" id="inputPhone" placeholder="Ej: 823715237" [formControl]="userForm.controls.phone">
-
-      </div>
-      <div class="form-control-feedback" [style.visibility]="(userForm.controls.phone.valid || userForm.controls.phone.untouched) ? 'hidden':'visible'">Ingresa tu número de teléfono</div>
-    </div>
-  </div>
-
-  <div class="col-sm-6 col-lg-6">
+  <!-- <div class="col-sm-6 col-lg-6">
     <div class="form-group">
       <label class="col-form-label" for="inputcountry">País</label>
 
@@ -108,7 +112,7 @@
 
       <div class="form-control-feedback" [style.visibility]="'hidden'">-</div>
     </div>
-  </div>
+  </div> -->
 
   <!-- <p class="form-control-feedback" style="visibility: hidden;">Example block-level help text here.</p> -->
 

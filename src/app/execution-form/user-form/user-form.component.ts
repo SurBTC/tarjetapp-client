@@ -24,6 +24,7 @@ export class UserFormComponent implements AfterViewInit {
   private userForm: FormGroup;
   @ViewChild('firstName') input: ElementRef;
 
+
   constructor (
     private fb:FormBuilder,
     private renderer:Renderer,
@@ -48,7 +49,7 @@ export class UserFormComponent implements AfterViewInit {
       'zipCode': ['', [Validators.required, Validators.pattern(zipCodeRegex)]],
       'phone': ['', [Validators.required, Validators.pattern(phoneRegex)]],
       'country': [{value: 'Chile', disabled: true}, [Validators.required]],
-      'rut': ['', [Validators.required]]
+      'rut': ['', [Validators.minLength(8), Validators.maxLength(9), rutValidator]]
     });
   }
 
@@ -57,7 +58,6 @@ export class UserFormComponent implements AfterViewInit {
     setTimeout(() => {
       this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
     }, 500)
-
   }
 
   search (text: Observable<string>) {

@@ -1,7 +1,53 @@
-<div role="tabpanel" class="tab-pane" id="bank-account">
-  <div class="form-group">
-    <label for="exampleInputEmail1">Número de cuenta</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Ej: 3246762-1">
+<p>Ahora tienes que:</p>
+<ul class="no-bullet">
+	<li>
+	<div class="form-check">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input">
+      <!-- <div class="spinner">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div> -->
+      <p>Confirmar tu dirección de correo electrónico</p>
+      <small>Hemos enviado un mail a la dirección que nos indicaste. Sigue las indicaciones que allí aparecen.</small>
+      <br>
+      <ul class="no-bullet">
+      	<li>
+      		<small class="text-muted">¿No es tu dirección? <a (click)="toggleIntentMail()" href="">Cambiar</a></small>
+					<div *ngIf="changingMail" class="form-group">
+			      <label for="newEmail">Correo electrónico</label>
+			      <input type="text" class="form-control" id="newEmail" placeholder="Ej: t.rodriguez@mi-mail.com">
+			      <button>Cambiar</button>
+			      <button (click)="toggleIntentMail()">Cerrar</button>
+
+			      <!-- <div class="form-control-feedback" [style.visibility]='hidden'>Ingresa una dirección de correo válida</div> -->
+		    	</div>
+      	</li>
+      	<li>
+      		<small class="text-muted">¿No te ha llegado el correo? <a (click)="resendMail()" href="">Reenviar</a></small>
+      	</li>
+      </ul>
+    	<br>
+    </label>
   </div>
-  <p class="help-block">Debes realizar un depósito desde esta cuenta por ${{sourceAmount | number:'1.0'}} pesos</p>
-</div>
+	</li>
+
+	<li>
+	<div class="form-check">
+    <label class="form-check-label">
+      <input type="checkbox" class="form-check-input">
+			Realizar un depósito por ${{sourceAmount | number:'1.0'}} a la siguiente cuenta:
+					<ul>
+						<li>Titular: Dinex SpA</li>
+						<li>RUT: 76.436.908-4</li>
+						<li>Cuenta: 37501542</li>
+						<li>Tipo de cuenta: Corriente</li>
+						<li>Banco: Banco de Chile</li>
+					</ul>
+					<br>
+					<small>Recuerda que debes hacer el depósito desde una cuenta a tu nombre (con tu RUT)</small>
+		</label>
+  </div>
+	</li>
+</ul>

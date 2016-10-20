@@ -7,6 +7,8 @@ import { QuotationService } from '../quotation.service';
 
 import { Observable } from 'rxjs/Rx';
 
+// import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert/alert.module'
+
 
 @Component({
   selector: 'execution-form',
@@ -29,6 +31,10 @@ export class ExecutionFormComponent {
   expired:boolean = false;
 
   quotationConfirmed = false;
+
+  private greetings = ['Súper', 'Excelente', 'Bien']
+  public currentGreet:string;
+  public state = 'gettingData';
 
   constructor(
     private amountService:AmountService,
@@ -66,7 +72,22 @@ export class ExecutionFormComponent {
        });
   }
 
+  updateState() {
+    if (this.state == 'gettingData') {
+      this.state = 'confirming';
+    } else if (this.state == 'confirming') {
+      this.state = 'creating';
+    } else if (this.state == 'creating') {
+      this.state = 'gettingData';
+    }
+  }
+
+  resetState() {
+    this.state = 'gettingData';
+  }
+
   ngOnInit() {
+    this.currentGreet = this.greetings[Math.floor(Math.random() * this.greetings.length)]
   }
 
   ngOnDestroy() {
