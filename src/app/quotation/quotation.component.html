@@ -1,43 +1,75 @@
-<form class="quotation-form" [formGroup]="quotationForm" (ngSubmit)="submitForm(quotationForm.value)">
+<div class="form-spacer"></div>
+<div class="container m-x-auto">
+  <div class="row">
 
-  
+    <div class="offset-lg-2 col-lg-5 col-md-12 container card-container">
+      <div class="cardlike container">
+        <div class="card-logo row">
+          <div class="col-sm-4"><p>Tarjetapp</p></div>
+          <div class="col-sm-2 sticker"><p> </p></div>
+        </div>
+        <div class="card-expiration monospace">
+          <p>VENCE</p>
+          <p>01/21</p>
+        </div>
+        <div class="card-number monospace">
+          <p>1234 5678 9123 4567</p>
+        </div>
+        <div class="card-name monospace">
+          <input class="editable text-uppercase monospace" type="text" autocomplete="off" [formControl]="quotationForm.controls.userName" placeholder="Ingresa tu nombre">
+        </div>
+      </div>
+    </div>
 
-  <p>Tu tarjeta con</p>
+    <div class="col-lg-5 col-md-12 amount">
+      <div class="row">
 
-  <div class="destination-amount editable">
-    <input #destinationInput type="text" autocomplete="off" [formControl]="quotationForm.controls.destinationAmount">
-    <label for="destinationAmount">USD</label>
+          <p>Tu tarjeta con</p>
 
-    <div class="validation text-right">
-      <div [style.visibility]="!quotationForm.valid ? 'visible':'hidden'">
-        Ingresa un monto válido
+          <div class="destination-amount">
+            <input class="editable" #destinationInput type="text" autocomplete="off" [formControl]="quotationForm.controls.destinationAmount">
+            <label for="destinationAmount">USD</label>
+
+            <div class="validation text-right">
+              <div [style.visibility]="!quotationForm.valid ? 'visible':'hidden'">
+                Ingresa un monto válido
+              </div>
+            </div>
+          </div>
+
+          <p>te cuesta</p>
+
+          <div class="source-amount read-only">
+            <div [style.visibility]="loading ? 'visible':'hidden'" class="spinner-container">
+              <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
+            </div>
+
+
+            <input class="read-only" type="text" id="sourceAmount" autocomplete="off" [formControl]="quotationForm.controls.sourceAmount" readonly="readonly">
+            <label for="sourceAmount">CLP</label>
+          </div>
+
+          <div [style.visibility]="error ? 'visible':'hidden'">
+            <p class="general-error">Ups! Estamos teniendo problemas para cotizar tu tarjeta. Por favor intenta nuevamente más tarde.</p>
+          </div>
       </div>
     </div>
   </div>
 
-  <p>te cuesta</p>
-
-  <div class="source-amount read-only">
-    <div [style.visibility]="loading ? 'visible':'hidden'" class="spinner-container">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
-      </div>
+  <div class="row confirm">
+    <div class="confirm-account">
+      <p><i class="ion-checkmark-circled"> </i> Tengo una cuenta bancaria asociada a mi RUT</p>
     </div>
-
-
-    <input type="text" id="sourceAmount" autocomplete="off" [formControl]="quotationForm.controls.sourceAmount" readonly="readonly">
-    <label for="sourceAmount">CLP</label>
+    <br>
+    <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-primary-outline btn-xl page-scroll">Crear mi tarjeta</button>
   </div>
 
-  <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-primary-outline btn-xl page-scroll fadeInUp m-t-3 wow">
-    Crear tarjeta
-  </button>
+</div>
 
-  <div [style.visibility]="error ? 'visible':'hidden'" class="general-error">
-    Ups! Estamos teniendo problemas para cotizar tu tarjeta. Por favor intenta más tarde.
-  </div>
-</form>
+

@@ -29,8 +29,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.quotationForm = fb.group({
       'sourceAmount': null,
       'destinationAmount': [25, [Validators.required, this.validAmount]],
-      'firstName': [''],
-      'lastName': ['']
+      'userName': [''],
     })
 
     // subscribe getQuotation() on destinationAmount changes

@@ -6,9 +6,80 @@
   border: 1px solid #a94442;
 }*/
 
-text-align: left;
+.form-spacer {
+  margin-top: 50px;
+}
+/*
+.card-container {
+  padding-left: 20%;
+}
+*/
 
-.quotation-form .alert {
+/*@import url('https://fonts.googleapis.com/css?family=Cairo');*/
+
+
+.cardlike {
+  background-color: #fff;
+  color: #585858;
+  border-radius: 5px;
+  height: 217px;
+  width: 362px;
+  -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
+  padding: 20px;
+}
+
+.monospace * {
+  font-family: 'Cairo', sans-serif;
+}
+
+.card-logo p {
+  color: #007fff;
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.card-logo .sticker {
+  background-color: #d8d8d8;
+  border-radius: 3px;
+  float: right;
+  height: 32px;
+  margin-right: 14px;
+}
+
+.card-number p {
+  font-size: 2em;
+  text-align: center;
+}
+
+.card-expiration {
+  padding-top: 25px;
+}
+
+.card-expiration p{
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 0.7em;
+}
+
+.card-name {
+  text-align: right;
+}
+
+.card-name input {
+  font-size: 20px;
+  max-width: 100%;
+  color: #007fff;
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.card-name input:focus{
+  border-bottom: 2px solid #007fff;
+}
+
+.alert {
   background-color: transparent;
   color: #fff;
   border: none;
@@ -33,6 +104,32 @@ text-align: left;
 
 input {
   color: #fff;
+  font-size: 40px;
+  text-align: right;
+  max-width: 70%;
+  padding: 2px;
+  border: none;
+  line-height: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
+.editable {
+  border-bottom: 1px solid white;
+}
+
+.read-only {
+  background-color: transparent;
+}
+
+p {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+.general-error {
+  font-size: 0.8em;
+  margin-top: 0;
 }
 
 button {
@@ -42,46 +139,13 @@ button {
 }
 
 button:hover {
-  border-color:#FFF;
+  -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
 }
 
-.quotation-form input {
-  font-size: 50px;
-  text-align: right;
-  max-width: 70%;
-  padding: 2px;
-  border: none;
-}
-
-.quotation-form input:focus {
-  border: 1px solid;
-  border-color: transparent;
-}
-
-.editable input {
-  background-color: rgba(255, 255, 255, 0.2);
-  border: 1px solid;
-  border-color: transparent;
-}
-
-.read-only input {
-  background-color: transparent;
-}
-
-/*.quotation-form .btn {
-  background-color: transparent;
-}*/
-
-.quotation-form p {
-  margin-bottom: 0;
-  margin-top: 10px;
-}
-
-.quotation-form .btn {
-  width: 70%;
-}
-
-.general-error {
-
-  padding-top: 20px;
+.confirm {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
