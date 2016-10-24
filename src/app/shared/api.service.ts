@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { Quotation } from './app.component'
 import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
-export class QuotationService {
+export class ApiService {
 
   headers: Headers = new Headers({
     'Content-Type': 'application/json',
     Accept: 'application/json'
   });
 
-  api_url: string = 'http://localhost:3030/quotations'
+  apiUrl: string = 'http://localhost:3030/quotations'
 
   constructor(private http: Http) {}
 
@@ -32,23 +31,27 @@ export class QuotationService {
   return Promise.reject(error.message || error);
 }
 
-  getQuotation(amount: number): Promise<Quotation> {
-    return this.http.post(this.api_url, {amount: amount}, { headers: this.headers })
+  getQuotation(destinationAmount: number): Promise<any> {
+    return this.http.post(
+      this.apiUrl,
+      {amount: destinationAmount},
+      {headers: this.headers})
     .toPromise()
     .then(response => this.checkForError(response))
     .then(response => {
 
       let data = response.json().quotation;
-      console.log(data);
+
       let quotation = {
         id: data.id,
         sourceAmount: data.sourceAmount,
         sourceCurrency: data.sourceCurrency,
-        destinationAmount: amount,
+        destinationAmount: destinationAmount,
         destinationCurrency: 'USD',
         expiresAt: data.expiresAt
       };
-      return quotation as Quotation;
+
+      return quotation;
     })
     .catch(this.handleError);
   }

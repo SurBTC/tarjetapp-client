@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { AmountService }   from './amount.service';
+// import { AmountService }   from './amount.service';
 
 export class Quotation {
   constructor(
@@ -16,6 +16,6 @@ export class Quotation {
   selector: 'app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  providers: [ AmountService ]
+  // providers: [ AmountService ]
 })
 export class AppComponent { }

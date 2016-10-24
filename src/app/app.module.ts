@@ -3,28 +3,33 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-import { AppComponent } from './app.component';
-import { QuotationFormComponent } from './quotation-form/quotation-form.component';
-import { ExecutionFormComponent } from './execution-form/execution-form.component';
-import { ExecutionFormModule } from './execution-form/execution-form.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppComponent } from './app.component';
+import { QuotationComponent } from './quotation/quotation.component';
+
+import { ApiService } from './shared/api.service';
+import { QuotationService } from './shared/quotation.service'
+// import { ExecutionFormComponent } from './execution-form/execution-form.component';
+// import { ExecutionFormModule } from './execution-form/execution-form.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    QuotationFormComponent,
-    ExecutionFormComponent
+    QuotationComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     ReactiveFormsModule,
-    ExecutionFormModule,
-    // NgbModule.forRoot()
+    NgbModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    QuotationService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

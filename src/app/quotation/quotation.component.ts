@@ -1,17 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { QuotationService } from '../quotation.service';
-import { AmountService }   from '../amount.service';
+import { QuotationService } from '../shared/quotation.service';
+import { ApiService }   from '../shared/api.service';
 
 
 @Component({
-  selector: 'quotation-form',
-  templateUrl: './quotation-form.component.html',
-  styleUrls: ['./quotation-form.component.css'],
-  providers: [QuotationService]
+  selector: 'quotation',
+  templateUrl: './quotation.component.html',
+  styleUrls: ['./quotation.component.css'],
+  providers: []
 })
-export class QuotationFormComponent implements OnInit, AfterViewInit {
+export class QuotationComponent implements OnInit, AfterViewInit {
   quotationForm: FormGroup;
   loading: boolean;
   error: boolean;
@@ -19,7 +19,7 @@ export class QuotationFormComponent implements OnInit, AfterViewInit {
 
   constructor (
     private quotationService:QuotationService,
-    private amountService:AmountService,
+    private apiService:ApiService,
     private fb: FormBuilder,
     private renderer:Renderer) {
 
@@ -28,7 +28,9 @@ export class QuotationFormComponent implements OnInit, AfterViewInit {
 
     this.quotationForm = fb.group({
       'sourceAmount': null,
-      'destinationAmount': [25, [Validators.required, this.validAmount]]
+      'destinationAmount': [25, [Validators.required, this.validAmount]],
+      'firstName': [''],
+      'lastName': ['']
     })
 
     // subscribe getQuotation() on destinationAmount changes
@@ -50,12 +52,10 @@ export class QuotationFormComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = false
 
-    this.quotationService.getQuotation(destinationAmount)
+    this.apiService.getQuotation(destinationAmount)
     .then(quotation => {
       this.quotationForm.controls['sourceAmount'].setValue(quotation.sourceAmount);
       this.quotationForm.controls['destinationAmount'].setValue(quotation.destinationAmount, {emitEvent: false});
-    })
-    .then(() => {
       // Quotation successfully retrieved.
       this.error = false;
       this.loading = false;
@@ -68,17 +68,16 @@ export class QuotationFormComponent implements OnInit, AfterViewInit {
 
   submitForm () {
     let value = this.quotationForm.value.destinationAmount;
-    this.amountService.changeAmount(value)
-
+    this.quotationService.changeAmount(value)
   }
 
   ngOnInit () {
-    // Call getQuotation with default values on form render
+    // Call getQuotation with default values
     this.getQuotation(this.quotationForm.value.destinationAmount);
   }
 
   ngAfterViewInit () {
-    // Put focus on destinationAmount
+    // Put focus on destinationAmount when app loads
     this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
   }
 
