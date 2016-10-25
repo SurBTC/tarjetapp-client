@@ -15,7 +15,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   quotationForm: FormGroup;
   loading: boolean;
   error: boolean;
-  @ViewChild('destinationInput') input: ElementRef
+  @ViewChild('userName') input: ElementRef
 
   constructor (
     private quotationService:QuotationService,
@@ -27,18 +27,19 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.error = false;
 
     this.quotationForm = fb.group({
-      'sourceAmount': null,
+      'sourceAmount': [null, []],
       'destinationAmount': [25, [Validators.required, this.validAmount]],
-      'userName': [''],
+      'userName': ['', []],
+      'hasAccount': [false, [this.hasAccount]]
     })
 
-    // subscribe getQuotation() on destinationAmount changes
+    // subscribe to getQuotation() on destinationAmount changes
     this.quotationForm.controls['destinationAmount']
     .valueChanges
     .debounceTime(300)
     .subscribe(value => {
       this.quotationForm.patchValue({ 'sourceAmount': null })
-      if (this.quotationForm.valid) {
+      if (this.quotationForm.controls['destinationAmount'].valid) {
         this.getQuotation(value)
       } else {
         this.error = false;
@@ -65,25 +66,40 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     });
   }
 
-  submitForm () {
+  submitForm() {
     let value = this.quotationForm.value.destinationAmount;
     this.quotationService.changeAmount(value)
+    console.log(this.quotationForm)
   }
 
-  ngOnInit () {
+  ngOnInit() {
     // Call getQuotation with default values
     this.getQuotation(this.quotationForm.value.destinationAmount);
   }
 
-  ngAfterViewInit () {
-    // Put focus on destinationAmount when app loads
-    this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+  ngAfterViewInit() {
+    // Set focus on userName input
+    // FIXME!
+    setTimeout(() => {
+      this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+    }, 500)
+  }
+
+  toggleHasAccount() {
+    this.quotationForm.controls['hasAccount'].setValue(!this.quotationForm.controls['hasAccount'].value);
+    console.log(this.quotationForm)
   }
 
   validAmount(control: FormControl) {
     let value = control.value;
     if (isNaN(value) || (value <= 0) || (value >= 1000)) {
       return { invalidAmount: true }
+    }
+  }
+
+  hasAccount(control: FormControl) {
+    if (control.value !== true) {
+      return { hasAccount: true }
     }
   }
 }

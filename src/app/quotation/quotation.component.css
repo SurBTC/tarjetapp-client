@@ -1,33 +1,18 @@
-/*.ng-valid[required], .ng-valid.required  {
-  border-left: 5px solid #42A948;
-}*/
-/*
-.ng-invalid:not(form)  {
-  border: 1px solid #a94442;
-}*/
-
 .form-spacer {
   margin-top: 50px;
 }
-/*
-.card-container {
-  padding-left: 20%;
-}
-*/
-
-/*@import url('https://fonts.googleapis.com/css?family=Cairo');*/
-
 
 .cardlike {
+  float: right;
   background-color: #fff;
   color: #585858;
   border-radius: 5px;
+  padding: 20px;
   height: 217px;
   width: 362px;
   -webkit-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
   -moz-box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
   box-shadow: 0px 5px 20px 0px rgba(0,0,0,0.75);
-  padding: 20px;
 }
 
 .monospace * {
@@ -89,8 +74,7 @@
 
 .spinner {
   margin: 0;
-  margin-top: 16px;
-  right: 32%;
+  left: 11em;
   position: absolute;
 }
 
@@ -104,9 +88,9 @@
 
 input {
   color: #fff;
-  font-size: 40px;
+  font-size: 2em;
+  max-width: 5em;
   text-align: right;
-  max-width: 70%;
   padding: 2px;
   border: none;
   line-height: 0;
@@ -122,9 +106,12 @@ input {
   background-color: transparent;
 }
 
+.validation p {
+  margin-left: 4em;
+}
+
 p {
   margin-bottom: 0;
-  margin-top: 10px;
 }
 
 .general-error {
@@ -148,4 +135,9 @@ button:hover {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 30px;
+}
+
+.has-account i {
+  font-size: 1.5em;
+  cursor: pointer;
 }
