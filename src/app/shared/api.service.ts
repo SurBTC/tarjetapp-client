@@ -3,6 +3,8 @@ import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
+import { Quotation } from '../shared/models';
+
 @Injectable()
 export class ApiService {
 
@@ -14,6 +16,10 @@ export class ApiService {
   apiUrl: string = 'http://localhost:3030/quotations'
 
   constructor(private http: Http) {}
+
+  private post(data:any) {
+    return this.http.post(this.apiUrl, data, { headers: this.headers })
+  }
 
   private checkForError(response: Response): Response {
     if (response.status >= 200 && response.status < 300) {
@@ -27,15 +33,20 @@ export class ApiService {
   }
 
   private handleError(error: any): Promise<any> {
-  console.error('An error occurred', error); // for demo purposes only
-  return Promise.reject(error.message || error);
-}
+    console.error('An error occurred', error); // for demo purposes only
+    return Promise.reject(error.message || error);
+  }
 
-  getQuotation(destinationAmount: number): Promise<any> {
-    return this.http.post(
-      this.apiUrl,
-      {amount: destinationAmount},
-      {headers: this.headers})
+  public getPrice(destinationAmount: number) {
+    // TODO: implement
+    return new Promise((resolve, reject) => {
+      resolve(destinationAmount * 690 + 100);
+    });
+  }
+
+  public getQuotation(destinationAmount: Number): Promise<any> {
+    return this.post( { amount: destinationAmount })
+    .delay(1000)
     .toPromise()
     .then(response => this.checkForError(response))
     .then(response => {
@@ -55,5 +66,4 @@ export class ApiService {
     })
     .catch(this.handleError);
   }
-
 }

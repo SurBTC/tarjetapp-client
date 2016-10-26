@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { QuotationComponent } from './quotation/quotation.component';
 
 import { ApiService } from './shared/api.service';
-import { QuotationService } from './shared/quotation.service'
+import { ModelsService } from './shared/models.service'
 // import { ExecutionFormComponent } from './execution-form/execution-form.component';
 // import { ExecutionFormModule } from './execution-form/execution-form.module';
 
@@ -28,7 +28,7 @@ import { QuotationService } from './shared/quotation.service'
   ],
   providers: [
     ApiService,
-    QuotationService
+    ModelsService
   ],
   bootstrap: [AppComponent]
 })
