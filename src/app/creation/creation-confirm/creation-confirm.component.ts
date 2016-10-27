@@ -3,8 +3,12 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 
 @Component({
-  selector: 'deposit-form',
-  templateUrl: './deposit-form.component.html',
+  selector: 'creation-confirm',
+  templateUrl: './creation-confirm.component.html',
+  styleUrls: [
+  	'./creation-confirm.component.css',
+  	'../creation.component.css'
+	],
   providers: []
 })
-export class DepositFormComponent { }
+export class CreationConfirmComponent { }

@@ -11,6 +11,7 @@ import { QuotationComponent } from './quotation/quotation.component';
 import { CreationComponent } from './creation/creation.component';
 import { DataConfirmComponent } from './creation/data-confirm/data-confirm.component';
 import { DepositConfirmComponent } from './creation/deposit-confirm/deposit-confirm.component';
+import { CreationConfirmComponent } from './creation/creation-confirm/creation-confirm.component';
 
 import { ApiService } from './shared/api.service';
 import { ModelsService } from './shared/models.service'
@@ -28,7 +29,8 @@ import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
     QuotationComponent,
     CreationComponent,
     DataConfirmComponent,
-    DepositConfirmComponent
+    DepositConfirmComponent,
+    CreationConfirmComponent
   ],
   imports: [
     BrowserModule,

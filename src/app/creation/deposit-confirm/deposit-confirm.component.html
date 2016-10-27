@@ -1,4 +1,97 @@
-<p>Ahora tienes que:</p>
+<div class="container">
+	<div class="modal-header row">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h4 class="modal-highlight" id="modalLabel">Último paso: transferir</h4>
+	</div>
+
+	<div class="modal-description">
+		<p class="text-muted">Transfiere el siguiente monto a la cuenta indicada dentro de los próximos 15 minutos</p>
+	</div>
+
+	<div class="modal-body row">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-xs-7 item">
+					<h6>Cargar tarjeta con $200 USD</h6>
+				</div>
+				<div class="col-xs-5 item-total">
+					<h6>$143.000 CLP</h6>
+				</div>
+			</div>
+
+			<div class="row text-muted">
+				<div class="col-xs-7 item">
+					<p>Tasa de cambio</p>
+				</div>
+				<div class="col-xs-5 item-total">
+					<p>670CLP / 1USD</p>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-7 item">
+					<h6>Costo de creación tarjeta</h6>
+				</div>
+				<div class="col-xs-5 item-total">
+					<h6>$1.000 CLP</h6>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12">
+					<hr>
+				</div>
+			</div>
+
+			<div class="row total">
+				<div class="col-xs-7">
+					<h5>Total a transferir</h5>
+				</div>
+				<div class="col-xs-5 item-total">
+					<h5>$144.000 CLP</h5>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="footer-text">
+			<div class="col-xs-12">
+				<p class="highlight"><b>Datos cuenta bancaria</b></p>
+				<p>Nombre: Dinex SpA</p>
+				<p>RUT: 76.436.908-4</p>
+				<p>Cuenta: 37501542</p>
+				<p>Tipo de cuenta: Corriente</p>
+				<p>Banco: Banco de Chile</p>
+				<p>Correo: depositos@tarjetapp.cl</p>
+			</div>
+		</div>
+
+		<div class="footer-text">
+			<div class="col-xs-12">
+				<p>Ten presente:</p>
+				<ul>
+					<li><p>La transferencia debes hacerla desde una cuenta bancaria con tu RUT</p></li>
+					<li><p>Enviaremos los datos de la tarjeta creada a pepito@aqui.com</p></li>
+				</ul>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="modal-footer row">
+		<button class="btn" [disabled]="false" (click)="submitForm()">Ya transferí</button>
+	</div>
+
+</div>
+
+
+
+
+
+<!-- <p>Ahora tienes que:</p>
 <ul class="no-bullet">
 	<li>
 	<div class="form-check">
@@ -17,7 +110,7 @@
 			      <button>Cambiar</button>
 			      <button (click)="toggleIntentMail()">Cerrar</button>
 
-			      <!-- <div class="form-control-feedback" [style.visibility]='hidden'>Ingresa una dirección de correo válida</div> -->
+			      <div class="form-control-feedback" [style.visibility]='hidden'>Ingresa una dirección de correo válida</div>
 		    	</div>
       	</li>
       	<li>
@@ -47,3 +140,4 @@
   </div>
 	</li>
 </ul>
+ -->

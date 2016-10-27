@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class CreationStateService {
 
-	private statusSource = new BehaviorSubject<string>('data')
+	private statusSource = new BehaviorSubject<string>('deposit')
 
 	public statusUpdates = this.statusSource.asObservable();
 

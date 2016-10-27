@@ -12,6 +12,10 @@
   font-family: 'Open Sans', sans-serif;
 }
 
+p {
+  font-family: 'Open Sans', sans-serif;
+}
+
 .form-control {
   color: #001a33;
 }
@@ -34,7 +38,7 @@
 	border-top: none;
 	text-align: center;
 	margin-top: 10px;
-	margin-bottom: 20px;
+	margin-bottom: 25px;
 }
 
 input {
