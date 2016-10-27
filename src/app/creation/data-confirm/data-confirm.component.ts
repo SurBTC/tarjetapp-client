@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { cities } from '../../shared/CL-cities';
 
 import { ModelsService } from '../../shared/models.service';
+import { CreationStateService } from '../creation-state.service';
 
 @Component({
   selector: 'data-confirm',
@@ -37,7 +38,8 @@ export class DataConfirmComponent implements AfterViewInit {
     private renderer:Renderer,
     private datePickerConfig:NgbDatepickerConfig,
     private rutValidator:RutValidator,
-    private modelsService:ModelsService) {
+    private modelsService:ModelsService,
+    private creationStateService:CreationStateService) {
 
     datePickerConfig.minDate = { year: 1910, month: 3, day: 1 };
     datePickerConfig.maxDate = { year: 1998, month: 11, day: 30 };
@@ -97,10 +99,10 @@ export class DataConfirmComponent implements AfterViewInit {
   }
 
   submitForm() {
-    // Publish changes to service
+    // Publish changes to models
     this.modelsService.patchUser(this.userForm.value);
-    // console.log(this.modelsService.userSource.getValue());
-    // console.log(this.modelsService.quotationSource.getValue());
-    console.log(this.userForm.valid)
+
+    // Update creation process status
+    this.creationStateService.updateState('deposit');
   }
 }

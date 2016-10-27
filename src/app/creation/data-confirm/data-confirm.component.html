@@ -7,7 +7,7 @@
   </div>
 
   <div class="modal-description">
-    <p class="text-muted">Completa el siguiente formulario con tus datos:</p>
+    <p class="text-muted">Necesitamos que completes el siguiente formulario con tus datos:</p>
   </div>
 
   <div class="modal-body row">
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-       <div class="col-sm-6 col-lg-6">
+      <div class="col-sm-6 col-lg-6">
         <div class="form-group" [class.has-danger]="!(userForm.controls.rut.valid || userForm.controls.rut.untouched)">
           <label class="col-form-label" for="inputRUT">RUT</label>
 
@@ -67,7 +67,7 @@
         </div>
       </div>
 
-       <div class="col-sm-6 col-lg-6">
+      <div class="col-sm-6 col-lg-6">
         <div class="form-group" [class.has-danger]="!(userForm.controls.phone.valid || userForm.controls.phone.untouched)">
           <label class="col-form-label" for="inputphone">Teléfono</label>
 
@@ -103,9 +103,9 @@
           <label class="col-form-label" for="inputcity">Ciudad</label>
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.city.valid || userForm.controls.city.untouched) ? 'hidden':'visible'">(requerida)</div>
-          </div>
+        </div>
 
-          <input type="text" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city" [ngbTypeahead]="search">
+        <input type="text" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city" [ngbTypeahead]="search">
 
       </div>
 
@@ -123,8 +123,7 @@
   </div>
 
   <div class="modal-footer row">
-
-    <button class="btn" [disabled]="!userForm.valid" (click)="submitForm()">Click me!</button>
+    <button class="btn" [disabled]="!userForm.valid" (click)="submitForm()">Cargar mi tarjeta</button>
   </div>
 
 </div>

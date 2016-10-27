@@ -9,12 +9,12 @@ import { Quotation, User } from './models';
 
 @Injectable()
 export class ModelsService {
-  public quotationSource = new BehaviorSubject<Quotation>({
+  private quotationSource = new BehaviorSubject<Quotation>({
   	sourceAmount: null,
   	destinationAmount: 10
   });
 
-  public userSource = new BehaviorSubject<User>({
+  private userSource = new BehaviorSubject<User>({
   	firstName: null,
   	lastName: null
   });

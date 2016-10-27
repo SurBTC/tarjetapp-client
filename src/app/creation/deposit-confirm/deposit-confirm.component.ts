@@ -2,11 +2,11 @@ import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @Component({
-  selector: 'bank-form',
-  templateUrl: './bank-form.component.html',
-  styleUrls: ['./bank-form.component.css'],
+  selector: 'deposit-confirm',
+  templateUrl: './deposit-confirm.component.html',
+  styleUrls: ['./deposit-confirm.component.css'],
 })
-export class BankFormComponent {
+export class DepositConfirmComponent {
   @Input() sourceAmount:number;
   @Input() emailAddress:string;
 

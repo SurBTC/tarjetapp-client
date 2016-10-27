@@ -10,9 +10,12 @@ import { AppComponent } from './app.component';
 import { QuotationComponent } from './quotation/quotation.component';
 import { CreationComponent } from './creation/creation.component';
 import { DataConfirmComponent } from './creation/data-confirm/data-confirm.component';
+import { DepositConfirmComponent } from './creation/deposit-confirm/deposit-confirm.component';
 
 import { ApiService } from './shared/api.service';
 import { ModelsService } from './shared/models.service'
+import { CreationStateService } from './creation/creation-state.service';
+
 import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
 
 // import { ExecutionFormComponent } from './execution-form/execution-form.component';
@@ -24,7 +27,8 @@ import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
     AppComponent,
     QuotationComponent,
     CreationComponent,
-    DataConfirmComponent
+    DataConfirmComponent,
+    DepositConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +41,7 @@ import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
   providers: [
     ApiService,
     ModelsService,
+    CreationStateService,
     {
       provide: NgbDateParserFormatter,
       useFactory: () => { return new NgbDateES_CLParserFormatter() }
