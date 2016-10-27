@@ -36,7 +36,7 @@
           </div>
 
           <div class="row">
-            <p>por sólo</p>
+            <p>por</p>
 
               <div [style.visibility]="loading ? 'visible':'hidden'" class="spinner-container">
                 <div class="spinner">
@@ -69,9 +69,8 @@
       </p>
     </div>
     <br>
-    <button (click)="submitForm()" type="button" data-toggle="modal" data-target="#executionModal" [disabled]="!quotationForm.valid || error || loading" class="btn btn-primary-outline btn-xl page-scroll">Crear mi tarjeta</button>
+    <button type="button" data-toggle="modal" data-target="#creationModal" [disabled]="!quotationForm.valid || error || loading" class="btn page-scroll">Crear mi tarjeta</button>
   </div>
-
 </div>
 
 

@@ -10,18 +10,25 @@ import { RutValidator } from 'ng2-rut';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
+import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { cities } from '../../shared/CL-cities';
 
+import { ModelsService } from '../../shared/models.service';
+
 @Component({
-  selector: 'user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.css'],
+  selector: 'data-confirm',
+  templateUrl: './data-confirm.component.html',
+  styleUrls: [
+    '../creation.component.css',
+    './data-confirm.component.css'
+  ],
   providers: [NgbDateES_CLParserFormatter]
 })
-export class UserFormComponent implements AfterViewInit {
+export class DataConfirmComponent implements AfterViewInit {
 
   private userForm: FormGroup;
+  private subscription: Subscription;
   @ViewChild('firstName') input: ElementRef;
 
 
@@ -29,7 +36,8 @@ export class UserFormComponent implements AfterViewInit {
     private fb:FormBuilder,
     private renderer:Renderer,
     private datePickerConfig:NgbDatepickerConfig,
-    private rutValidator:RutValidator) {
+    private rutValidator:RutValidator,
+    private modelsService:ModelsService) {
 
     datePickerConfig.minDate = { year: 1910, month: 3, day: 1 };
     datePickerConfig.maxDate = { year: 1998, month: 11, day: 30 };
@@ -51,6 +59,22 @@ export class UserFormComponent implements AfterViewInit {
       'country': [{value: 'Chile', disabled: true}, [Validators.required]],
       'rut': ['', [Validators.minLength(8), Validators.maxLength(9), rutValidator]]
     });
+
+    // Subscribe to changes on user service
+    this.subscription = this.modelsService.userUpdates.subscribe(user => {
+      this.userForm.patchValue(user);
+    });
+
+    // Subscribe userService to changes on form controls:
+    // subscribeServicetoChanges() {
+    //   for (let fieldName in this.userForm.controls) {
+    //     this.userForm.controls[fieldName]
+    //     .valueChanges
+    //     .subscribe(value => {
+    //       this.modelsService.patchUser({[fieldName]: value})
+    //     })
+    //   }
+    // }
   }
 
   ngAfterViewInit () {
@@ -65,16 +89,18 @@ export class UserFormComponent implements AfterViewInit {
       .debounceTime(100)
       .distinctUntilChanged()
       .map(term => term.length < 1 ? []
-        : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 10));
+        : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 5));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  submitForm() {
+    // Publish changes to service
+    this.modelsService.patchUser(this.userForm.value);
+    // console.log(this.modelsService.userSource.getValue());
+    // console.log(this.modelsService.quotationSource.getValue());
+    console.log(this.userForm.valid)
   }
 }
-
-
-// export class Validators {
-//   /**
-//    * Validator that requires controls to have a non-empty value.
-//    */
-//   static required(control: AbstractControl): {[key: string]: boolean} {
-//     return isEmptyInputValue(control.value) ? {'required': true} : null;
-//   }
-// }

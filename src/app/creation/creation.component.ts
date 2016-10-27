@@ -1,22 +1,20 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { AmountService }   from '../amount.service';
 import { Subscription } from 'rxjs/Subscription';
-import { QuotationService } from '../quotation.service';
+import { ModelsService } from '../shared/models.service';
 
 import { Observable } from 'rxjs/Rx';
 
-// import { NgbAlert } from '@ng-bootstrap/ng-bootstrap/alert/alert.module'
 
 
 @Component({
-  selector: 'execution-form',
-  templateUrl: './execution-form.component.html',
-  styleUrls: ['./execution-form.component.css'],
-  providers: [QuotationService]
+  selector: 'creation',
+  templateUrl: './creation.component.html',
+  styleUrls: ['./creation.component.css'],
+  providers: []
 })
-export class ExecutionFormComponent {
+export class CreationComponent {
 
   destinationAmount:number;
   sourceAmount:number;
@@ -32,68 +30,66 @@ export class ExecutionFormComponent {
 
   quotationConfirmed = false;
 
-  private greetings = ['Súper', 'Excelente', 'Bien']
-  private currentGreet:string;
-  private state = 'gettingData';
-  private warningMins = 10;
+  public greetings = ['Súper', 'Excelente', 'Bien']
+  public currentGreet:string;
+  public state = 'data';
+  public warningMins = 10;
 
-  constructor(
-    private amountService:AmountService,
-    private quotationService:QuotationService) {
+  constructor() {
+    this.currentGreet = this.greetings[Math.floor(Math.random() * this.greetings.length)]
 
-    this.subscription = this.amountService.amountStream
-       .subscribe((amount:number) => {
-         // On change do:
+    // this.subscription = this.amountService.amountStream
+    //    .subscribe((amount:number) => {
+    //      // On change do:
 
-         // Update component status
-         this.quotationConfirmed = false;
-         this.destinationAmount = amount;
+    //      // Update component status
+    //      this.quotationConfirmed = false;
+    //      this.destinationAmount = amount;
 
-         // Retrieve the quotation
-         this.quotationService.getQuotation(amount)
-         .then(quotation => {
+    //      // Retrieve the quotation
+    //      this.quotationService.getQuotation(amount)
+    //      .then(quotation => {
 
-           // Parse the quotation and check if is valid
-           this.sourceAmount = quotation.sourceAmount;
-           this.quotationConfirmed = true;
-           this.expirationDate = new Date(quotation.expiresAt);
-           this.expired = ((this.expirationDate.getTime() - new Date().getTime()) <= 0)
-         })
+    //        // Parse the quotation and check if is valid
+    //        this.sourceAmount = quotation.sourceAmount;
+    //        this.quotationConfirmed = true;
+    //        this.expirationDate = new Date(quotation.expiresAt);
+    //        this.expired = ((this.expirationDate.getTime() - new Date().getTime()) <= 0)
+    //      })
 
-         // Subscribe a timer to update component valid
-         Observable.interval(1000)
-         .subscribe(() => {
-           let timeLeft = this.expirationDate.getTime() - new Date().getTime();
-           this.expired = (timeLeft <= 0);
-           if (!this.expired) {
-             this.timeLeft.secs = Math.floor(timeLeft/1000);
-             this.timeLeft.mins = Math.floor(this.timeLeft.secs/60);
-             console.log(this.timeLeft);
-           }
-         });
-       });
+    //      // Subscribe a timer to update component valid
+    //      Observable.interval(1000)
+    //      .subscribe(() => {
+    //        let timeLeft = this.expirationDate.getTime() - new Date().getTime();
+    //        this.expired = (timeLeft <= 0);
+    //        if (!this.expired) {
+    //          this.timeLeft.secs = Math.floor(timeLeft/1000);
+    //          this.timeLeft.mins = Math.floor(this.timeLeft.secs/60);
+    //          console.log(this.timeLeft);
+    //        }
+    //      });
+    //    });
   }
 
   updateState() {
-    if (this.state == 'gettingData') {
-      this.state = 'confirming';
-    } else if (this.state == 'confirming') {
+    if (this.state == 'data') {
+      this.state = 'deposit';
+    } else if (this.state == 'deposit') {
       this.state = 'creating';
     } else if (this.state == 'creating') {
-      this.state = 'gettingData';
+      this.state = 'data';
     }
   }
 
   resetState() {
-    this.state = 'gettingData';
+    this.state = 'data';
   }
 
   ngOnInit() {
-    this.currentGreet = this.greetings[Math.floor(Math.random() * this.greetings.length)]
   }
 
   ngOnDestroy() {
     // prevent memory leak when component is destroyed
-    this.subscription.unsubscribe();
+    // this.subscription.unsubscribe();
   }
 }

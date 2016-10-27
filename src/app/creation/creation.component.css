@@ -1,19 +1,90 @@
-.modal {
-  color: #001a33;
+.modal-content {
+	border-radius: 12px;
+	background-color: #fff;
+}
+
+.modal-content * {
+  color: #585858;
+  font-family: 'Open Sans', sans-serif;
+  border: none;
+  -webkit-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.65);
+	-moz-box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.65);
+	box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.65);
 }
 
 .form-control {
   color: #001a33;
 }
 
-
-.modal-content {
-	background-color: #fafafa;
+.modal-header {
+	border-bottom: none;
+	text-align: center;
 }
 
-.btn-primary:hover {
-	background-color: #0275d8;
-	color: #fff;
-	opacity: 1;
+.modal-description {
+	padding: 15px;
+	text-align: center;
 }
 
+.modal-description p{
+	margin-bottom: 0;
+}
+
+.modal-footer {
+	border-top: none;
+	text-align: center;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+
+input {
+	border: none;
+	border-bottom: solid 1px #d4d4d4;
+	border-radius: 0;
+  padding-left: 0;
+}
+
+input:focus {
+	color: #007fff;
+}
+
+label {
+	display: inline-block;
+	font-size: 0.8em;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+.form-control {
+	color: #585858;
+	background-color: transparent;
+	padding: .25rem .0rem;
+}
+
+.has-danger label {
+	color: #d9534f;
+}
+
+.form-group {
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.form-control-feedback {
+  font-size: 0.8em;
+  display: inline;
+  /*text-align: right;*/
+}
+
+::selection {
+  background: #007fff;
+}
+
+::-moz-selection {
+  background: #007fff;
+}
+
+.btn-secondary:hover {
+	background-color: #007fff;
+}

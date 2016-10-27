@@ -2,7 +2,7 @@ export interface User {
 	firstName?: string,
 	lastName?: string,
 	email?: string,
-	nationalId?: string
+	ruts?: string
 	birthDate?: Date,
 	address?: string,
 	city?: string,

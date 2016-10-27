@@ -1,9 +1,8 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { AmountService }   from '../amount.service';
 import { Subscription } from 'rxjs/Subscription';
-import { QuotationService } from '../quotation.service';
+import { ModelsService } from '../models.service';
 
 import { Observable } from 'rxjs/Rx';
 
@@ -14,7 +13,7 @@ import { Observable } from 'rxjs/Rx';
   selector: 'execution-form',
   templateUrl: './execution-form.component.html',
   styleUrls: ['./execution-form.component.css'],
-  providers: [QuotationService]
+  providers: [ModelsService]
 })
 export class ExecutionFormComponent {
 
@@ -38,8 +37,7 @@ export class ExecutionFormComponent {
   private warningMins = 10;
 
   constructor(
-    private amountService:AmountService,
-    private quotationService:QuotationService) {
+    private modelsService:ModelsService) {
 
     this.subscription = this.amountService.amountStream
        .subscribe((amount:number) => {
