@@ -49,7 +49,7 @@
         <div class="form-group" [class.has-danger]="!(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched)">
           <label class="col-form-label" for="inputbirthDate">Fecha de nacimiento</label>
 
-          <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.pristine) ? 'hidden':'visible'">(requerida)</div>
+          <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched) ? 'hidden':'visible'">(requerida)</div>
 
           <input type="text" class="form-control" placeholder="Ej: 27-01-1990" name="dp" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker" (focus)="datePicker.open()">
 
