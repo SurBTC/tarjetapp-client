@@ -64,7 +64,7 @@
   <div class="row confirm">
     <div class="confirm-account">
       <p class="has-account align-middle">
-        <i class="align-middle" (click)="toggleHasAccount()" [class.ion-ios-checkmark]="quotationForm.controls['hasAccount'].value" [class.ion-ios-circle-outline]="!quotationForm.controls['hasAccount'].value"> </i>
+        <i class="material-icons align-middle" (click)="toggleHasAccount()">{{quotationForm.controls['hasAccount'].value ? 'check_circle' : 'radio_button_unchecked'}}</i>
         Tengo una cuenta bancaria asociada a mi RUT
       </p>
     </div>
