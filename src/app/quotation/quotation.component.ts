@@ -150,7 +150,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     // FIXME!
     setTimeout(() => {
       this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
-    }, 500)
+    }, 1000)
   }
 
   ngOnDestroy() {

@@ -3,7 +3,7 @@ import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Quotation } from '../shared/models';
+import { Quotation, User } from '../shared/models';
 
 @Injectable()
 export class ApiService {
@@ -40,7 +40,7 @@ export class ApiService {
   public getPrice(destinationAmount: number) {
     // TODO: implement
     return new Promise((resolve, reject) => {
-      resolve(destinationAmount * 690 + 100);
+      resolve(destinationAmount * 670 + 1000);
     });
   }
 
@@ -65,5 +65,16 @@ export class ApiService {
       return quotation;
     })
     .catch(this.handleError);
+  }
+
+  public createCard() {
+    return new Promise((resolve, reject) => {
+      setTimeout(function(){
+        resolve({
+          success: true,
+          msg: 'Card created successfully'
+        })
+      }, 5000);
+    })
   }
 }

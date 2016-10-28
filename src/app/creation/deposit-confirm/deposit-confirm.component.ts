@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { Subscription } from 'rxjs/Subscription';
+
 import { CreationStateService } from '../creation-state.service';
 
 @Component({
@@ -15,9 +17,19 @@ export class DepositConfirmComponent {
   @Input() sourceAmount:number;
   @Input() emailAddress:string;
 
+  private creationStateSubscription: Subscription;
+
   private changingMail: boolean = false;
 
-  constructor(private creationStateService: CreationStateService) { }
+  constructor(private creationStateService: CreationStateService) {
+    // Subscribe to changes to creation state
+    this.creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
+      if (newState === 'deposit') {
+        console.log('Data was submitted. Now we should create the final quotation')
+      }
+    })
+
+  }
 
   toggleIntentMail() {
   	this.changingMail = !this.changingMail;

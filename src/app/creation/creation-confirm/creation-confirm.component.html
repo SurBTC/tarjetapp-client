@@ -1,11 +1,61 @@
-<div role="tabpanel" class="tab-pane" id="deposit">
-  <p class="help-block">Estamos creando tu tarjeta...</p>
-  <div class="spinner">
-  <div class="rect1"></div>
-  <div class="rect2"></div>
-  <div class="rect3"></div>
-  <div class="rect4"></div>
-  <div class="rect5"></div>
-</div>
-  <p>Sólo unos instantes más...</p>
+<div class="container">
+	<div class="modal-header row">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<h4 class="modal-highlight" id="modalLabel">{{title}}</h4>
+	</div>
+
+	<div class="modal-description">
+		<p class="text-muted">{{description}}</p>
+	</div>
+
+	<div class="modal-body row">
+		<div class="container">
+
+			<div *ngIf="state==='creation'" class="row">
+				<div role="tabpanel" class="tab-pane" id="deposit">
+				  <div class="spinner">
+					  <div class="rect1"></div>
+					  <div class="rect2"></div>
+					  <div class="rect3"></div>
+					  <div class="rect4"></div>
+					  <div class="rect5"></div>
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="state==='success'" class="row">
+				<div class="row">
+				<div class="col-xs-12">
+					<h4>Tarjeta creada!</h4>
+				</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p>Sólo falta que revises tu correo, donde te hemos enviado un mail con instrucciones para verificar tu identidad y obtener los números completos de tu tarjeta virtual.</p>
+					</div>
+				</div>
+			</div>
+
+			<div *ngIf="state==='error'" class="row">
+				<div class="row">
+					<div class="col-xs-12">
+						<h4>Ups!</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p>Tuvimos un error al crear tu tarjeta.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="modal-footer row">
+		<button class="btn" [disabled]="state!=='success'" data-dismiss="modal">Listo</button>
+	</div>
+
 </div>
