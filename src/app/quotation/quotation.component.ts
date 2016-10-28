@@ -7,6 +7,7 @@ import { CreationComponent } from '../creation/creation.component';
 
 import { ModelsService } from '../shared/models.service';
 import { ApiService }   from '../shared/api.service';
+import { CreationStateService } from '../creation/creation-state.service';
 
 import { Quotation, User } from '../shared/models';
 
@@ -21,6 +22,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   quotationForm: FormGroup;
   private loading: boolean;
   private error: boolean;
+  private editable: boolean;
   @ViewChild('userName') input: ElementRef;
 
   private subscriptions:Subscription[];
@@ -29,7 +31,8 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     private modelsService:ModelsService,
     private apiService:ApiService,
     private fb: FormBuilder,
-    private renderer:Renderer) {
+    private renderer:Renderer,
+    private creationStateService:CreationStateService) {
 
     this.loading = false;
     this.error = false;
@@ -64,6 +67,11 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     .subscribe(userName => {
       this.updateUserName(userName);
     })
+
+    // // Subscribe to creation status
+    // let creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
+    //   this.editable = (newState === 'data');
+    // })
 
     // update quotation info on quotation changes
     let quotationSubscription = modelsService.quotationUpdates.subscribe(quotation => {
@@ -111,6 +119,9 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   updateUserName (userName: string):void {
+    if (this.creationStateService.getState() !== 'data') {
+      return
+    }
     // User name parsing to divide first and last names
     let firstName = '';
     let lastName = '';

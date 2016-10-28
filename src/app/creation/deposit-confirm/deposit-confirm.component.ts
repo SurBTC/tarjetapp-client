@@ -3,7 +3,11 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { Subscription } from 'rxjs/Subscription';
 
+import { ApiService } from '../../shared/api.service';
+import { ModelsService } from '../../shared/models.service';
 import { CreationStateService } from '../creation-state.service';
+
+import { Quotation, User } from '../../shared/models';
 
 @Component({
   selector: 'deposit-confirm',
@@ -18,15 +22,46 @@ export class DepositConfirmComponent {
   @Input() emailAddress:string;
 
   private creationStateSubscription: Subscription;
+  private userSubscription: Subscription;
+  private quotationSubscription: Subscription;
 
   private changingMail: boolean = false;
+  private quotation: Quotation;
+  private user: User;
+  private fee:number;
 
-  constructor(private creationStateService: CreationStateService) {
+  private state:string;
+
+  constructor(
+    private apiService: ApiService,
+    private modelsService:ModelsService,
+    private creationStateService: CreationStateService) {
+
+    this.quotation = modelsService.quotationSource.getValue();
+    this.user = modelsService.userSource.getValue();
+
+
     // Subscribe to changes to creation state
     this.creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
       if (newState === 'deposit') {
-        console.log('Data was submitted. Now we should create the final quotation')
+        this.state = 'confirming';
+        this.apiService.getQuotation(this.quotation.destinationAmount)
+        .then(result => {
+          this.state = 'confirmed';
+          modelsService.updateQuotation(result.quotation);
+          this.fee = result.fee.amount;
+        })
       }
+    });
+
+    // Subscribe to changes to quotation
+    this.quotationSubscription = modelsService.quotationUpdates.subscribe(quotation => {
+      this.quotation = quotation;
+    });
+
+    // Subscribe to changes to user
+    this.userSubscription = modelsService.userUpdates.subscribe(user => {
+      this.user = user;
     })
 
   }
