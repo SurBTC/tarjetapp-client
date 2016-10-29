@@ -145,3 +145,27 @@ label {
     -webkit-transform: scaleY(1.0);
   }
 }
+
+
+/*Icons*/
+.logo {
+	text-align: center
+}
+
+.logo i {
+	font-size: 60px;
+}
+
+.info {
+	color: #4b66ed;
+}
+
+.success {
+	color: #34bb1f;
+}
+
+.error {
+	color: #dc2431;
+}
+
+
