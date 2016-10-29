@@ -40,10 +40,17 @@ export class ApiService {
   public getPrice(destinationAmount: number) {
     // TODO: implement
     return new Promise((resolve, reject) => {
-      return resolve(destinationAmount * 670 + 1000);
-      // setTimeout(() => {
-      //   resolve(destinationAmount * 670 + 1000);
-      // }, 100)
+      setTimeout(() => {
+        resolve({
+          quotation: {
+            sourceAmount: destinationAmount * 670,
+            destinationAmount: destinationAmount,
+          },
+          fee: {
+            amount: 1000
+          }
+        });
+      }, 250)
     });
   }
 
@@ -55,6 +62,8 @@ export class ApiService {
     .then(response => {
 
       let data = response.json();
+
+      console.log(data);
 
       return {
         quotation: {

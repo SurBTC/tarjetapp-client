@@ -40,8 +40,8 @@ export class CreationConfirmComponent {
         .catch(err => {
         	console.log(err);
         	this.state = 'error'
-        	this.title = '¡Ups!'
-        	this.description = 'No pudimos crear tu tarjeta'
+        	this.title = 'Lo sentimos'
+        	this.description = 'Hubo un problema al crear tu tarjeta'
         })
       }
     })

@@ -48,6 +48,7 @@ export class DepositConfirmComponent {
         this.apiService.getQuotation(this.quotation.destinationAmount)
         .then(result => {
           this.state = 'confirmed';
+          console.log('Updating real quotation from api')
           modelsService.updateQuotation(result.quotation);
           this.fee = result.fee.amount;
         })
@@ -66,19 +67,8 @@ export class DepositConfirmComponent {
 
   }
 
-  toggleIntentMail() {
-  	this.changingMail = !this.changingMail;
-  }
-
-  confirmChangeMail() {
-  	this.changingMail = false;
-  }
-
-  resendMail() {
-  	console.log("resending mail to...");
-  }
-
   submitForm() {
-    this.creationStateService.updateState('creation');
+    // this.creationStateService.updateState('creation');
+    console.log(this.quotation)
   }
 }

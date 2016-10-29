@@ -18,3 +18,11 @@ export interface Quotation {
 	destinationCurrency?: string,
 	expiresAt?: Date
 }
+
+export interface ApiResponse {
+	quotation: Quotation,
+	fee: {
+		amount:number,
+		description?: string
+	}
+}

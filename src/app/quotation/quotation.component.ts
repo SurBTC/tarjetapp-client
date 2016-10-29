@@ -9,7 +9,7 @@ import { ModelsService } from '../shared/models.service';
 import { ApiService }   from '../shared/api.service';
 import { CreationStateService } from '../creation/creation-state.service';
 
-import { Quotation, User } from '../shared/models';
+import { Quotation, User, ApiResponse } from '../shared/models';
 
 
 @Component({
@@ -74,11 +74,10 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     // })
 
     // update quotation info on quotation changes
-    let quotationSubscription = modelsService.quotationUpdates.subscribe(quotation => {
-      this.quotationForm.patchValue({
-        sourceAmount: quotation.sourceAmount,
-        destinationAmount: quotation.destinationAmount
-      })
+    let quotationSubscription = modelsService.quotationUpdates
+    .subscribe(quotation => {
+      this.quotationForm.controls['sourceAmount'].setValue(quotation.sourceAmount + modelsService.feeSource.getValue(), { emitEvent: false });
+      this.quotationForm.controls['destinationAmount'].setValue(quotation.destinationAmount, { emitEvent: false })
     });
 
     // update userName on user changes
@@ -99,13 +98,17 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.error = false
 
     this.apiService.getPrice(destinationAmount)
-    .then((sourceAmount:number) =>  {
+    .then((response:ApiResponse) =>  {
+      console.log('Updating fake quotation from api')
+      console.log(response);
 
       // Patch quotation on modelsService
       this.modelsService.patchQuotation({
-        sourceAmount: sourceAmount,
-        destinationAmount: destinationAmount
+        sourceAmount: response.quotation.sourceAmount,
+        destinationAmount: response.quotation.destinationAmount
       })
+
+      this.modelsService.updateFee(response.fee.amount);
 
       // Update status vars
       this.error = false;

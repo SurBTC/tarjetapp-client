@@ -19,8 +19,11 @@ export class ModelsService {
   	lastName: null
   });
 
+  public feeSource = new BehaviorSubject<number>(1000);
+
   quotationUpdates = this.quotationSource.asObservable();
   userUpdates = this.userSource.asObservable();
+  feeUpdates = this.feeSource.asObservable();
 
   updateQuotation(quotation:Quotation) {
     this.quotationSource.next(quotation);
@@ -44,5 +47,9 @@ export class ModelsService {
   		currentUser[prop] = user[prop];
   	}
   	this.updateUser(currentUser);
+  }
+
+  updateFee(fee:number) {
+    this.feeSource.next(fee);
   }
 }
