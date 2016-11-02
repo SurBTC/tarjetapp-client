@@ -68,7 +68,7 @@ export class DepositConfirmComponent {
   }
 
   submitForm() {
-    // this.creationStateService.updateState('creation');
     console.log(this.quotation)
+    this.creationStateService.updateState('creation');
   }
 }
