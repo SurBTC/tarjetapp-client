@@ -50,13 +50,13 @@ export class ApiService {
             amount: 1000
           }
         });
-      }, 250)
+      }, 1000)
     });
   }
 
   public getQuotation(destinationAmount: Number): Promise<any> {
     return this.post( { amount: destinationAmount })
-    .delay(1000)
+    .delay(10000)
     .toPromise()
     .then(response => this.checkForError(response))
     .then(response => {
@@ -87,7 +87,7 @@ export class ApiService {
           success: true,
           msg: 'Card created successfully'
         })
-      }, 5000);
+      }, 1000);
     })
   }
 }

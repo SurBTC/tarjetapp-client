@@ -1,9 +1,11 @@
 import { Component, OnInit} from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
 
-import { CreationStateService } from '../creation-state.service';
+import { Store } from '@ngrx/store';
+
 import { ApiService } from '../../shared/api.service';
 
 
@@ -21,14 +23,18 @@ export class CreationConfirmComponent {
   private state:string = ''
   private title: string = 'Creando tu tarjeta';
   private description: string = 'Estamos creando tu tarjeta...';
+  private mainProcessTask: Observable<any>;
 
 	constructor(
-		private creationStateService:CreationStateService,
+		private store:Store<any>,
 		private apiService:ApiService) {
-		// Subscribe to changes on creation state
 
-		this.creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
-      if (newState === 'creation') {
+    this.mainProcessTask = this.store.select('mainProcess');
+
+		// Subscribe to changes to main process state
+
+		this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
+      if (newState === 'GET_CARD') {
         // Submit data for card creation
         this.state = 'creation';
         this.apiService.createCard()

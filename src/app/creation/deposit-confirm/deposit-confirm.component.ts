@@ -1,11 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
+
+import { Store } from '@ngrx/store';
 
 import { ApiService } from '../../shared/api.service';
 import { ModelsService } from '../../shared/models.service';
-import { CreationStateService } from '../creation-state.service';
 
 import { Quotation, User } from '../../shared/models';
 
@@ -30,20 +32,23 @@ export class DepositConfirmComponent {
   private user: User;
   private fee:number;
 
+  private mainProcessTask: Observable<any>;
+
   private state:string;
 
   constructor(
     private apiService: ApiService,
     private modelsService:ModelsService,
-    private creationStateService: CreationStateService) {
+    private store: Store<any>) {
 
+    this.mainProcessTask = store.select('mainProcess');
     this.quotation = modelsService.quotationSource.getValue();
     this.user = modelsService.userSource.getValue();
 
 
     // Subscribe to changes to creation state
-    this.creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
-      if (newState === 'deposit') {
+    this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
+      if (newState === 'GET_DEPOSIT') {
         this.state = 'confirming';
         this.apiService.getQuotation(this.quotation.destinationAmount)
         .then(result => {
@@ -69,6 +74,6 @@ export class DepositConfirmComponent {
 
   submitForm() {
     console.log(this.quotation)
-    this.creationStateService.updateState('creation');
+    this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
   }
 }

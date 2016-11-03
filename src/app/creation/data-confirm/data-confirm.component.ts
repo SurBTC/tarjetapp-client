@@ -1,6 +1,8 @@
 import { Component, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
+import { Store } from '@ngrx/store';
+
 import { NgbDatepickerConfig, NgbDateStruct, NgbTypeaheadConfig, NgbDatepickerModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateES_CLParserFormatter } from '../../shared/es_CL-ngb-date-parser'
 import { NgbDatepickerService } from '@ng-bootstrap/ng-bootstrap/datepicker/datepicker-service';
@@ -15,7 +17,7 @@ import { Observable } from 'rxjs/Observable';
 import { cities } from '../../shared/CL-cities';
 
 import { ModelsService } from '../../shared/models.service';
-import { CreationStateService } from '../creation-state.service';
+
 
 @Component({
   selector: 'data-confirm',
@@ -39,7 +41,7 @@ export class DataConfirmComponent implements AfterViewInit {
     private datePickerConfig:NgbDatepickerConfig,
     private rutValidator:RutValidator,
     private modelsService:ModelsService,
-    private creationStateService:CreationStateService) {
+    private store:Store<any>) {
 
     datePickerConfig.minDate = { year: 1910, month: 3, day: 1 };
     datePickerConfig.maxDate = { year: 1998, month: 11, day: 30 };
@@ -81,9 +83,10 @@ export class DataConfirmComponent implements AfterViewInit {
 
   ngAfterViewInit () {
     // Set focus on firstName on modal show. Requires a slight delay
-    setTimeout(() => {
-      this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
-    }, 500)
+    // FIXME: The focus should be triggered when the creation process begins ("Crear mi tarjeta")
+    // setTimeout(() => {
+    //   this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+    // }, 500)
   }
 
   search (text: Observable<string>) {
@@ -103,6 +106,6 @@ export class DataConfirmComponent implements AfterViewInit {
     this.modelsService.patchUser(this.userForm.value);
 
     // Update creation process status
-    this.creationStateService.updateState('deposit');
+    this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
   }
 }

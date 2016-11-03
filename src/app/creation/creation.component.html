@@ -2,9 +2,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <data-confirm *ngIf="(processState | async)==='GET_DATA'"></data-confirm>
-      <deposit-confirm *ngIf="(processState | async)==='GET_DEPOSIT'"></deposit-confirm>
-      <creation-confirm *ngIf="(processState | async)==='GET_CARD'"></creation-confirm>
+      <data-confirm *ngIf="(mainProcessTask | async)==='GET_DATA'"></data-confirm>
+      <deposit-confirm *ngIf="(mainProcessTask | async)==='GET_DEPOSIT'"></deposit-confirm>
+      <creation-confirm *ngIf="(mainProcessTask | async)==='GET_CARD'"></creation-confirm>
 
     </div>
   </div>

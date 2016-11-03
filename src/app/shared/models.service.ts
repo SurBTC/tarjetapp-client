@@ -19,7 +19,7 @@ export class ModelsService {
   	lastName: null
   });
 
-  public feeSource = new BehaviorSubject<number>(1000);
+  public feeSource = new BehaviorSubject<number>(null);
 
   quotationUpdates = this.quotationSource.asObservable();
   userUpdates = this.userSource.asObservable();

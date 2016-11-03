@@ -3,6 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { StoreModule } from '@ngrx/store';
+
+import { MainProcessReducer } from './creation/main-process.reducer';
+
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2Rut } from 'ng2-rut';
 
@@ -15,7 +19,7 @@ import { CreationConfirmComponent } from './creation/creation-confirm/creation-c
 
 import { ApiService } from './shared/api.service';
 import { ModelsService } from './shared/models.service'
-import { CreationStateService } from './creation/creation-state.service';
+// import { CreationStateService } from './creation/creation-state.service';
 
 import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
 
@@ -34,12 +38,13 @@ import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
     HttpModule,
     ReactiveFormsModule,
     NgbModule.forRoot(),
-    Ng2Rut
+    Ng2Rut,
+    StoreModule.provideStore({ mainProcess: MainProcessReducer })
   ],
   providers: [
     ApiService,
     ModelsService,
-    CreationStateService,
+    // CreationStateService,
     {
       provide: NgbDateParserFormatter,
       useFactory: () => { return new NgbDateES_CLParserFormatter() }

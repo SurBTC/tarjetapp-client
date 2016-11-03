@@ -3,13 +3,15 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 
 import { Subscription } from 'rxjs/Subscription';
 
+import { Store } from '@ngrx/store';
+
 import { CreationComponent } from '../creation/creation.component';
 
 import { ModelsService } from '../shared/models.service';
 import { ApiService }   from '../shared/api.service';
-import { CreationStateService } from '../creation/creation-state.service';
 
 import { Quotation, User, ApiResponse } from '../shared/models';
+
 
 
 @Component({
@@ -23,6 +25,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   private loading: boolean;
   private error: boolean;
   private editable: boolean;
+  private mainProcessTask;
   @ViewChild('userName') input: ElementRef;
 
   private subscriptions:Subscription[];
@@ -32,7 +35,9 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     private apiService:ApiService,
     private fb: FormBuilder,
     private renderer:Renderer,
-    private creationStateService:CreationStateService) {
+    private store:Store<any>) {
+
+    this.mainProcessTask = store.select('mainProcess')
 
     this.loading = false;
     this.error = false;
@@ -122,9 +127,6 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   updateUserName (userName: string):void {
-    if (this.creationStateService.getState() !== 'data') {
-      return
-    }
     // User name parsing to divide first and last names
     let firstName = '';
     let lastName = '';
