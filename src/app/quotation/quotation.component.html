@@ -22,8 +22,8 @@
     </div>
 
     <div class="col-md-6 offset-md-0 col-sm-10 offset-sm-3 col-xs-10 offset-xs-2 amount">
-      <div class="container">
-        <div class="col-md-10 col-sm-12 container">
+      <div class="row">
+        <div class="col-md-10 col-sm-12">
           <div class="row">
             <p>Tu tarjeta con</p>
 
@@ -64,8 +64,8 @@
   <div class="row confirm">
     <div class="confirm-account">
       <br>
-      <p class="has-account align-middle">
-        <i class="material-icons align-middle" (click)="toggleHasAccount()">{{quotationForm.controls['hasAccount'].value ? 'check_circle' : 'radio_button_unchecked'}}</i>
+      <p class="has-account align-middle" (click)="toggleHasAccount()">
+        <i class="material-icons align-middle">{{quotationForm.controls['hasAccount'].value ? 'check_circle' : 'radio_button_unchecked'}}</i>
         Tengo una cuenta bancaria asociada a mi RUT
       </p>
     </div>
