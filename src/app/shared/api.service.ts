@@ -3,7 +3,7 @@ import { Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Quotation, User } from '../shared/models';
+import { CreationFee, Simulation, Quotation, User } from '../shared/models';
 
 @Injectable()
 export class ApiService {
@@ -37,47 +37,73 @@ export class ApiService {
     return Promise.reject(error.message || error);
   }
 
-  public getPrice(destinationAmount: number) {
-    // TODO: implement
+  public getCreationFee() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve({
-          quotation: {
-            sourceAmount: destinationAmount * 670,
-            destinationAmount: destinationAmount,
-          },
-          fee: {
-            amount: 1000
-          }
-        });
+          amount: 1000,
+          currency: 'CLP'
+        })
+      }, 500)
+    })
+  }
+
+  public getSimulation(destinationAmount, destinationCurrency):Promise<Simulation> {
+    // TODO: implement
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let now = new Date();
+        resolve({
+          sourceAmount: destinationAmount * 670,
+          sourceCurrency: 'CLP',
+          destinationAmount: destinationAmount,
+          destinationCurrency: destinationCurrency,
+          updatedAt: now,
+          expiresAt: new Date(now.getTime() + 15 * 60000)
+        } as Simulation);
       }, 1000)
     });
   }
 
-  public getQuotation(destinationAmount: Number): Promise<any> {
-    return this.post( { amount: destinationAmount })
-    .delay(10000)
-    .toPromise()
-    .then(response => this.checkForError(response))
-    .then(response => {
+  public getQuotation(destinationAmount, destinationCurrency):Promise<Quotation> {
+    // return this.post( { amount: destinationAmount })
+    // .delay(10000)
+    // .toPromise()
+    // .then(response => this.checkForError(response))
+    // .then(response => {
 
-      let data = response.json();
+    //   let data = response.json();
 
-      console.log(data);
+    //   console.log(data);
 
-      return {
-        quotation: {
-          id: data.quotation.id,
-          sourceAmount: data.quotation.sourceAmount,
-          sourceCurrency: data.quotation.sourceCurrency,
+    //   return {
+    //     quotation: {
+    //       id: data.quotation.id,
+    //       sourceAmount: data.quotation.sourceAmount,
+    //       sourceCurrency: data.quotation.sourceCurrency,
+    //       destinationAmount: destinationAmount,
+    //       destinationCurrency: 'USD',
+    //       expiresAt: data.quotation.expiresAt
+    //     },
+    //     fee: data.fee
+    //   }
+    // })
+    // .catch(this.handleError);
+
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        let now = new Date();
+        resolve({
+          uuid: Math.floor(Math.random()*1000).toString(),
+          sourceAmount: destinationAmount * 675,
+          sourceCurrency: 'CLP',
           destinationAmount: destinationAmount,
-          destinationCurrency: 'USD',
-          expiresAt: data.quotation.expiresAt
-        },
-        fee: data.fee
-      }
-    })
-    .catch(this.handleError);
+          destinationCurrency: destinationCurrency,
+          updatedAt: now,
+          expiresAt: new Date(now.getTime() + 15 * 60000)
+        } as Quotation);
+      }, 1000)
+    });
   }
 
   public createCard() {

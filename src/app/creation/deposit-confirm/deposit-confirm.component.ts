@@ -9,7 +9,7 @@ import { Store } from '@ngrx/store';
 import { ApiService } from '../../shared/api.service';
 import { ModelsService } from '../../shared/models.service';
 
-import { Quotation, User } from '../../shared/models';
+import { Simulation, CreationFee, Quotation, User } from '../../shared/models';
 
 @Component({
   selector: 'deposit-confirm',
@@ -50,12 +50,20 @@ export class DepositConfirmComponent {
     this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
       if (newState === 'GET_DEPOSIT') {
         this.state = 'confirming';
-        this.apiService.getQuotation(this.quotation.destinationAmount)
+
+        // Quote card creation and top-up
+        Promise.all([
+          this.apiService.getCreationFee(),
+          this.apiService.getQuotation(this.quotation.destinationAmount, 'CLP')
+          ])
         .then(result => {
+          let creationFee = <CreationFee> result[0];
+          let quotation = <Quotation> result[1];
+
           this.state = 'confirmed';
           console.log('Updating real quotation from api')
-          modelsService.updateQuotation(result.quotation);
-          this.fee = result.fee.amount;
+          modelsService.updateQuotation(quotation);
+          this.fee = creationFee.amount;
         })
       }
     });

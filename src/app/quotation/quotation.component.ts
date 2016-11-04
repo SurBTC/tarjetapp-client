@@ -10,7 +10,7 @@ import { CreationComponent } from '../creation/creation.component';
 import { ModelsService } from '../shared/models.service';
 import { ApiService }   from '../shared/api.service';
 
-import { Quotation, User, ApiResponse } from '../shared/models';
+import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared/models';
 
 
 
@@ -102,18 +102,23 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = false
 
-    this.apiService.getPrice(destinationAmount)
-    .then((response:ApiResponse) =>  {
-      console.log('Updating fake quotation from api')
-      console.log(response);
+    Promise.all([
+      this.apiService.getCreationFee(),
+      this.apiService.getSimulation(destinationAmount, 'USD')
+    ])
+    .then(result =>  {
+      let creationFee = <CreationFee> result[0];
+      let simulation = <Simulation> result[1];
+      console.log('Updating simulation')
+      console.log(result);
 
       // Patch quotation on modelsService
       this.modelsService.patchQuotation({
-        sourceAmount: response.quotation.sourceAmount,
-        destinationAmount: response.quotation.destinationAmount
+        sourceAmount: simulation.sourceAmount,
+        destinationAmount: simulation.destinationAmount
       })
 
-      this.modelsService.updateFee(response.fee.amount);
+      this.modelsService.updateFee(creationFee.amount);
 
       // Update status vars
       this.error = false;

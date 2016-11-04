@@ -29,7 +29,7 @@ export class ModelsService {
     this.quotationSource.next(quotation);
   }
 
-  patchQuotation(quotation:Quotation) {
+  patchQuotation(quotation:any) {
   	let currentQuotation = this.quotationSource.getValue();
   	for (let prop in quotation) {
   		currentQuotation[prop] = quotation[prop];
