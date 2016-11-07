@@ -48,7 +48,6 @@
                 </div>
               </div>
 
-
               <input class="read-only" type="text" id="sourceAmount" autocomplete="off" [formControl]="quotationForm.controls.sourceAmount" readonly="readonly">
               <label for="sourceAmount">CLP</label>
 
@@ -70,7 +69,7 @@
       </p>
     </div>
     <br>
-    <button type="button" data-toggle="modal" data-target="#creationModal" [disabled]="!quotationForm.valid || (simulationState | async).error || (simulationState | async).loading" class="btn page-scroll">Crear mi tarjeta</button>
+    <!-- <button type="button" data-toggle="modal" data-target="#creationModal" class="btn page-scroll">Crear mi tarjeta</button> -->
   </div>
 </div>
 

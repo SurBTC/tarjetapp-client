@@ -121,22 +121,8 @@ p {
   margin-top: 0;
 }
 
-/*button {
-  color: #fff;
-  background-color:#007FFF;
-  border-color:#007FFF;
-}
-
-button:hover {
-  -webkit-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
-  box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.75);
-}
-*/
 .confirm {
   text-align: center;
-  margin-top: 2%;
-  margin-bottom: 2.5%;
 }
 
 .has-account {

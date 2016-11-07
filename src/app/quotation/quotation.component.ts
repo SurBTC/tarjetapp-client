@@ -100,12 +100,22 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         }
       });
 
+    // Subscribe to changes on the form to update validity
+    this.quotationForm
+      .valueChanges
+      .subscribe( _ => {
+        this.quotationForm.valid ?
+          this.store.dispatch({ type: 'SIMULATION_VALID' }) :
+          this.store.dispatch({ type: 'SIMULATION_INVALID' })
+      });
+
     // update userName on user changes
-    let userSubscription = modelsService.userUpdates.subscribe(user => {
-      this.quotationForm.patchValue({
-        userName: `${user.firstName || ''}${(user.firstName && user.lastName)? ' ': ''}${user.lastName || ''}`
-      })
-    });
+    modelsService.userUpdates
+      .subscribe(user => {
+        this.quotationForm.patchValue({
+          userName: `${user.firstName || ''}${(user.firstName && user.lastName) ? ' ' : ''}${user.lastName || ''}`
+        })
+      });
   }
 
   updateSourceAmount (destinationAmount:number): void {
@@ -181,6 +191,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   hasAccount(control: FormControl) {
+
     if (control.value !== true) {
       return { hasAccount: true }
     }
