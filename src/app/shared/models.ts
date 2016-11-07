@@ -20,7 +20,8 @@ export interface Quotation {
 
 export interface CreationFee {
 	amount: number,
-	currency?: string
+	currency?: string,
+	expiresAt?: Date
 }
 
 export interface User {

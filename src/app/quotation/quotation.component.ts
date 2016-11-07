@@ -1,18 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
-import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Rx';
 
 import { Store } from '@ngrx/store';
 
 import { CreationComponent } from '../creation/creation.component';
 
 import { ModelsService } from '../shared/models.service';
-import { ApiService }   from '../shared/api.service';
+import { SimulationService } from '../shared/simulation.service';
+import { CreationFeeService } from '../shared/creation-fee.service';
 
 import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared/models';
-
-
 
 @Component({
   selector: 'quotation',
@@ -21,80 +20,98 @@ import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared
   providers: []
 })
 export class QuotationComponent implements OnInit, AfterViewInit {
+
   quotationForm: FormGroup;
+
   private loading: boolean;
   private error: boolean;
-  private editable: boolean;
+
   private mainProcessTask;
+  private simulation: Observable<Simulation>;
+  private creationFee: Observable<CreationFee>;
+
+  private simulationSourceAmount: number;
+  private creationFeeAmount: number;
+  private creationFeeExpiresAt: Date;
   @ViewChild('userName') input: ElementRef;
 
-  private subscriptions:Subscription[];
 
   constructor (
-    private modelsService:ModelsService,
-    private apiService:ApiService,
+    private modelsService: ModelsService,
+    private simulationService: SimulationService,
+    private creationFeeService: CreationFeeService,
     private fb: FormBuilder,
     private renderer:Renderer,
-    private store:Store<any>) {
+    private store: Store<any>) {
 
-    this.mainProcessTask = store.select('mainProcess')
+    this.mainProcessTask = store.select('mainProcess');
+    this.simulation = store.select<Simulation>('simulation');
+    this.creationFee = store.select<CreationFee>('creationFee');
 
     this.loading = false;
     this.error = false;
 
-    this.subscriptions = [];
-
     this.quotationForm = fb.group({
       'sourceAmount': [{value: null, disabled: true}, []],
-      'destinationAmount': [null, [Validators.required, this.validAmount]],
+      'destinationAmount': [10, [Validators.required, this.validAmount]],
       'userName': ['', []],
       'hasAccount': [false, [this.hasAccount]]
     })
 
     // subscribe to changes on destinationAmount control
     this.quotationForm.controls['destinationAmount']
-    .valueChanges
-    .debounceTime(300)
-    .subscribe(destinationAmount => {
-      this.quotationForm.patchValue({ 'sourceAmount': null })
-      if (this.quotationForm.controls['destinationAmount'].valid) {
-        this.updateSourceAmount(destinationAmount)
-      }
-      else {
-        this.error = false;
-      }
-    });
+      .valueChanges
+      .debounceTime(300)
+      .subscribe(destinationAmount => {
+        this.quotationForm.patchValue({ 'sourceAmount': null })
+        if (this.quotationForm.controls['destinationAmount'].valid) {
+          this.updateSourceAmount(destinationAmount)
+        }
+        else {
+          this.error = false;
+        }
+      });
 
-    // subscribe to changes on userName control
+    // Subscribe to changes on userName control
     this.quotationForm.controls['userName']
-    .valueChanges
-    .debounceTime(500)
-    .subscribe(userName => {
-      this.updateUserName(userName);
-    })
+      .valueChanges
+      .debounceTime(1000)
+      .subscribe(userName => {
+        this.updateUserName(userName);
+      });
 
-    // // Subscribe to creation status
-    // let creationStateSubscription = creationStateService.statusUpdates.subscribe(newState => {
-    //   this.editable = (newState === 'data');
-    // })
+    // Subscribe to changes to simulation
+    this.simulation
+      .filter(res => res.destinationAmount !== null)
+      .subscribe(simulation => {
+        this.simulationSourceAmount = simulation.sourceAmount;
+        if (this.creationFeeAmount !== undefined) {
+          this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
+          this.quotationForm.controls['destinationAmount'].setValue(simulation.destinationAmount, { emitEvent: false })
+          this.error = false;
+          this.loading = false;
+        }
+      });
 
-    // update quotation info on quotation changes
-    let quotationSubscription = modelsService.quotationUpdates
-    .subscribe(quotation => {
-      this.quotationForm.controls['sourceAmount'].setValue(quotation.sourceAmount + modelsService.feeSource.getValue(), { emitEvent: false });
-      this.quotationForm.controls['destinationAmount'].setValue(quotation.destinationAmount, { emitEvent: false })
-    });
+    // Subscribe to changes on creationFee
+    this.creationFee
+      .filter(res => res !== undefined)
+      .subscribe(creationFee => {
+        this.creationFeeAmount = creationFee.amount;
+        this.creationFeeExpiresAt = creationFee.expiresAt;
+        if (this.simulationSourceAmount !== undefined){
+          this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
+          this.error = false;
+          this.loading = false;
+        }
+      });
 
     // update userName on user changes
     let userSubscription = modelsService.userUpdates.subscribe(user => {
       this.quotationForm.patchValue({
-        userName: `${user.firstName || ''}${(user.firstName || user.lastName)? ' ': ''}${user.lastName || ''}`
+        userName: `${user.firstName || ''}${(user.firstName && user.lastName)? ' ': ''}${user.lastName || ''}`
       })
     });
-
-    // Add subscriptions to array for disposal
-    this.subscriptions.push(quotationSubscription);
-    this.subscriptions.push(userSubscription);
   }
 
   updateSourceAmount (destinationAmount:number): void {
@@ -102,33 +119,22 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.loading = true;
     this.error = false
 
-    Promise.all([
-      this.apiService.getCreationFee(),
-      this.apiService.getSimulation(destinationAmount, 'USD')
-    ])
-    .then(result =>  {
-      let creationFee = <CreationFee> result[0];
-      let simulation = <Simulation> result[1];
-      console.log('Updating simulation')
-      console.log(result);
+    this.simulationSourceAmount = undefined;
+    if (this.creationFeeAmount && this.creationFeeExpiresAt < new Date()) {
+      this.creationFeeAmount = undefined;
+    }
 
-      // Patch quotation on modelsService
-      this.modelsService.patchQuotation({
-        sourceAmount: simulation.sourceAmount,
-        destinationAmount: simulation.destinationAmount
-      })
+    try {
+      this.simulationService.updateSimulation(destinationAmount);
+      if (this.creationFeeAmount === undefined) {
+        this.creationFeeService.updateCreationFee();
+      }
+    }
 
-      this.modelsService.updateFee(creationFee.amount);
-
-      // Update status vars
-      this.error = false;
-      this.loading = false;
-
-    })
-    .catch(err => {
+    catch(err) {
       this.loading = false;
       this.error = true;
-    });
+    };
   }
 
   updateUserName (userName: string):void {
@@ -162,22 +168,15 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    // Call getQuotation with default values
+    // Update sourceAmount with default values (see FormGroup)
     this.updateSourceAmount(this.quotationForm.value.destinationAmount);
   }
 
   ngAfterViewInit() {
     // Set focus on userName input
-    // FIXME!
     setTimeout(() => {
       this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
-    }, 1000)
-  }
-
-  ngOnDestroy() {
-    for (let subscription of this.subscriptions) {
-      subscription.unsubscribe();
-    }
+    }, 500)
   }
 
   toggleHasAccount() {

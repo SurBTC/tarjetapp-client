@@ -48,23 +48,6 @@ export class ApiService {
     })
   }
 
-  public getSimulation(destinationAmount, destinationCurrency):Promise<Simulation> {
-    // TODO: implement
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        let now = new Date();
-        resolve({
-          sourceAmount: destinationAmount * 670,
-          sourceCurrency: 'CLP',
-          destinationAmount: destinationAmount,
-          destinationCurrency: destinationCurrency,
-          updatedAt: now,
-          expiresAt: new Date(now.getTime() + 15 * 60000)
-        } as Simulation);
-      }, 1000)
-    });
-  }
-
   public getQuotation(destinationAmount, destinationCurrency):Promise<Quotation> {
     // return this.post( { amount: destinationAmount })
     // .delay(10000)
