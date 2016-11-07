@@ -36,13 +36,17 @@ export class SimulationService {
 
 	public updateSimulation(destinationAmount:number) {
 
-		// Ask for new values to API
+		// Fetch for new values from API
 		this.http.get(`${BASE_URL}/${destinationAmount}`)
+			.catch((error:any) => {
+				console.log(error)
+				this.store.dispatch({type: 'SIMULATION_ERROR' });
+				return Observable.empty();
+			})
 			.map(res => res.json())
 			.map(res => Object.assign(res, { expiresAt: new Date(res.expiresAt) }))
 			.map(res => Object.assign(res, { updatedAt: new Date() }))
 			.map(payload => ({ type: 'UPDATE_SIMULATION', payload }))
-			.catch((error:any) => Observable.throw(error.json().error || 'Server error'))
 			.subscribe(action => this.store.dispatch(action));
 	}
 }

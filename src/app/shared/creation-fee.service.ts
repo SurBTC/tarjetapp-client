@@ -36,6 +36,11 @@ export class CreationFeeService {
 
   public updateCreationFee() {
     this.http.get(BASE_URL)
+      .catch((error: any) => {
+        console.log(error)
+        this.store.dispatch({ type: 'SIMULATION_ERROR' });
+        return Observable.empty();
+      })
       .map(res => res.json())
       .map(res => Object.assign(res, {expiresAt: new Date(res.expiresAt)}))
       .map(payload => ({ type: 'UPDATE_CREATION_FEE', payload }))

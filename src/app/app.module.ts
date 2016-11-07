@@ -26,6 +26,7 @@ import { CreationFeeService } from './shared/creation-fee.service';
 import { MainProcessReducer } from './creation/main-process.reducer';
 import { simulation } from './shared/simulation.reducer';
 import { creationFee } from './shared/creation-fee.reducer';
+import { simulationState } from './shared/simulation-state.reducer';
 
 
 @NgModule({
@@ -47,7 +48,8 @@ import { creationFee } from './shared/creation-fee.reducer';
     StoreModule.provideStore({
       mainProcess: MainProcessReducer,
       simulation,
-      creationFee
+      creationFee,
+      simulationState
     })
   ],
   providers: [

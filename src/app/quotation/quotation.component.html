@@ -38,7 +38,7 @@
           <div class="row">
             <p>por</p>
 
-              <div [style.visibility]="loading ? 'visible':'hidden'" class="spinner-container">
+              <div [style.visibility]="(simulationState | async).loading ? 'visible':'hidden'" class="spinner-container">
                 <div class="spinner">
                   <div class="rect1"></div>
                   <div class="rect2"></div>
@@ -52,7 +52,7 @@
               <input class="read-only" type="text" id="sourceAmount" autocomplete="off" [formControl]="quotationForm.controls.sourceAmount" readonly="readonly">
               <label for="sourceAmount">CLP</label>
 
-            <div [style.visibility]="error ? 'visible':'hidden'">
+            <div [style.visibility]="(simulationState | async).error ? 'visible':'hidden'">
               <p class="general-error">Ups! Estamos teniendo problemas para cotizar tu tarjeta. Por favor intenta nuevamente más tarde.</p>
             </div>
           </div>
@@ -70,7 +70,7 @@
       </p>
     </div>
     <br>
-    <button type="button" data-toggle="modal" data-target="#creationModal" [disabled]="!quotationForm.valid || error || loading" class="btn page-scroll">Crear mi tarjeta</button>
+    <button type="button" data-toggle="modal" data-target="#creationModal" [disabled]="!quotationForm.valid || (simulationState | async).error || (simulationState | async).loading" class="btn page-scroll">Crear mi tarjeta</button>
   </div>
 </div>
 

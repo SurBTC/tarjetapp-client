@@ -11,6 +11,8 @@ import { ModelsService } from '../shared/models.service';
 import { SimulationService } from '../shared/simulation.service';
 import { CreationFeeService } from '../shared/creation-fee.service';
 
+import { SimulationState } from '../shared/simulation-state.reducer';
+
 import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared/models';
 
 @Component({
@@ -23,12 +25,10 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   quotationForm: FormGroup;
 
-  private loading: boolean;
-  private error: boolean;
-
   private mainProcessTask;
   private simulation: Observable<Simulation>;
   private creationFee: Observable<CreationFee>;
+  private simulationState: Observable<SimulationState>;
 
   private simulationSourceAmount: number;
   private creationFeeAmount: number;
@@ -47,9 +47,8 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.mainProcessTask = store.select('mainProcess');
     this.simulation = store.select<Simulation>('simulation');
     this.creationFee = store.select<CreationFee>('creationFee');
+    this.simulationState = store.select<SimulationState>('simulationState');
 
-    this.loading = false;
-    this.error = false;
 
     this.quotationForm = fb.group({
       'sourceAmount': [{value: null, disabled: true}, []],
@@ -67,9 +66,6 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         if (this.quotationForm.controls['destinationAmount'].valid) {
           this.updateSourceAmount(destinationAmount)
         }
-        else {
-          this.error = false;
-        }
       });
 
     // Subscribe to changes on userName control
@@ -86,10 +82,9 @@ export class QuotationComponent implements OnInit, AfterViewInit {
       .subscribe(simulation => {
         this.simulationSourceAmount = simulation.sourceAmount;
         if (this.creationFeeAmount !== undefined) {
+          this.store.dispatch({ type: 'SIMULATION_LOADED' });
           this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
           this.quotationForm.controls['destinationAmount'].setValue(simulation.destinationAmount, { emitEvent: false })
-          this.error = false;
-          this.loading = false;
         }
       });
 
@@ -99,10 +94,9 @@ export class QuotationComponent implements OnInit, AfterViewInit {
       .subscribe(creationFee => {
         this.creationFeeAmount = creationFee.amount;
         this.creationFeeExpiresAt = creationFee.expiresAt;
-        if (this.simulationSourceAmount !== undefined){
+        if (this.simulationSourceAmount !== undefined) {
+          this.store.dispatch({ type: 'SIMULATION_LOADED' });
           this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
-          this.error = false;
-          this.loading = false;
         }
       });
 
@@ -116,25 +110,17 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
   updateSourceAmount (destinationAmount:number): void {
     // Reset form status vars
-    this.loading = true;
-    this.error = false
+    this.store.dispatch({ type: 'SIMULATION_LOADING' });
 
     this.simulationSourceAmount = undefined;
     if (this.creationFeeAmount && this.creationFeeExpiresAt < new Date()) {
       this.creationFeeAmount = undefined;
     }
 
-    try {
-      this.simulationService.updateSimulation(destinationAmount);
-      if (this.creationFeeAmount === undefined) {
-        this.creationFeeService.updateCreationFee();
-      }
+    this.simulationService.updateSimulation(destinationAmount);
+    if (this.creationFeeAmount === undefined) {
+      this.creationFeeService.updateCreationFee();
     }
-
-    catch(err) {
-      this.loading = false;
-      this.error = true;
-    };
   }
 
   updateUserName (userName: string):void {
