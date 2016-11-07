@@ -19,14 +19,6 @@ export class CreationComponent {
   destinationAmount:number;
   sourceAmount:number;
 
-  expirationDate:Date;
-  timeLeft = {
-    secs: null,
-    mins: null
-  };
-
-  expired:boolean = false;
-
   quotationConfirmed = false;
 
   public greetings = ['Súper', 'Excelente', 'Bien']
@@ -39,5 +31,9 @@ export class CreationComponent {
 
     // Get first status and subscribe to changes on main process
     this.mainProcessTask = store.select('mainProcess');
+  }
+
+  closeCreateView() {
+    this.store.dispatch({ type: 'SIMULATION_VIEW' });
   }
 }

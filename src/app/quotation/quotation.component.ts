@@ -153,6 +153,10 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     })
   }
 
+  openCreateView() {
+    this.store.dispatch({ type: 'CREATION_VIEW' });
+  }
+
   ngOnInit() {
     // Update sourceAmount with default values (see FormGroup)
     this.updateSourceAmount(this.quotationForm.value.destinationAmount);

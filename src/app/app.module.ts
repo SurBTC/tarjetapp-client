@@ -5,10 +5,12 @@ import { HttpModule } from '@angular/http';
 
 import { StoreModule } from '@ngrx/store';
 
+// NgBootstrap:
 import { Ng2Rut } from 'ng2-rut';
 import { NgbDateES_CLParserFormatter } from './shared/es_CL-ngb-date-parser';
 import { NgbModule, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
+// Components:
 import { AppComponent } from './app.component';
 import { QuotationComponent } from './quotation/quotation.component';
 import { CreationComponent } from './creation/creation.component';
@@ -27,6 +29,7 @@ import { MainProcessReducer } from './creation/main-process.reducer';
 import { simulation } from './shared/simulation.reducer';
 import { creationFee } from './shared/creation-fee.reducer';
 import { simulationState } from './shared/simulation-state.reducer';
+import { appView } from './shared/app-view.reducer';
 
 
 @NgModule({
@@ -49,7 +52,8 @@ import { simulationState } from './shared/simulation-state.reducer';
       mainProcess: MainProcessReducer,
       simulation,
       creationFee,
-      simulationState
+      simulationState,
+      appView
     })
   ],
   providers: [
