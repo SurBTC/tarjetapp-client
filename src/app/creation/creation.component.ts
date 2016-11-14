@@ -25,10 +25,10 @@ export class CreationComponent {
 
   public greetings = ['Súper', 'Excelente', 'Bien']
   public currentGreet:string;
-  public mainProcessTask:Observable<any>;
   public warningMins = 10;
 
   private closeResult: string;
+  private mainProcessTask:Observable<any>;
   private simulationState: Observable<SimulationState>;
 
   constructor(
@@ -42,9 +42,11 @@ export class CreationComponent {
   }
 
   open(content) {
-    this.modalService.open(content).result.then(result => {
-      console.log(result);
-    })
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 
   closeCreateView() {

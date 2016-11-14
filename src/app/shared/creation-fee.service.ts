@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Rx';
 import { Store } from '@ngrx/store';
 
 import { CreationFee } from '../shared/models';
-  
+
 const BASE_URL = 'http://localhost:3030/creationFees/1';
 // const HEADERS = { headers: new Headers({ 'Content-Type': 'application/json' }) };
 
@@ -36,6 +36,7 @@ export class CreationFeeService {
 
   public updateCreationFee() {
     this.http.get(BASE_URL)
+      .timeout(10000)
       .catch((error: any) => {
         console.log(error)
         this.store.dispatch({ type: 'SIMULATION_ERROR' });

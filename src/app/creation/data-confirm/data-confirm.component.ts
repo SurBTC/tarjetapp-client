@@ -30,6 +30,9 @@ import { ModelsService } from '../../shared/models.service';
 })
 export class DataConfirmComponent implements AfterViewInit {
 
+  public title = '¡Bien!';
+  public description = 'Necesitamos que completes el siguiente formulario con tus datos:';
+
   private userForm: FormGroup;
   private subscription: Subscription;
   @ViewChild('firstName') input: ElementRef;
