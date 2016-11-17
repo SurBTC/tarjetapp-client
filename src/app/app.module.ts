@@ -22,14 +22,14 @@ import { CreationConfirmComponent } from './creation/creation-confirm/creation-c
 import { ApiService } from './shared/api.service';
 import { ModelsService } from './shared/models.service'
 import { SimulationService } from './shared/simulation.service';
-import { CreationFeeService } from './shared/creation-fee.service';
+import { UserService } from './shared/user.service';
 
 // Reducers:
 import { MainProcessReducer } from './creation/main-process.reducer';
 import { simulation } from './shared/simulation.reducer';
-import { creationFee } from './shared/creation-fee.reducer';
 import { simulationState } from './shared/simulation-state.reducer';
 import { appView } from './shared/app-view.reducer';
+import { user } from './shared/user.reducer';
 
 
 @NgModule({
@@ -51,16 +51,16 @@ import { appView } from './shared/app-view.reducer';
     StoreModule.provideStore({
       mainProcess: MainProcessReducer,
       simulation,
-      creationFee,
       simulationState,
-      appView
+      appView,
+      user
     })
   ],
   providers: [
     ApiService,
     ModelsService,
     SimulationService,
-    CreationFeeService,
+    UserService,
     {
       provide: NgbDateParserFormatter,
       useFactory: () => { return new NgbDateES_CLParserFormatter() }

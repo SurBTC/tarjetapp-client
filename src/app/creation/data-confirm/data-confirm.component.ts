@@ -14,27 +14,30 @@ import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { cities } from '../../shared/CL-cities';
 
-import { ModelsService } from '../../shared/models.service';
+import { cities } from '../../shared/CL-cities';
+import { User } from '../../shared/models';
+import { UserService } from '../../shared/user.service';
 
 
 @Component({
   selector: 'data-confirm',
   templateUrl: './data-confirm.component.html',
   styleUrls: [
-    '../creation.component.css',
-    './data-confirm.component.css'
+  '../creation.component.css',
+  './data-confirm.component.css'
   ],
   providers: [NgbDateES_CLParserFormatter]
 })
 export class DataConfirmComponent implements AfterViewInit {
 
-  public title = '¡Bien!';
-  public description = 'Necesitamos que completes el siguiente formulario con tus datos:';
-
   private userForm: FormGroup;
-  private subscription: Subscription;
+
+  private title = '¡Bien!';
+  private description = 'Necesitamos que completes el siguiente formulario con tus datos:';
+
+  private user: Observable<User>;
+
   @ViewChild('firstName') input: ElementRef;
 
 
@@ -43,8 +46,10 @@ export class DataConfirmComponent implements AfterViewInit {
     private renderer:Renderer,
     private datePickerConfig:NgbDatepickerConfig,
     private rutValidator:RutValidator,
-    private modelsService:ModelsService,
-    private store:Store<any>) {
+    private store:Store<any>,
+    private userService:UserService) {
+
+    this.user = store.select<User>('user');
 
     datePickerConfig.minDate = { year: 1910, month: 3, day: 1 };
     datePickerConfig.maxDate = { year: 1998, month: 11, day: 30 };
@@ -67,48 +72,56 @@ export class DataConfirmComponent implements AfterViewInit {
       'rut': ['', [Validators.minLength(8), Validators.maxLength(9), rutValidator]]
     });
 
-    // Subscribe to changes on user service
-    this.subscription = this.modelsService.userUpdates.subscribe(user => {
-      this.userForm.patchValue(user);
-    });
+    // Update form on user changes
+    this.user
+      .filter(user => user !== undefined)
+      // Convert from Date to datepicker date object:
+      .map(user => Object.assign(user, {
+        birthDate: {
+          year: user.birthDate.getFullYear(),
+          month: user.birthDate.getMonth() + 1,
+          day: user.birthDate.getDate()
+        }
+      }))
+      .subscribe(user => {
+        console.log('update from user', user);
+        this.userForm.patchValue(user)
+      })
 
-    // Subscribe userService to changes on form controls:
-    // subscribeServicetoChanges() {
-    //   for (let fieldName in this.userForm.controls) {
-    //     this.userForm.controls[fieldName]
-    //     .valueChanges
-    //     .subscribe(value => {
-    //       this.modelsService.patchUser({[fieldName]: value})
-    //     })
-    //   }
-    // }
+    // Update user on form changes
+    this.userForm
+      .valueChanges
+      .map( _ => (<any>Object).assign(this.userForm.value, {
+          birthDate: new Date(`${this.userForm.value.birthDate.year}-${this.userForm.value.birthDate.month}-${this.userForm.value.birthDate.day}`)
+        }))
+      .subscribe(user => {
+        console.log('update from form', user);
+        store.dispatch({ type: 'UPDATE_USER', payload: user })
+      })
   }
+
 
   ngAfterViewInit () {
     // Set focus on firstName on modal show. Requires a slight delay
     // FIXME: The focus should be triggered when the creation process begins ("Crear mi tarjeta")
     // setTimeout(() => {
-    //   this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
-    // }, 500)
-  }
+      //   this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
+      // }, 500)
+    }
 
-  search (text: Observable<string>) {
-    return text
-      .debounceTime(100)
-      .distinctUntilChanged()
-      .map(term => term.length < 1 ? []
-        : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 5));
-  }
+    search (text: Observable<string>) {
+      return text
+        .debounceTime(100)
+        .distinctUntilChanged()
+        .map(term => term.length < 1 ? []
+          : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 5));
+    }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+    submitForm() {
 
-  submitForm() {
-    // Publish changes to models
-    this.modelsService.patchUser(this.userForm.value);
-
-    // Update creation process status
-    this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
+      // Publish changes to models
+      this.userService.postUser();
+      // Update creation process status
+      this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
+    }
   }
-}

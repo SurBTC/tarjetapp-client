@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { Store } from '@ngrx/store';
 
-import { SimulationState } from '../shared/simulation-state.reducer';
+import { ServiceState } from '../shared/models';
 
 import { ModelsService } from '../shared/models.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -23,30 +23,27 @@ export class CreationComponent {
 
   quotationConfirmed = false;
 
-  public greetings = ['Súper', 'Excelente', 'Bien']
-  public currentGreet:string;
   public warningMins = 10;
 
   private closeResult: string;
   private mainProcessTask:Observable<any>;
-  private simulationState: Observable<SimulationState>;
+  private simulationState: Observable<ServiceState>;
 
   constructor(
     private store: Store<any>,
     private modalService: NgbModal) {
-    this.currentGreet = this.greetings[Math.floor(Math.random() * this.greetings.length)];
 
     // Get first status and subscribe to changes on main process
     this.mainProcessTask = store.select('mainProcess');
-    this.simulationState = this.store.select<SimulationState>('simulationState');
+    this.simulationState = this.store.select<ServiceState>('simulationState');
   }
 
   open(content) {
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    this.modalService.open(content).result
+      .then(
+        result => this.closeResult = `Closed with: ${result}`,
+        reason => this.closeResult = `Dismissed ${this.getDismissReason(reason)}`
+      );
   }
 
   closeCreateView() {

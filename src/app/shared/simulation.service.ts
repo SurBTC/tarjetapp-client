@@ -39,7 +39,7 @@ export class SimulationService {
 		// Fetch for new values from API
 		this.http.get(`${BASE_URL}/${destinationAmount}`)
 			.timeout(10000)
-			.catch((error:any) => {
+			.catch(error => {
 				console.log(error)
 				this.store.dispatch({type: 'SIMULATION_ERROR' });
 				return Observable.empty();

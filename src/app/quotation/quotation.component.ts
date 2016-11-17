@@ -9,9 +9,8 @@ import { CreationComponent } from '../creation/creation.component';
 
 import { ModelsService } from '../shared/models.service';
 import { SimulationService } from '../shared/simulation.service';
-import { CreationFeeService } from '../shared/creation-fee.service';
 
-import { SimulationState } from '../shared/simulation-state.reducer';
+import { ServiceState } from '../shared/models';
 
 import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared/models';
 
@@ -23,12 +22,12 @@ import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared
 })
 export class QuotationComponent implements OnInit, AfterViewInit {
 
-  quotationForm: FormGroup;
+  private quotationForm: FormGroup;
 
   private mainProcessTask;
   private simulation: Observable<Simulation>;
-  private creationFee: Observable<CreationFee>;
-  private simulationState: Observable<SimulationState>;
+  private simulationState: Observable<ServiceState>;
+  private user: Observable<User>;
 
   private simulationSourceAmount: number;
   private creationFeeAmount: number;
@@ -39,16 +38,14 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   constructor (
     private modelsService: ModelsService,
     private simulationService: SimulationService,
-    private creationFeeService: CreationFeeService,
     private fb: FormBuilder,
     private renderer:Renderer,
     private store: Store<any>) {
 
     this.mainProcessTask = store.select('mainProcess');
     this.simulation = store.select<Simulation>('simulation');
-    this.creationFee = store.select<CreationFee>('creationFee');
-    this.simulationState = store.select<SimulationState>('simulationState');
-
+    this.simulationState = store.select<ServiceState>('simulationState');
+    this.user = store.select<User>('user');
 
     this.quotationForm = fb.group({
       'sourceAmount': [{value: null, disabled: true}, []],
@@ -64,7 +61,7 @@ export class QuotationComponent implements OnInit, AfterViewInit {
       .subscribe(destinationAmount => {
         this.quotationForm.patchValue({ 'sourceAmount': null })
         if (this.quotationForm.controls['destinationAmount'].valid) {
-          this.updateSourceAmount(destinationAmount)
+          this.updateSimulation(destinationAmount)
         }
       });
 
@@ -72,15 +69,15 @@ export class QuotationComponent implements OnInit, AfterViewInit {
     this.quotationForm.controls['userName']
       .valueChanges
       .debounceTime(1000)
-      .subscribe(userName => {
-        this.updateUserName(userName);
-      });
+      .map(userName => this.splitUserName(userName))
+      .subscribe(userName => this.store.dispatch({ type: 'UPDATE_USER', payload: userName}));
 
     // Subscribe to changes to simulation
     this.simulation
       .filter(res => res.destinationAmount !== null)
       .subscribe(simulation => {
         this.simulationSourceAmount = simulation.sourceAmount;
+        this.creationFeeAmount = simulation.creationFeeAmount;
         if (this.creationFeeAmount !== undefined) {
           this.store.dispatch({ type: 'SIMULATION_LOADED' });
           this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
@@ -88,52 +85,32 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         }
       });
 
-    // Subscribe to changes on creationFee
-    this.creationFee
-      .filter(res => res !== undefined)
-      .subscribe(creationFee => {
-        this.creationFeeAmount = creationFee.amount;
-        this.creationFeeExpiresAt = creationFee.expiresAt;
-        if (this.simulationSourceAmount !== undefined) {
-          this.store.dispatch({ type: 'SIMULATION_LOADED' });
-          this.quotationForm.controls['sourceAmount'].setValue((this.simulationSourceAmount + this.creationFeeAmount).toFixed(0), { emitEvent: false });
-        }
-      });
-
     // Subscribe to changes on the form to update validity
-    this.quotationForm
-      .valueChanges
-      .subscribe( _ => {
+    this.quotationForm.valueChanges
+      .distinct()
+      .subscribe(() => {
         this.quotationForm.valid ?
           this.store.dispatch({ type: 'SIMULATION_VALID' }) :
           this.store.dispatch({ type: 'SIMULATION_INVALID' })
       });
 
-    // update userName on user changes
-    modelsService.userUpdates
-      .subscribe(user => {
-        this.quotationForm.patchValue({
-          userName: `${user.firstName || ''}${(user.firstName && user.lastName) ? ' ' : ''}${user.lastName || ''}`
-        })
+    // update userName input on user changes
+    this.user
+      .map(user => user.firstName + (user.firstName && user.lastName ? ' ' : '') + user.lastName)
+      .subscribe(userName => {
+        console.log(userName);
+        this.quotationForm.patchValue({ userName })
       });
   }
 
-  updateSourceAmount (destinationAmount:number): void {
+  updateSimulation (destinationAmount:number): void {
     // Reset form status vars
     this.store.dispatch({ type: 'SIMULATION_LOADING' });
-
     this.simulationSourceAmount = undefined;
-    if (this.creationFeeAmount && this.creationFeeExpiresAt < new Date()) {
-      this.creationFeeAmount = undefined;
-    }
-
     this.simulationService.updateSimulation(destinationAmount);
-    if (this.creationFeeAmount === undefined) {
-      this.creationFeeService.updateCreationFee();
-    }
   }
 
-  updateUserName (userName: string):void {
+  splitUserName (userName: string) {
     // User name parsing to divide first and last names
     let firstName = '';
     let lastName = '';
@@ -156,20 +133,16 @@ export class QuotationComponent implements OnInit, AfterViewInit {
         lastName = names.slice(splitPos, names.length).join(' ');
       }
     }
-
-    this.modelsService.patchUser({
-      firstName: firstName || null,
-      lastName: lastName || null
-    })
+    return { firstName, lastName }
   }
 
   openCreateView() {
-    this.store.dispatch({ type: 'CREATION_VIEW' });
+    // this.store.dispatch({ type: 'CREATION_VIEW' });
   }
 
   ngOnInit() {
-    // Update sourceAmount with default values (see FormGroup)
-    this.updateSourceAmount(this.quotationForm.value.destinationAmount);
+    // Update sourceAmount with default value
+    this.updateSimulation(this.quotationForm.value.destinationAmount);
   }
 
   ngAfterViewInit() {
@@ -191,7 +164,6 @@ export class QuotationComponent implements OnInit, AfterViewInit {
   }
 
   hasAccount(control: FormControl) {
-
     if (control.value !== true) {
       return { hasAccount: true }
     }

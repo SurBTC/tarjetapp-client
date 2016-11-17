@@ -34,22 +34,28 @@ export class UserService {
 		return Promise.reject(error.message || error);
 	}
 
-	public createUser(user:User) {
-		let req = JSON.stringify(user);
+	public getCurrentUser(): User {
+		let user: User;
+		this.store.take(1).subscribe(s => user = s.user);
+		return user;
+	}
+
+	public postUser() {
+		let currentUser = this.getCurrentUser();
+		delete currentUser.uuid
+		let req = JSON.stringify(currentUser);
 		console.log(req);
 
 		// Post new values from API
 		this.http.post(BASE_URL, req, HEADERS)
 			.map(res => {console.log(res); return res})
 			.timeout(10000)
-			.catch((error:any) => {
+			.catch(error => {
 				console.log(error)
 				this.store.dispatch({type: 'USER_SERVICE_ERROR' });
 				return Observable.empty();
 			})
 			.map(res => res.json())
-			.map(res => Object.assign(res, { expiresAt: new Date(res.expiresAt) }))
-			.map(res => Object.assign(res, { updatedAt: new Date() }))
 			.map(payload => ({ type: 'UPDATE_USER', payload }))
 			.subscribe(action => this.store.dispatch(action));
 	}

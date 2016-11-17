@@ -1,26 +1,9 @@
 <template #content let-c="close" let-d="dismiss">
 
-	<div class="modal-header row">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="modal-title" id="modalLabel">¡Bien!</h4>
-	</div>
+	<data-confirm *ngIf="(mainProcessTask | async)==='GET_DATA'"></data-confirm>
+	<deposit-confirm *ngIf="(mainProcessTask | async)==='GET_DEPOSIT'"></deposit-confirm>
+	<creation-confirm *ngIf="(mainProcessTask | async)==='GET_CARD'"></creation-confirm>
 
-	<div class="modal-description row">
-		<p class="text-muted">Necesitamos que completes el siguiente formulario con tus datos:</p>
-	</div>
-
-	<div class="modal-body row">
-		<data-confirm *ngIf="(mainProcessTask | async)==='GET_DATA'"></data-confirm>
-		<deposit-confirm *ngIf="(mainProcessTask | async)==='GET_DEPOSIT'"></deposit-confirm>
-		<creation-confirm *ngIf="(mainProcessTask | async)==='GET_CARD'"></creation-confirm>
-	</div>
-
-	<div class="modal-footer row">
-		
-	</div>
-	
 </template>
 
 <div class="row">

@@ -1,21 +1,12 @@
 import { ActionReducer, Action } from '@ngrx/store';
+import { ServiceState, defaultServiceState } from './models';
 
-export interface SimulationState {
-	error: boolean,
-	loading: boolean
-}
 
-const defaultSimulationState = {
-	error: false,
-	loading: false,
-	valid: false
-}
-
-export const simulationState: ActionReducer<SimulationState> = (state: SimulationState = defaultSimulationState, action: Action) => {
+export const simulationState: ActionReducer<ServiceState> = (state: ServiceState = defaultServiceState, action: Action) => {
 	switch (action.type) {
 
-		case 'SIMULATION_LISTENING':
-			return Object.assign(state, { error: false, loading: false })
+		// case 'SIMULATION_LISTENING':
+		// 	return Object.assign(state, { error: false, loading: false })
 
 		case 'SIMULATION_LOADING':
 			return Object.assign(state, { error: false, loading: true })
@@ -27,7 +18,7 @@ export const simulationState: ActionReducer<SimulationState> = (state: Simulatio
 			return Object.assign(state, { error: true, loading: false })
 
 		case 'SIMULATION_VALID':
-			return Object.assign(state, { valid: true})
+			return Object.assign(state, { valid: true })
 
 		case 'SIMULATION_INVALID':
 			return Object.assign(state, { valid: false })

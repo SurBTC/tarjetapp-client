@@ -4,6 +4,8 @@ export interface Simulation {
 	sourceCurrency?: string,
 	destinationAmount: number,
 	destinationCurrency?: string,
+	creationFeeAmount?: number,
+	creationFeeCurrency?: string,
 	updatedAt: Date,
 	expiresAt: Date
 }
@@ -29,7 +31,7 @@ export interface User {
 	firstName?: string,
 	lastName?: string,
 	email?: string,
-	ruts?: string
+	RUT?: string
 	birthDate?: Date,
 	address?: string,
 	city?: string,
@@ -43,4 +45,16 @@ export interface ApiResponse {
 		amount:number,
 		description?: string
 	}
+}
+
+export interface ServiceState {
+	error: boolean,
+	loading: boolean
+	valid: boolean
+}
+
+export const defaultServiceState:ServiceState = {
+	error: false,
+	loading: false,
+	valid: false
 }
