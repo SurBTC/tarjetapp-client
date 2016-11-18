@@ -7,7 +7,6 @@ import { Store } from '@ngrx/store';
 
 import { ServiceState } from '../shared/models';
 
-import { ModelsService } from '../shared/models.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

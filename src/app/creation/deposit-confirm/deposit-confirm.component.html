@@ -13,7 +13,7 @@
 	<div class="modal-body row">
 		<div class="container">
 
-			<div *ngIf="state==='confirming'" class="row">
+			<div *ngIf="state==='CONFIRMING'" class="row">
 				<div class="spinner">
 					<div class="rect1"></div>
 					<div class="rect2"></div>
@@ -25,18 +25,18 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<h4>Un segundo...</h4>
-						<p>Estamos reservando tu tarjeta por {{quotation.destinationAmount}} dólares.</p>
+						<p>Estamos reservando tu tarjeta por {{ (simulation | async).destinationAmount }} dólares.</p>
 					</div>
 				</div>
 			</div>
 
-			<div *ngIf="state==='confirmed'">
+			<div *ngIf="state==='CONFIRMED'">
 				<div class="row">
 					<div class="col-xs-7 item">
-						<h6>Cargar tarjeta con {{quotation.destinationAmount}} USD</h6>
+						<h6>Cargar tarjeta con {{ (quotation | async).destinationAmount | number:'1.0-0' }} USD</h6>
 					</div>
 					<div class="col-xs-5 item-total">
-						<h6>{{quotation.sourceAmount}} CLP</h6>
+						<h6>{{ (quotation | async ).sourceAmount | number:'1.0-0'}} CLP</h6>
 					</div>
 				</div>
 
@@ -45,7 +45,7 @@
 						<p>Tasa de cambio</p>
 					</div>
 					<div class="col-xs-5 item-total">
-						<p>{{quotation.sourceAmount / quotation.destinationAmount}} CLP / 1 USD</p>
+						<p>{{ ((quotation | async).sourceAmount / (quotation | async).destinationAmount) | number:'1.0-1' }} CLP / 1 USD</p>
 					</div>
 				</div>
 
@@ -54,7 +54,7 @@
 						<h6>Costo de creación tarjeta</h6>
 					</div>
 					<div class="col-xs-5 item-total">
-						<h6>{{fee}} CLP</h6>
+						<h6>{{ (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h6>
 					</div>
 				</div>
 
@@ -69,7 +69,7 @@
 						<h5>Total a transferir</h5>
 					</div>
 					<div class="col-xs-5 item-total">
-						<h5>${{quotation.sourceAmount + fee}} CLP</h5>
+						<h5>${{ (quotation | async).sourceAmount + (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h5>
 					</div>
 				</div>
 
@@ -93,7 +93,7 @@
 						<p>Ten presente:</p>
 						<ul>
 							<li><p>Debes hacer la transferencia desde una cuenta bancaria con tu RUT</p></li>
-							<li><p>Enviaremos los datos de la tarjeta creada a {{user.email}}</p></li>
+							<li><p>Enviaremos los datos de la tarjeta creada a {{ (user | async).email }}</p></li>
 						</ul>
 					</div>
 				</div>
@@ -105,8 +105,7 @@
 	</div>
 
 	<div class="modal-footer row">
-		<button class="btn" [disabled]="state==='confirming'" (click)="stepBack()">Atrás</button>
-		<button class="btn" [disabled]="state==='confirming'" (click)="submitForm()">Ya transferí</button>
+		<button class="btn" [disabled]="state==='CONFIRMING'" (click)="submitForm()">Ya transferí</button>
 	</div>
 
 </div>

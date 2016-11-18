@@ -6,8 +6,6 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
 
-import { ApiService } from '../../shared/api.service';
-
 
 @Component({
   selector: 'creation-confirm',
@@ -26,30 +24,29 @@ export class CreationConfirmComponent {
   private mainProcessTask: Observable<any>;
 
 	constructor(
-		private store:Store<any>,
-		private apiService:ApiService) {
+		private store:Store<any>) {
 
     this.mainProcessTask = this.store.select('mainProcess');
 
 		// Subscribe to changes to main process state
 
-		this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
-      if (newState === 'GET_CARD') {
-        // Submit data for card creation
-        this.state = 'creation';
-        this.apiService.createCard()
-        .then(result => {
-        	this.state = 'success'
-        	this.title = '¡Tarjeta creada!'
-        	this.description = 'Tu tarjeta ha sido creada exitosamente'
-        })
-        .catch(err => {
-        	console.log(err);
-        	this.state = 'error'
-        	this.title = 'Lo sentimos'
-        	this.description = 'Hubo un problema al crear tu tarjeta'
-        })
-      }
-    })
+		// this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
+  //     if (newState === 'GET_CARD') {
+  //       // Submit data for card creation
+  //       this.state = 'creation';
+  //       this.apiService.createCard()
+  //       .then(result => {
+  //       	this.state = 'success'
+  //       	this.title = '¡Tarjeta creada!'
+  //       	this.description = 'Tu tarjeta ha sido creada exitosamente'
+  //       })
+  //       .catch(err => {
+  //       	console.log(err);
+  //       	this.state = 'error'
+  //       	this.title = 'Lo sentimos'
+  //       	this.description = 'Hubo un problema al crear tu tarjeta'
+  //       })
+  //     }
+  //   })
 	}
 }

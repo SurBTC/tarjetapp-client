@@ -11,19 +11,15 @@ export interface Simulation {
 }
 
 export interface Quotation {
-	uuid: string,
+	uuid?: string,
 	sourceAmount: number,
 	sourceCurrency?: string,
 	destinationAmount: number,
 	destinationCurrency?: string,
+	creationFeeAmount: number,
+	creationFeeCurrency?: string,
 	updatedAt: Date,
 	expiresAt: Date
-}
-
-export interface CreationFee {
-	amount: number,
-	currency?: string,
-	expiresAt?: Date
 }
 
 export interface User {

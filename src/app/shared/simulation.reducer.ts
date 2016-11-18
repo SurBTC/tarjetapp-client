@@ -5,7 +5,7 @@ const defaultSimulation:Simulation = {
 	sourceAmount: null,
 	sourceCurrency: 'CLP',
 	destinationAmount: 10,
-	destinationCurrency: 'CLP',
+	destinationCurrency: 'USD',
 	expiresAt: new Date(),
 	updatedAt: new Date()
 }

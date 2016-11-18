@@ -7,12 +7,11 @@ import { Store } from '@ngrx/store';
 
 import { CreationComponent } from '../creation/creation.component';
 
-import { ModelsService } from '../shared/models.service';
 import { SimulationService } from '../shared/simulation.service';
 
 import { ServiceState } from '../shared/models';
 
-import { CreationFee, Simulation, Quotation, User, ApiResponse } from '../shared/models';
+import { Simulation, Quotation, User, ApiResponse } from '../shared/models';
 
 @Component({
   selector: 'quotation',
@@ -36,7 +35,6 @@ export class QuotationComponent implements OnInit, AfterViewInit {
 
 
   constructor (
-    private modelsService: ModelsService,
     private simulationService: SimulationService,
     private fb: FormBuilder,
     private renderer:Renderer,

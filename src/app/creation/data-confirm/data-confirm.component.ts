@@ -39,6 +39,7 @@ export class DataConfirmComponent implements AfterViewInit {
   private user: Observable<User>;
   private mainProcessTask: Observable<any>;
   private state: string;
+  private apiError: boolean;
 
   @ViewChild('firstName') input: ElementRef;
 
@@ -52,6 +53,8 @@ export class DataConfirmComponent implements AfterViewInit {
     private userService:UserService) {
 
     this.user = store.select<User>('user');
+    this.mainProcessTask = store.select('mainProcess');
+    this.apiError = false;
 
     datePickerConfig.minDate = { year: 1910, month: 3, day: 1 };
     datePickerConfig.maxDate = { year: 1998, month: 11, day: 30 };
@@ -74,12 +77,10 @@ export class DataConfirmComponent implements AfterViewInit {
       'rut': ['', [Validators.minLength(8), Validators.maxLength(9), rutValidator]]
     });
 
-    this.mainProcessTask = store.select('mainProcess');
-
     // Subscribe to changes on main process task
     this.mainProcessTask
       .filter(newState => newState === 'GET_DATA')
-      .subscribe(newState => this.state = 'RECEIVING_DATA');
+      .subscribe(newState => this.state = 'ACCEPTING_DATA');
 
 
     // Subscribe to changes on user
@@ -131,12 +132,13 @@ export class DataConfirmComponent implements AfterViewInit {
     // Post user to API:
     this.state = 'SENDING_DATA';
     this.userService.postUser()
-    .catch(err => {
-      console.log(err);
-      this.state = 'API_ERROR';
-      return Observable.empty();
-    })
-    .subscribe(() => this.store.dispatch({ type: 'NEXT_PROCESS_TASK' }))
+      .catch(err => {
+        console.log(err);
+        this.state = 'ACCEPTING_DATA';
+        this.apiError = true;  // TODO: Give customer feedback about what went wrong
+        return Observable.empty();
+      })
+      .subscribe(() => this.store.dispatch({ type: 'NEXT_PROCESS_TASK' }))
 
   }
 }

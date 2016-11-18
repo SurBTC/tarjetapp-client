@@ -19,10 +19,9 @@ import { DepositConfirmComponent } from './creation/deposit-confirm/deposit-conf
 import { CreationConfirmComponent } from './creation/creation-confirm/creation-confirm.component';
 
 // Services:
-import { ApiService } from './shared/api.service';
-import { ModelsService } from './shared/models.service'
 import { SimulationService } from './shared/simulation.service';
 import { UserService } from './shared/user.service';
+import { QuotationService } from './shared/quotation.service';
 
 // Reducers:
 import { MainProcessReducer } from './creation/main-process.reducer';
@@ -30,6 +29,7 @@ import { simulation } from './shared/simulation.reducer';
 import { simulationState } from './shared/simulation-state.reducer';
 import { appView } from './shared/app-view.reducer';
 import { user } from './shared/user.reducer';
+import { quotation } from './shared/quotation.reducer';
 
 
 @NgModule({
@@ -53,18 +53,18 @@ import { user } from './shared/user.reducer';
       simulation,
       simulationState,
       appView,
-      user
+      user,
+      quotation
     })
   ],
   providers: [
-    ApiService,
-    ModelsService,
     SimulationService,
     UserService,
     {
       provide: NgbDateParserFormatter,
       useFactory: () => { return new NgbDateES_CLParserFormatter() }
-    }
+    },
+    QuotationService
   ],
   bootstrap: [AppComponent]
 })

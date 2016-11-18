@@ -44,7 +44,6 @@ export class UserService {
 		let currentUser = this.getCurrentUser();
 		delete currentUser.uuid
 		let req = JSON.stringify(currentUser);
-		console.log(req);
 
 		// Post new values from API
 		return this.http.post(BASE_URL, req, HEADERS)

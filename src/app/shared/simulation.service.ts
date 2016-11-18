@@ -5,10 +5,10 @@ import { Observable } from 'rxjs/Rx';
 
 import { Store } from '@ngrx/store';
 
-import { Simulation } from '../shared/models';
+import { Simulation } from './models';
 
 const BASE_URL = 'http://localhost:3030/simulations';
-// const HEADERS = { headers: new Headers({ 'Content-Type': 'application/json' }) };
+const HEADERS = { headers: new Headers({ 'Content-Type': 'application/json' }) };
 
 @Injectable()
 export class SimulationService {
@@ -34,10 +34,16 @@ export class SimulationService {
 		return Promise.reject(error.message || error);
 	}
 
+	// public getCurrentSimulation(): Simulation {
+	// 	let simulation: Simulation;
+	// 	this.store.take(1).subscribe(s => simulation = s.simulation);
+	// 	return simulation;
+	// }
+
 	public updateSimulation(destinationAmount:number) {
 
 		// Fetch for new values from API
-		this.http.get(`${BASE_URL}/${destinationAmount}`)
+		this.http.get(`${BASE_URL}/${destinationAmount}`, HEADERS)
 			.timeout(10000)
 			.catch(error => {
 				console.log(error)
