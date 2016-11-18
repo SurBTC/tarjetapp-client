@@ -47,16 +47,11 @@ export class UserService {
 		console.log(req);
 
 		// Post new values from API
-		this.http.post(BASE_URL, req, HEADERS)
-			.map(res => {console.log(res); return res})
+		return this.http.post(BASE_URL, req, HEADERS)
 			.timeout(10000)
-			.catch(error => {
-				console.log(error)
-				this.store.dispatch({type: 'USER_SERVICE_ERROR' });
-				return Observable.empty();
-			})
+			.map(res => this.checkForError(res))
 			.map(res => res.json())
 			.map(payload => ({ type: 'UPDATE_USER', payload }))
-			.subscribe(action => this.store.dispatch(action));
+			.do(action => this.store.dispatch(action));
 	}
 }

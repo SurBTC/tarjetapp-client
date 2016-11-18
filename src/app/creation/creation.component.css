@@ -50,7 +50,6 @@ input {
 	border-bottom: solid 1px #d4d4d4;
 	border-radius: 0;
   padding-left: 0;
-  font-family: 
 }
 
 input:focus {
@@ -65,14 +64,14 @@ label {
   color: #878787;
 }
 
-.form-control {
-	color: #585858;
-	background-color: transparent;
-	padding: .25rem .0rem;
+label .has-danger {
+	color: #f44b3c;
 }
 
-.has-danger {
-	color: #f44b3c;
+.form-control {
+  color: #585858;
+  background-color: transparent;
+  padding: .25rem .0rem;
 }
 
 .form-group {
@@ -83,7 +82,7 @@ label {
 .form-control-feedback {
   font-size: 0.8em;
   display: inline;
-  /*text-align: right;*/
+  color: #f44b3c;
 }
 
 ::selection {

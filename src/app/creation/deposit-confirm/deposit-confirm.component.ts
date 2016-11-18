@@ -27,7 +27,6 @@ export class DepositConfirmComponent {
   private userSubscription: Subscription;
   private quotationSubscription: Subscription;
 
-  private changingMail: boolean = false;
   private quotation: Quotation;
   private user: User;
   private fee:number;
@@ -47,7 +46,7 @@ export class DepositConfirmComponent {
 
 
     // Subscribe to changes to creation state
-    this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
+    this.mainProcessTask.subscribe(newState => {
       if (newState === 'GET_DEPOSIT') {
         this.state = 'confirming';
 
@@ -69,12 +68,12 @@ export class DepositConfirmComponent {
     });
 
     // Subscribe to changes to quotation
-    this.quotationSubscription = modelsService.quotationUpdates.subscribe(quotation => {
+    modelsService.quotationUpdates.subscribe(quotation => {
       this.quotation = quotation;
     });
 
     // Subscribe to changes to user
-    this.userSubscription = modelsService.userUpdates.subscribe(user => {
+    modelsService.userUpdates.subscribe(user => {
       this.user = user;
     })
 
@@ -83,5 +82,9 @@ export class DepositConfirmComponent {
   submitForm() {
     console.log(this.quotation)
     this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
+  }
+
+  stepBack() {
+    this.store.dispatch({ type: 'PREVIOUS_PROCESS_TASK' });
   }
 }

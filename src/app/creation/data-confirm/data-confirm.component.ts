@@ -37,6 +37,8 @@ export class DataConfirmComponent implements AfterViewInit {
   private description = 'Necesitamos que completes el siguiente formulario con tus datos:';
 
   private user: Observable<User>;
+  private mainProcessTask: Observable<any>;
+  private state: string;
 
   @ViewChild('firstName') input: ElementRef;
 
@@ -72,11 +74,19 @@ export class DataConfirmComponent implements AfterViewInit {
       'rut': ['', [Validators.minLength(8), Validators.maxLength(9), rutValidator]]
     });
 
-    // Update form on user changes
+    this.mainProcessTask = store.select('mainProcess');
+
+    // Subscribe to changes on main process task
+    this.mainProcessTask
+      .filter(newState => newState === 'GET_DATA')
+      .subscribe(newState => this.state = 'RECEIVING_DATA');
+
+
+    // Subscribe to changes on user
     this.user
       .filter(user => user !== undefined)
-      // Convert from Date to datepicker date object:
       .map(user => Object.assign(user, {
+        // Convert from Date to datepicker date object:
         birthDate: {
           year: user.birthDate.getFullYear(),
           month: user.birthDate.getMonth() + 1,
@@ -109,19 +119,24 @@ export class DataConfirmComponent implements AfterViewInit {
       // }, 500)
     }
 
-    search (text: Observable<string>) {
-      return text
-        .debounceTime(100)
-        .distinctUntilChanged()
-        .map(term => term.length < 1 ? []
-          : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 5));
-    }
-
-    submitForm() {
-
-      // Publish changes to models
-      this.userService.postUser();
-      // Update creation process status
-      this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
-    }
+  search (text: Observable<string>) {
+    return text
+      .debounceTime(100)
+      .distinctUntilChanged()
+      .map(term => term.length < 1 ? []
+        : cities.filter(v => new RegExp(term, 'gi').test(v)).splice(0, 5));
   }
+
+  submitForm() {
+    // Post user to API:
+    this.state = 'SENDING_DATA';
+    this.userService.postUser()
+    .catch(err => {
+      console.log(err);
+      this.state = 'API_ERROR';
+      return Observable.empty();
+    })
+    .subscribe(() => this.store.dispatch({ type: 'NEXT_PROCESS_TASK' }))
+
+  }
+}

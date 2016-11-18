@@ -12,7 +12,7 @@
   </div>
 
   <div class="modal-body row">
-    <form [formGroup]="userForm">
+    <form *ngIf="state==='RECEIVING_DATA'" [formGroup]="userForm">
       <div class="col-sm-6 col-lg-6">
         <div class="form-group" [class.has-danger]="!(userForm.controls.firstName.valid || userForm.controls.firstName.untouched)">
           <label class="col-form-label" for="inputFirstName">Nombres</label>
@@ -121,6 +121,28 @@
         </div>
       </div>
     </form>
+
+    <div *ngIf="state==='SENDING_DATA'" class="row">
+      <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h4>Un segundo...</h4>
+          <p>Creando tu cuenta...</p>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="state==='API_ERROR'" class="row">
+      <h1>Error!</h1>
+    </div>
+
   </div>
 
   <div class="modal-footer row">
