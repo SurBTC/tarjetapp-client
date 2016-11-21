@@ -2,16 +2,16 @@ import { User } from './models';
 import { ActionReducer, Action } from '@ngrx/store';
 
 const defaultUser:User = {
-	uuid: '',
-	firstName: '',
-	lastName: '',
-	email: '',
-	RUT: '',
+	uuid: '60b94234-faf4-49bd-bf3a-7cbeb0aa1785',
+	firstName: 'Camilo',
+	lastName: 'Flores',
+	email: 'yo@aqui.com',
+	RUT: '157356399',
 	birthDate: new Date(),
-	address: '',
-	city: '',
-	zipCode: '',
-	phone: ''
+	address: 'Aqui 23423',
+	city: 'Temuco',
+	zipCode: '23423423',
+	phone: '234234234'
 }
 
 export const user: ActionReducer<User> = (state:User=defaultUser, action:Action) => {

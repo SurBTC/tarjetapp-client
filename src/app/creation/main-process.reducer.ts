@@ -1,7 +1,7 @@
 import { ActionReducer, Action } from '@ngrx/store';
 
 const mainProcessTasks = [
-	// 'GET_DATA',
+	'GET_DATA',
 	'GET_DEPOSIT',
 	'GET_CARD',
 ]
