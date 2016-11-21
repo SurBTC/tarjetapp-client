@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ViewChild, Renderer, ElementRef } from '@angular/core';
+import { Component, ViewChild, Renderer, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 
 import { Store } from '@ngrx/store';
@@ -29,7 +29,7 @@ import { UserService } from '../../shared/user.service';
   ],
   providers: [NgbDateES_CLParserFormatter]
 })
-export class DataConfirmComponent implements AfterViewInit {
+export class DataConfirmComponent {
 
   private userForm: FormGroup;
 
@@ -41,7 +41,7 @@ export class DataConfirmComponent implements AfterViewInit {
   private state: string;
   private apiError: boolean;
 
-  @ViewChild('firstName') input: ElementRef;
+  @ViewChild('firstName') firstNameInput: ElementRef;
 
 
   constructor (
@@ -80,7 +80,14 @@ export class DataConfirmComponent implements AfterViewInit {
     // Subscribe to changes on main process task
     this.mainProcessTask
       .filter(newState => newState === 'GET_DATA')
-      .subscribe(newState => this.state = 'ACCEPTING_DATA');
+      .subscribe(newState => {
+        this.state = 'ACCEPTING_DATA'
+
+        // Set focus on firstName input:
+        setTimeout(() => {
+          this.renderer.invokeElementMethod(this.firstNameInput.nativeElement, 'focus');
+        }, 500)
+      });
 
 
     // Subscribe to changes on user
@@ -110,15 +117,6 @@ export class DataConfirmComponent implements AfterViewInit {
         store.dispatch({ type: 'UPDATE_USER', payload: user })
       })
   }
-
-
-  ngAfterViewInit () {
-    // Set focus on firstName on modal show. Requires a slight delay
-    // FIXME: The focus should be triggered when the creation process begins ("Crear mi tarjeta")
-    // setTimeout(() => {
-      //   this.renderer.invokeElementMethod(this.input.nativeElement, 'focus');
-      // }, 500)
-    }
 
   search (text: Observable<string>) {
     return text
