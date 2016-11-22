@@ -1,7 +1,3 @@
-.no-bullet {
-	list-style: none;
-}
-
 input[type="checkbox"] {
 	width: 20px;
 	height: 20px;
@@ -16,6 +12,7 @@ input[type="checkbox"] {
 }
 
 .highlight {
+  font-weight: bold;
   color: #007fff;
 }
 
@@ -29,6 +26,18 @@ input[type="checkbox"] {
   line-height: 1.5;
 }
 
+.info p{
+  font-size: 0.83em;
+}
+
+.info-logo {
+  color: #f54b3c;
+  position: absolute;
+  top: -15px;
+  font-size: 30px;
+  margin-left: -15px;
+}
+
 hr {
   background-color: #007fff;
   opacity: 1;
@@ -36,4 +45,19 @@ hr {
   max-width: 100%;
   margin-top: 5px;
   margin-bottom: 15px;
+}
+
+.info-card {
+  background-color: #fff;
+  -webkit-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.4);
+  -moz-box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.4);
+  box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.4);
+  border-radius: 4px;
+  font-size: 0.82em;
+  padding: 15px;
+  text-align: center;
+}
+
+.info-card p {
+  margin-top: 5px;
 }

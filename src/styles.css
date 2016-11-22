@@ -7,10 +7,6 @@ input {
   outline: none;
 }
 
-.title {
-  text-align: center;
-}
-
 .btn {
   width: 100%;
   max-width: 285px;

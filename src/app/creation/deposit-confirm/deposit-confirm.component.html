@@ -73,29 +73,22 @@
 					</div>
 				</div>
 
-				<div class="footer-text">
-					<div class="col-xs-12">
-						<p class="highlight"><b>Datos cuenta bancaria</b></p>
-						<p>Nombre: Dinex SpA</p>
+				<div class="row info footer-text">
+					<div class="col-xs-12 col-sm-6">
+						<p class="highlight"><b>Cuenta bancaria Dinex SpA</b></p>
+						<p>Banco: Banco de Chile</p>
+						<p>Tipo de cuenta: Corriente</p>
 						<p>RUT: 76.436.908-4</p>
 						<p>Cuenta: 37501542</p>
-						<p>Tipo de cuenta: Corriente</p>
-						<p>Banco: Banco de Chile</p>
 						<p>Correo: depositos@tarjetapp.cl</p>
 					</div>
-				</div>
 
-				<div class="footer-text">
-					<div class="col-xs-2 logo">
-							<i class="material-icons info">info</i>
+					<div class="col-xs-12 col-sm-5 info-card text-center">
+						<i class="material-icons info-logo">info</i>
+						<p>Transfiere desde una cuenta bancaria con tu RUT</p>
+						<p>Los datos de la tarjeta serán enviados a <span class="highlight">{{ (user | async).email }}</span></p>
 					</div>
-					<div class="col-xs-10">
-						<p>Ten presente:</p>
-						<ul>
-							<li><p>Debes hacer la transferencia desde una cuenta bancaria con tu RUT</p></li>
-							<li><p>Enviaremos los datos de la tarjeta creada a {{ (user | async).email }}</p></li>
-						</ul>
-					</div>
+
 				</div>
 
 			</div>

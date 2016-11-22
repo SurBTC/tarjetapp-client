@@ -105,6 +105,10 @@ p {
     color: #007FFF;
 }
 
+.title {
+  text-align: center;
+}
+
 section {
     padding: 70px 0;
 }
