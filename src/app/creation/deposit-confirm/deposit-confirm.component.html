@@ -7,13 +7,21 @@
 	</div>
 
 	<div class="modal-description">
-		<p class="text-muted">Transfiere el siguiente monto a la cuenta indicada dentro de los próximos 15 minutos</p>
+		<p [style.visibility]="quotationState==='CONFIRMED' ? 'visible':'hidden'" class="text-muted">Transfiere monto indicado en el total dentro de los próximos 15 mins</p>
 	</div>
 
 	<div class="modal-body row">
 		<div class="container">
 
-			<div *ngIf="state==='CONFIRMING'" class="row">
+			<div *ngIf="quotationState==='CONFIRMING'" class="row">
+
+			<div class="row">
+					<div class="col-xs-12 wait-message">
+						<h5>Un momento...</h5> <b></b>
+						<p>Estamos reservando tu tarjeta por <span>{{ (simulation | async).destinationAmount }}</span> dólares.</p>
+					</div>
+				</div>
+
 				<div class="spinner">
 					<div class="rect1"></div>
 					<div class="rect2"></div>
@@ -22,15 +30,21 @@
 					<div class="rect5"></div>
 				</div>
 
-				<div class="row">
-					<div class="col-xs-12">
-						<h4>Un segundo...</h4>
-						<p>Estamos reservando tu tarjeta por {{ (simulation | async).destinationAmount }} dólares.</p>
-					</div>
-				</div>
 			</div>
 
-			<div *ngIf="state==='CONFIRMED'">
+			<div *ngIf="quotationState==='API_ERROR'" class="row">
+
+				<div class="row">
+					<div class="col-xs-12 wait-message">
+						<h5>Ups!</h5> <b></b>
+						<p>Ocurrió un error al reservar tu tarjeta.</p>
+						<p>
+					</div>
+				</div>
+
+			</div>
+
+			<div *ngIf="quotationState==='CONFIRMED'">
 				<div class="row">
 					<div class="col-xs-7 item">
 						<h6>Cargar tarjeta con {{ (quotation | async).destinationAmount | number:'1.0-0' }} USD</h6>
@@ -97,8 +111,12 @@
 
 	</div>
 
-	<div class="modal-footer row">
-		<button class="btn" [disabled]="state==='CONFIRMING'" (click)="submitForm()">Ya transferí</button>
+	<div *ngIf="quotationState!=='API_ERROR'" class="modal-footer row">
+		<button class="btn" [disabled]="quotationState==='CONFIRMING'" (click)="submitForm()">Ya transferí</button>
+	</div>
+
+	<div *ngIf="quotationState==='API_ERROR'" class="modal-footer row">
+		<button class="btn" [disabled]="quotationState==='CONFIRMING'" (click)="createQuotation()">Reintentar</button>
 	</div>
 
 </div>

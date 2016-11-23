@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,6 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 
 import { QuotationService } from '../../shared/quotation.service';
+import { CardService } from '../../shared/card.service';
 
 import { Simulation, Quotation, User } from '../../shared/models';
 
@@ -26,10 +28,12 @@ export class DepositConfirmComponent {
 
   private mainProcessTask: Observable<any>;
 
-  private state:string;
+  private quotationState: string;
+  private depositState: string;
 
   constructor(
     private quotationService: QuotationService,
+    private cardService: CardService,
     private store: Store<any>) {
 
     this.mainProcessTask = store.select('mainProcess');
@@ -37,23 +41,40 @@ export class DepositConfirmComponent {
     this.quotation = this.store.select<Quotation>('quotation');
     this.simulation = this.store.select<Simulation>('simulation');
 
+    this.depositState = 'UNKNOWN';
+
     // Subscribe to changes to creation state
     this.mainProcessTask.subscribe(newState => {
       if (newState === 'GET_DEPOSIT') {
-        this.state = 'CONFIRMING';
-
-        // Quote card creation and top-up
-        this.quotationService.createQuotation()
-          .catch(err => {
-            return Observable.empty();
-          })
-          .subscribe(quotation => this.state = 'CONFIRMED');
+        this.createQuotation();
       }
     });
   }
 
+  createQuotation() {
+    // Quote card creation and top-up
+    this.quotationState = 'CONFIRMING';
+    this.quotationService.createQuotation()
+      .catch(err => {
+        this.quotationState = 'API_ERROR';
+        return Observable.empty();
+      })
+      .subscribe(quotation => this.quotationState = 'CONFIRMED');
+  }
+
   submitForm() {
-    console.log(this.quotation)
-    this.store.dispatch({ type: 'NEXT_PROCESS_TASK' });
+    this.depositState = 'UPDATING';
+    this.cardService.createCard()
+      .subscribe(
+        (res:Response) => {
+          this.depositState = 'OK'
+          this.store.dispatch({ type: 'NEXT_PROCESS_TASK' })
+        },
+        (err) => {
+          let res:Response = err.response;
+          (res.status === 402) ? (this.depositState = 'PENDING'): (this.depositState = 'API_ERROR');
+          return Observable.empty();
+        }
+      );
   }
 }
