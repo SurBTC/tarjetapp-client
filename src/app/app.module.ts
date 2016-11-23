@@ -22,6 +22,7 @@ import { CreationConfirmComponent } from './creation/creation-confirm/creation-c
 import { SimulationService } from './shared/simulation.service';
 import { UserService } from './shared/user.service';
 import { QuotationService } from './shared/quotation.service';
+import { CardService } from './shared/card.service';
 
 // Reducers:
 import { MainProcessReducer } from './creation/main-process.reducer';
@@ -64,7 +65,8 @@ import { quotation } from './shared/quotation.reducer';
       provide: NgbDateParserFormatter,
       useFactory: () => { return new NgbDateES_CLParserFormatter() }
     },
-    QuotationService
+    QuotationService,
+    CardService
   ],
   bootstrap: [AppComponent]
 })

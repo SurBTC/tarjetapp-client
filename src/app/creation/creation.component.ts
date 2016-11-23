@@ -22,8 +22,6 @@ export class CreationComponent {
 
   quotationConfirmed = false;
 
-  public warningMins = 10;
-
   private closeResult: string;
   private mainProcessTask:Observable<any>;
   private simulationState: Observable<ServiceState>;

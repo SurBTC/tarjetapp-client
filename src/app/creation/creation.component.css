@@ -167,4 +167,7 @@ label .has-danger {
 	color: #dc2431;
 }
 
+.wait-message {
+  text-align: center;
+}
 

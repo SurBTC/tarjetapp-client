@@ -35,6 +35,11 @@ export interface User {
 	phone?: string,
 }
 
+export interface Card {
+	uuid?: string,
+	
+}
+
 export interface ApiResponse {
 	quotation: Quotation,
 	fee: {

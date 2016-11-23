@@ -61,3 +61,7 @@ hr {
 .info-card p {
   margin-top: 5px;
 }
+
+.deposit-message {
+  text-align: center;
+}

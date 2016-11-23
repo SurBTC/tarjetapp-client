@@ -122,7 +122,7 @@
       </div>
     </form>
 
-    <div *ngIf="apiError" class="row">
+    <div [style.visibility]="apiError ? 'visible':'hidden'" *ngIf="apiError" class="row">
       <p>No hemos podido crear tu cuenta</p>
     </div>
 

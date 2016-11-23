@@ -6,6 +6,10 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
 
+import { Quotation } from '../../shared/models';
+
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'creation-confirm',
@@ -17,36 +21,20 @@ import { Store } from '@ngrx/store';
   providers: []
 })
 export class CreationConfirmComponent {
-  private creationStateSubscription: Subscription;
-  private state:string = ''
-  private title: string = 'Creando tu tarjeta';
-  private description: string = 'Estamos creando tu tarjeta...';
   private mainProcessTask: Observable<any>;
+  private quotation: Observable<Quotation>;
 
 	constructor(
-		private store:Store<any>) {
+		private store:Store<any>,
+    private modalService: NgbModal) {
 
     this.mainProcessTask = this.store.select('mainProcess');
+    this.quotation = this.store.select<Quotation>('quotation');
 
-		// Subscribe to changes to main process state
-
-		// this.creationStateSubscription = this.mainProcessTask.subscribe(newState => {
-  //     if (newState === 'GET_CARD') {
-  //       // Submit data for card creation
-  //       this.state = 'creation';
-  //       this.apiService.createCard()
-  //       .then(result => {
-  //       	this.state = 'success'
-  //       	this.title = '¡Tarjeta creada!'
-  //       	this.description = 'Tu tarjeta ha sido creada exitosamente'
-  //       })
-  //       .catch(err => {
-  //       	console.log(err);
-  //       	this.state = 'error'
-  //       	this.title = 'Lo sentimos'
-  //       	this.description = 'Hubo un problema al crear tu tarjeta'
-  //       })
-  //     }
-  //   })
 	}
+
+  closeModal()
+  {
+
+  }
 }

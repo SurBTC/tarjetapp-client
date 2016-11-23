@@ -7,7 +7,7 @@
 	</div>
 
 	<div class="modal-description">
-		<p [style.visibility]="quotationState==='CONFIRMED' ? 'visible':'hidden'" class="text-muted">Transfiere monto indicado en el total dentro de los próximos 15 mins</p>
+		<p [style.visibility]="quotationState==='CONFIRMED' ? 'visible':'hidden'" class="text-muted">Transfiere el monto total dentro de los próximos 15 mins</p>
 	</div>
 
 	<div class="modal-body row">
@@ -19,6 +19,7 @@
 					<div class="col-xs-12 wait-message">
 						<h5>Un momento...</h5> <b></b>
 						<p>Estamos reservando tu tarjeta por <span>{{ (simulation | async).destinationAmount }}</span> dólares.</p>
+						<p>Ten presente que el valor de reserva podria variar levemente respecto de la cotización inicial</p>
 					</div>
 				</div>
 
@@ -111,8 +112,18 @@
 
 	</div>
 
+	<div [style.visibility]="depositState!=='UNKNOWN' ? 'visible':'hidden'" class="row deposit-message">
+		<div class="col-xs-12">
+			<p *ngIf="depositState==='UPDATING'">Estamos comprobando el depósito...</p>
+			<p *ngIf="depositState==='PENDING'">Nos llegó tu depósito pero aún falta un monto por cubrir</p>
+			<p *ngIf="depositState==='API_ERROR'">Tenemos problemas para revisar tu depósito. Por favor intenta nuevamente</p>
+			<p *ngIf="depositState==='OK'">Depósito OK!</p>
+		</div>
+		
+	</div>
+
 	<div *ngIf="quotationState!=='API_ERROR'" class="modal-footer row">
-		<button class="btn" [disabled]="quotationState==='CONFIRMING'" (click)="submitForm()">Ya transferí</button>
+		<button class="btn" [disabled]="(quotationState==='CONFIRMING') || (depositState==='UPDATING')" (click)="submitForm()">Ya transferí</button>
 	</div>
 
 	<div *ngIf="quotationState==='API_ERROR'" class="modal-footer row">

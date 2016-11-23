@@ -70,8 +70,7 @@ export class DepositConfirmComponent {
           this.depositState = 'OK'
           this.store.dispatch({ type: 'NEXT_PROCESS_TASK' })
         },
-        (err) => {
-          let res:Response = err.response;
+        (res:Response) => {
           (res.status === 402) ? (this.depositState = 'PENDING'): (this.depositState = 'API_ERROR');
           return Observable.empty();
         }
