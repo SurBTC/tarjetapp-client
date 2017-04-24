@@ -1,25 +1,25 @@
-<div class="container modal-content">
+<div class="container">
 
   <div class="modal-header row">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
     <h4 class="modal-title" id="modalLabel">¡Bien!</h4>
   </div>
 
   <div class="modal-description row">
-    <p class="text-muted">Necesitamos que completes el siguiente formulario con tus datos:</p>
+    <p class="text-muted">Para crear tu tarjeta necesitamos conocerte un poco mejor.</p>
   </div>
 
   <div class="modal-body row">
-  <form *ngIf="state==='ACCEPTING_DATA'" [formGroup]="userForm">
+    <form *ngIf="state==='ACCEPTING_DATA' || state==='SENDING_DATA'" [formGroup]="userForm">
       <div class="col-sm-6 col-lg-6">
         <div class="form-group" [class.has-danger]="!(userForm.controls.firstName.valid || userForm.controls.firstName.untouched)">
           <label class="col-form-label" for="inputFirstName">Nombres</label>
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.firstName.valid || userForm.controls.firstName.untouched) ? 'hidden':'visible'">(requerido)</div>
 
-          <input type="text" #firstName class="form-control" id="inputFirstName" placeholder="Ej: Tomás" [formControl]="userForm.controls.firstName">
+          <input #firstName type="text" class="form-control" id="inputFirstName" placeholder="Ej: Tomás" [formControl]="userForm.controls.firstName">
 
         </div>
       </div>
@@ -41,7 +41,7 @@
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.rut.valid || userForm.controls.rut.untouched) ? 'hidden':'visible'">(inválido)</div>
 
-          <input type="text" #rut class="form-control" id="inputRUT" placeholder="Ej: 12345678-9" [formControl]="userForm.controls.rut" formatRut>
+          <input type="text" class="form-control" id="inputRUT" placeholder="Ej: 12345678-9" [formControl]="userForm.controls.rut" formatRut>
 
         </div>
       </div>
@@ -52,7 +52,7 @@
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.birthDate.valid || userForm.controls.birthDate.untouched) ? 'hidden':'visible'">(requerida)</div>
 
-          <input type="text" class="form-control" placeholder="Ej: 27-01-1990" name="dp" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker" (focus)="datePicker.open()">
+          <input class="form-control" placeholder="Ej: 27-01-1990" [formControl]="userForm.controls.birthDate" ngbDatepicker #datePicker="ngbDatepicker" (focus)="datePicker.open()">
 
         </div>
       </div>
@@ -63,7 +63,7 @@
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.email.valid || userForm.controls.email.untouched) ? 'hidden':'visible'">(requerido)</div>
 
-          <input type="text" class="form-control" id="inputEmail" placeholder="Ej: t.rodriguez@mi-mail.com" [formControl]="userForm.controls.email" (focus)="datePicker.close()">
+          <input type="email" class="form-control" id="inputEmail" placeholder="Ej: t.rodriguez@mi-mail.com" [formControl]="userForm.controls.email" (focus)="datePicker.close()">
 
         </div>
       </div>
@@ -78,7 +78,7 @@
 
             <!-- <div class="input-group-addon">+56</div> -->
 
-            <input type="text" class="form-control" id="inputPhone" placeholder="Ej: 823715237" [formControl]="userForm.controls.phone">
+            <input type="tel" class="form-control" id="inputPhone" placeholder="Ej: 823715237" [formControl]="userForm.controls.phone">
 
           </div>
 
@@ -100,13 +100,13 @@
       </div>
 
       <div class="col-sm-6 col-lg-6">
-        <div class="form-group" [class.has-danger]="!(userForm.controls.city.valid || userForm.controls.city.untouched)">
-          <label class="col-form-label" for="inputcity">Ciudad</label>
+        <div class="form-group" [class.has-danger]="!(userForm.controls.locality.valid || userForm.controls.locality.untouched)">
+          <label class="col-form-label" for="inputLocality">Comuna</label>
 
-          <div class="form-control-feedback" [style.visibility]="(userForm.controls.city.valid || userForm.controls.city.untouched) ? 'hidden':'visible'">(requerida)</div>
+          <div class="form-control-feedback" [style.visibility]="(userForm.controls.locality.valid || userForm.controls.locality.untouched) ? 'hidden':'visible'">(requerida)</div>
+
+          <input type="text" class="form-control" id="inputLocality" placeholder="Ej: Huechuraba" [formControl]="userForm.controls.locality" [ngbTypeahead]="search">
         </div>
-
-        <input type="text" class="form-control" id="inputCity" placeholder="Ej: Santiago" [formControl]="userForm.controls.city" [ngbTypeahead]="search">
 
       </div>
 
@@ -116,37 +116,44 @@
 
           <div class="form-control-feedback" [style.visibility]="(userForm.controls.zipCode.valid || userForm.controls.zipCode.untouched) ? 'hidden':'visible'">(requerido)</div>
 
-          <input type="text" class="form-control" id="inputZipCode" placeholder="Ej: 6452734" [formControl]="userForm.controls.zipCode">
+          <input type="number" pattern="[0-9]*" class="form-control" id="inputZipCode" placeholder="Ej: 6452734" [formControl]="userForm.controls.zipCode">
 
         </div>
       </div>
     </form>
 
-    <div [style.visibility]="apiError ? 'visible':'hidden'" *ngIf="apiError" class="row">
-      <p>No hemos podido crear tu cuenta</p>
+    <div *ngIf="state==='ACCEPTING_DATA' && !apiError" class="row">
+      <div class="col-xs-12 message hidden">
+        <p>.</p>
+      </div>
+    </div>
+
+    <div *ngIf="apiError && state!=='SENDING_DATA'" class="row">
+      <div class="col-xs-12 message error">
+        <p><i class="material-icons align-middle">error</i> {{ errorMsg }}</p>
+      </div>
     </div>
 
     <div *ngIf="state==='SENDING_DATA'" class="row">
-      <div class="spinner">
-        <div class="rect1"></div>
-        <div class="rect2"></div>
-        <div class="rect3"></div>
-        <div class="rect4"></div>
-        <div class="rect5"></div>
+
+      <div class="col-xs-12 message">
+        <p>Creando tu cuenta...</p>
+            <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+          </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <h4>Un segundo...</h4>
-          <p>Creando tu cuenta...</p>
-        </div>
-      </div>
     </div>
 
   </div>
 
   <div class="modal-footer row">
-    <button class="btn" [disabled]="!userForm.valid" (click)="submitForm()">Crear mi tarjeta</button>
+
+    <button class="btn" [disabled]="!userForm.valid || state==='SENDING_DATA'" (click)="submitForm()">Crear mi tarjeta</button>
   </div>
 
 </div>

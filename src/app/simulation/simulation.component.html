@@ -1,0 +1,78 @@
+<div class="form-spacer hidden-lg-down"></div>
+<div class="container">
+  <div class="row justify-content-center">
+
+    <div class="col-sm-12 col-md-7 col-lg-6 hidden-xs-down">
+      <div class="cardlike container">
+        <div class="card-name monospace">
+          <input class="editable text-uppercase monospace" #userName type="text" autocomplete="off" [formControl]="simulationForm.controls.userName" placeholder="Ingresa tu nombre">
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-5 col-lg-6">
+      <div class="amount-wrapper">
+        <div class="row">
+          <p>Tu tarjeta con</p>
+
+          <input class="editable" #destinationInput type="number" pattern="[0-9]*" autocomplete="off" [formControl]="simulationForm.controls.destinationAmount">
+          <label for="destinationAmount">USD</label>
+
+          <div class="validation">
+            <p *ngIf="!simulationForm.controls['destinationAmount'].valid">Ingresa un monto válido</p>
+            <p *ngIf="(simulationState | async).exceedsMax">Monto excede el máximo.</p>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <p>por:</p>
+
+            <div [style.visibility]="(simulationState | async).loading ? 'visible':'hidden'" class="spinner-container">
+              <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+              </div>
+            </div>
+
+            <input class="read-only" type="text" id="sourceAmount" autocomplete="off" [formControl]="simulationForm.controls.sourceAmount" readonly="readonly">
+            <label for="sourceAmount">CLP</label>
+
+          <div *ngIf="(simulationState | async).error">
+            <p class="general-error"><i class="material-icons align-middle">warning</i> Momentánemante no disponible.</p>
+            <p class="general-error retry" (click)="updateSimulation(destinationInput.value)">Prueba reintentando más tarde</p>
+          </div>
+
+          <div class="text-centered creation-fee" *ngIf="!(simulationState | async).error && !(simulationState | async).loading">
+            <p>+ ${{ creationFeeAmount }} de creación</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row confirm justify-content-center">
+    <div class="confirm-account">
+      <br><p></p>
+      <p class="has-account text-centered" (click)="toggleHasAccount()">
+        <i class="material-icons align-middle">{{simulationForm.controls['hasAccount'].value ? 'check_circle' : 'radio_button_unchecked'}}</i>
+        Tengo una cuenta bancaria asociada a mi RUT
+      </p>
+    </div>
+    <br>
+  </div>
+
+  <div class="row">
+    <div class="col-12 btn-container">
+      <a routerLink="/create">
+        <button class="btn" [disabled]="!(simulationState | async).valid || (simulationState | async).error || (simulationState | async).loading">Crear tarjeta</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+

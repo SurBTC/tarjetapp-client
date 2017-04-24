@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css?family=Cairo');
+
+.icon {
+  text-align: center;
+  color: #4b66ed;
+}
+
+.icon > i {
+  font-size: 4em;
+}
+
+.cardlike {
+  background-image: url('assets/img/card-empty.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 235px;
+  width: 376px;
+  color: #fff;
+}
+
+.card-name input {
+  font-size: 20px;
+  max-width: 240px;
+  text-align: left;
+  border-bottom: none;
+  font-family: 'Cairo', sans-serif;
+  margin-left: 15px;
+  bottom: 15px;
+  position: absolute;
+  background-color: transparent;
+  color: #fff;
+}
+
+.card-name input:focus{
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.card-number {
+  position: absolute;
+  top: 90px;
+  margin-left: 10px;
+}
+
+.card-number p{
+  font-size: 22px;
+}
+
+
+.card-validity {
+  position: absolute;
+  top: 120px;
+  margin-left: 0px;
+}
+
+.card-validity .text p {
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+.card-validty .number p {
+  font-size: 18px;
+}
+
+.monospace * {
+  font-family: 'Cairo', sans-serif;
+}
+
+li {
+  font-size: 14px;
+}

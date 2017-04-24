@@ -1,0 +1,119 @@
+.form-spacer {
+  margin-top: 6vh;
+}
+
+.cardlike {
+  background-image: url('assets/img/card.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 235px;
+  width: 360px;
+  min-width: 360px;
+}
+
+.card-name input {
+  font-size: 20px;
+  max-width: 240px;
+  color: #fff;
+  text-align: left;
+  border-bottom: 1px solid #878787;
+  font-family: 'Cairo', sans-serif;
+  margin-left: 10px;
+  bottom: 30px;
+  position: absolute;
+}
+
+.card-name input:focus{
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.alert {
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  padding-bottom: 0;
+  padding-top: 0;
+}
+
+.spinner {
+  margin: 0;
+  left: 11em;
+  position: absolute;
+}
+
+.spinner > div {
+  background-color: white;
+}
+
+.spinner-container {
+  position: relative;
+}
+
+input {
+  color: #fff;
+  font-size: 2em;
+  width: 80%;
+  text-align: right;
+  border: none;
+  line-height: 0;
+  padding-bottom: 0;
+  background-color: transparent;
+}
+
+.editable {
+  border-bottom: 1px solid white;
+}
+
+.read-only {
+  background-color: transparent;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.validation {
+  height: 1.5em;
+}
+
+.general-error {
+  font-size: 0.7em;
+  margin-top: 0;
+}
+
+.confirm {
+  text-align: center;
+}
+
+.has-account {
+  cursor: pointer;
+}
+
+.retry {
+  cursor: pointer;
+}
+
+.creation-fee {
+  border: 1px white solid;
+  border-radius: 15px;
+  padding: 3px;
+}
+
+.amount-wrapper {
+  padding-top: 10px;
+  max-width: 250px;
+}
+
+@media (min-width: 768px) {
+  .cardlike {
+    float: right;
+  }
+}
+
+@media (max-width: 768px) {
+  .amount-wrapper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+

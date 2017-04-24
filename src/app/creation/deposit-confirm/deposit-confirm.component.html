@@ -1,133 +1,143 @@
-<div class="container modal-content">
-	<div class="modal-header row">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<h4 class="modal-highlight" id="modalLabel">Último paso: transferir</h4>
-	</div>
+<div class="container">
+  <div class="modal-header row">
+    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-highlight" id="modalLabel">Último paso: transferir</h4>
+  </div>
 
-	<div class="modal-description">
-		<p [style.visibility]="quotationState==='CONFIRMED' ? 'visible':'hidden'" class="text-muted">Transfiere el monto total dentro de los próximos 15 mins</p>
-	</div>
+  <div class="modal-description">
+    <p [style.visibility]="quotationState==='CONFIRMED' ? 'visible':'hidden'" class="text-muted">Transfiere el monto total dentro de los próximos {{(timeLeft / (60*1000)) | number:'1.0-0'}} mins</p>
+  </div>
 
-	<div class="modal-body row">
-		<div class="container">
+  <div class="modal-body row">
+    <div class="container">
 
-			<div *ngIf="quotationState==='CONFIRMING'" class="row">
+      <div *ngIf="quotationState==='CONFIRMING'" class="row">
 
-			<div class="row">
-					<div class="col-xs-12 wait-message">
-						<h5>Un momento...</h5> <b></b>
-						<p>Estamos reservando tu tarjeta por <span>{{ (simulation | async).destinationAmount }}</span> dólares.</p>
-						<p>Ten presente que el valor de reserva podria variar levemente respecto de la cotización inicial</p>
-					</div>
-				</div>
+        <div class="row">
+          <div class="col-xs-10 offset-xs-1 wait-message">
+            <h5>Un momento...</h5>
+            <p>Estamos confirmando el valor de tu tarjeta por <b>{{ (simulation | async).destinationAmount }} dólares.</b></p>
+            <p>Ten presente que el valor de reserva podria variar levemente respecto de la cotización inicial</p>
+          </div>
+        </div>
 
-				<div class="spinner">
-					<div class="rect1"></div>
-					<div class="rect2"></div>
-					<div class="rect3"></div>
-					<div class="rect4"></div>
-					<div class="rect5"></div>
-				</div>
+        <div class="spinner">
+          <div class="rect1"></div>
+          <div class="rect2"></div>
+          <div class="rect3"></div>
+          <div class="rect4"></div>
+          <div class="rect5"></div>
+        </div>
 
-			</div>
+      </div>
 
-			<div *ngIf="quotationState==='API_ERROR'" class="row">
+      <div *ngIf="quotationState==='API_ERROR'" class="row">
 
-				<div class="row">
-					<div class="col-xs-12 wait-message">
-						<h5>Ups!</h5> <b></b>
-						<p>Ocurrió un error al reservar tu tarjeta.</p>
-						<p>
-					</div>
-				</div>
+        <div class="row">
+          <div class="col-xs-10 offset-xs-1 wait-message">
+            <h5>Ups!</h5> <b></b>
+            <p>Ocurrió un error al reservar tu tarjeta.</p>
+            <p>
+          </div>
+        </div>
 
-			</div>
+      </div>
 
-			<div *ngIf="quotationState==='CONFIRMED'">
-				<div class="row">
-					<div class="col-xs-7 item">
-						<h6>Cargar tarjeta con {{ (quotation | async).destinationAmount | number:'1.0-0' }} USD</h6>
-					</div>
-					<div class="col-xs-5 item-total">
-						<h6>{{ (quotation | async ).sourceAmount | number:'1.0-0'}} CLP</h6>
-					</div>
-				</div>
+      <div *ngIf="quotationState==='CONFIRMED' || quotationState==='EXPIRED'" [class.expired]="quotationState==='EXPIRED'">
+        <div class="row">
+          <div class="col-xs-7 item">
+            <h6>Cargar tarjeta con {{ (quotation | async).destinationAmount | number:'1.0-0' }} USD</h6>
+          </div>
+          <div class="col-xs-5 item-total">
+            <h6>{{ (quotation | async ).sourceAmount | number:'1.0-0'}} CLP</h6>
+          </div>
+        </div>
 
-				<div class="row text-muted">
-					<div class="col-xs-7 item">
-						<p>Tasa de cambio</p>
-					</div>
-					<div class="col-xs-5 item-total">
-						<p>{{ ((quotation | async).sourceAmount / (quotation | async).destinationAmount) | number:'1.0-1' }} CLP / 1 USD</p>
-					</div>
-				</div>
+        <div class="row text-muted">
+          <div class="col-xs-7 item">
+            <p>Tasa de cambio</p>
+          </div>
+          <div class="col-xs-5 item-total">
+            <p>{{ ((quotation | async).sourceAmount / (quotation | async).destinationAmount) | number:'1.0-1' }} CLP / 1 USD</p>
+          </div>
+        </div>
 
-				<div class="row">
-					<div class="col-xs-7 item">
-						<h6>Costo de creación tarjeta</h6>
-					</div>
-					<div class="col-xs-5 item-total">
-						<h6>{{ (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h6>
-					</div>
-				</div>
+        <div class="row">
+          <div class="col-xs-7 item">
+            <h6>Costo de creación tarjeta</h6>
+          </div>
+          <div class="col-xs-5 item-total">
+            <h6>{{ (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h6>
+          </div>
+        </div>
 
-				<div class="row">
-					<div class="col-xs-12">
-						<hr>
-					</div>
-				</div>
+        <div class="row">
+          <div class="col-xs-12">
+            <hr>
+          </div>
+        </div>
 
-				<div class="row total">
-					<div class="col-xs-7">
-						<h5>Total a transferir</h5>
-					</div>
-					<div class="col-xs-5 item-total">
-						<h5>${{ (quotation | async).sourceAmount + (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h5>
-					</div>
-				</div>
+        <div class="row total">
+          <div class="col-xs-7">
+            <h5>Total a transferir</h5>
+          </div>
+          <div class="col-xs-5 item-total">
+            <h5>${{ (quotation | async).sourceAmount + (quotation | async).creationFeeAmount | number:'1.0-0'}} CLP</h5>
+          </div>
+        </div>
 
-				<div class="row info footer-text">
-					<div class="col-xs-12 col-sm-6">
-						<p class="highlight"><b>Cuenta bancaria Dinex SpA</b></p>
-						<p>Banco: Banco de Chile</p>
-						<p>Tipo de cuenta: Corriente</p>
-						<p>RUT: 76.436.908-4</p>
-						<p>Cuenta: 37501542</p>
-						<p>Correo: depositos@tarjetapp.cl</p>
-					</div>
+        <div class="row info footer-text">
+          <div class="col-xs-12 col-sm-6">
+            <p class="highlight"><b>Cuenta bancaria Dinex SpA</b></p>
+            <p>RUT: 76.436.908-4</p>
+            <p>Tipo de cuenta: Corriente</p>
+            <p>Banco: Banco de Chile</p>
+            <p>Número: 220-10534-00</p>
+            <p>Correo: depositos@tarjetapp.cl</p>
+          </div>
 
-					<div class="col-xs-12 col-sm-5 info-card text-center">
-						<i class="material-icons info-logo">info</i>
-						<p>Transfiere desde una cuenta bancaria con tu RUT</p>
-						<p>Los datos de la tarjeta serán enviados a <span class="highlight">{{ (user | async).email }}</span></p>
-					</div>
+          <div class="col-xs-12 col-sm-5 info-card text-center">
+            <i class="material-icons info-logo">info</i>
+            <p>Transfiere desde una cuenta bancaria con tu RUT</p>
+            <p>Los datos de la tarjeta serán enviados a <span class="highlight">{{ (user | async).email }}</span></p>
+          </div>
 
-				</div>
+        </div>
 
-			</div>
+      </div>
 
-		</div>
+    </div>
 
-	</div>
+  </div>
 
-	<div [style.visibility]="depositState!=='UNKNOWN' ? 'visible':'hidden'" class="row deposit-message">
-		<div class="col-xs-12">
-			<p *ngIf="depositState==='UPDATING'">Estamos comprobando el depósito...</p>
-			<p *ngIf="depositState==='PENDING'">Nos llegó tu depósito pero aún falta un monto por cubrir</p>
-			<p *ngIf="depositState==='API_ERROR'">Tenemos problemas para revisar tu depósito. Por favor intenta nuevamente</p>
-			<p *ngIf="depositState==='OK'">Depósito OK!</p>
-		</div>
-		
-	</div>
+  <div [style.visibility]="depositState!=='UNKNOWN' ? 'visible':'hidden'" class="row deposit-message">
+    <div class="col-xs-12">
+      <p *ngIf="depositState==='UPDATING'">Estamos comprobando el depósito...</p>
+      <p *ngIf="depositState==='PAYMENT_REQUIRED'">Aún no nos llega tu depósito. Ten en cuenta que esto podría tener hasta 5 minutos de demora.</p>
+      <p *ngIf="depositState==='API_ERROR'">Tenemos problemas para revisar tu depósito. Por favor intenta nuevamente</p>
+      <p *ngIf="depositState==='CREATING'">Tu depósito nos llegó y tu tarjeta está siendo creada. Un segundo...</p>
+      <p *ngIf="depositState==='OK'">Depósito OK!</p>
+    </div>
+  </div>
 
-	<div *ngIf="quotationState!=='API_ERROR'" class="modal-footer row">
-		<button class="btn" [disabled]="(quotationState==='CONFIRMING') || (depositState==='UPDATING')" (click)="submitForm()">Ya transferí</button>
-	</div>
+  <div *ngIf="quotationState!=='API_ERROR' && quotationState==='EXPIRED'" class="row deposit-message">
+    <div class="col-xs-12">
+      <p>Tu tarjeta expiró. Haz click en el botón para volver a reservarla o cierra este diálogo si quieres reservar una por un nuevo monto</p>
+    </div>
+  </div>
 
-	<div *ngIf="quotationState==='API_ERROR'" class="modal-footer row">
-		<button class="btn" [disabled]="quotationState==='CONFIRMING'" (click)="createQuotation()">Reintentar</button>
-	</div>
+  <div *ngIf="quotationState!=='API_ERROR' && quotationState!=='EXPIRED'" class="modal-footer row">
+    <button class="btn" [disabled]="(quotationState==='CONFIRMING') || (depositState==='UPDATING')" (click)="submitForm()">Ya transferí</button>
+  </div>
+
+  <div *ngIf="quotationState!=='API_ERROR' && quotationState==='EXPIRED'" class="modal-footer row">
+    <button class="btn" [disabled]="(quotationState==='CONFIRMING') || (depositState==='UPDATING')" (click)="createQuotation()">Volver a reservar</button>
+  </div>
+
+  <div *ngIf="quotationState==='API_ERROR'" class="modal-footer row">
+    <button class="btn" [disabled]="quotationState==='CONFIRMING'" (click)="createQuotation()">Reintentar</button>
+  </div>
 
 </div>

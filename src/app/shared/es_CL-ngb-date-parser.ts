@@ -1,6 +1,6 @@
 import { padNumber, toInteger, isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-struct';
-import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter'
+import { NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap/datepicker/ngb-date-parser-formatter';
 
 export class NgbDateES_CLParserFormatter extends NgbDateParserFormatter {
   parse(value: string): NgbDateStruct {
@@ -22,4 +22,8 @@ export class NgbDateES_CLParserFormatter extends NgbDateParserFormatter {
         `${isNumber(date.day) ? padNumber(date.day) : ''}-${isNumber(date.month) ? padNumber(date.month) : ''}-${date.year}` :
         '';
   }
+}
+
+export function esCLDateParserFormatterFactory() {
+  return new NgbDateES_CLParserFormatter();
 }

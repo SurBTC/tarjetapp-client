@@ -1,6 +1,6 @@
 input[type="checkbox"] {
-	width: 20px;
-	height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 .text-muted p {
@@ -9,11 +9,6 @@ input[type="checkbox"] {
 
 .item-total {
   text-align: right;
-}
-
-.highlight {
-  font-weight: bold;
-  color: #007fff;
 }
 
 .footer-text div {
@@ -39,7 +34,7 @@ input[type="checkbox"] {
 }
 
 hr {
-  background-color: #007fff;
+  background-color: #4b66ed;
   opacity: 1;
   border-width: 1px;
   max-width: 100%;
@@ -64,4 +59,8 @@ hr {
 
 .deposit-message {
   text-align: center;
+}
+
+.expired {
+  opacity: 0.5;
 }

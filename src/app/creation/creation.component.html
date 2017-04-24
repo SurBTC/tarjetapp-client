@@ -1,13 +1,7 @@
 <template #content let-c="close" let-d="dismiss">
 
-	<data-confirm *ngIf="(mainProcessTask | async)==='GET_DATA'"></data-confirm>
-	<deposit-confirm *ngIf="(mainProcessTask | async)==='GET_DEPOSIT'"></deposit-confirm>
-	<creation-confirm *ngIf="(mainProcessTask | async)==='GET_CARD'"></creation-confirm>
+  <data-confirm *ngIf="(creationTask | async)==='GET_DATA'" [ngbModalRef]="ngbModalRef"></data-confirm>
+  <deposit-confirm *ngIf="(creationTask | async)==='GET_DEPOSIT'" [ngbModalRef]="ngbModalRef"></deposit-confirm>
+  <creation-confirm *ngIf="(creationTask | async)==='GET_CARD'" [ngbModalRef]="ngbModalRef"></creation-confirm>
 
 </template>
-
-<div class="row">
-	<div class="col-xs-12 button-container">
-		<button class="btn" [disabled]="!(simulationState | async).valid || (simulationState | async).error || (simulationState | async).loading" (click)="open(content)">Crear mi tarjeta</button>
-	</div>
-</div>

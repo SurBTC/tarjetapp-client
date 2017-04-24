@@ -1,62 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http, Response } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Rx';
 
 import { Store } from '@ngrx/store';
 
-import { Quotation, User } from './models';
+import { Quotation, Card } from './models';
+
+import { environment } from '../../environments/environment';
 
 
-const BASE_URL = 'http://localhost:3030/cards';
-const HEADERS = { headers: new Headers({ 'Content-Type': 'application/json' }) };
+const BASE_URL = `${environment.api.url}/cards`;
 
 @Injectable()
 export class CardService {
-	// public quotation:Observable<Quotation>;
+  public card: Observable<Card>;
 
-	constructor(private http: Http, private store: Store<any>) {
-		// this.quotation = store.select<Quotation>('quotation');
-	}
+  constructor(private http: Http, private store: Store<any>) {
+    this.card = store.select<Card>('card');
+  }
 
-	private checkForError(response: Response): Response {
-		if (response.status >= 200 && response.status < 300) {
-			return response;
-		} else {
-			var error = new Error(response.statusText)
-			error['response'] = response;
-			console.error(error);
-			throw error;
-		}
-	}
+  private getCurrentQuotation(): Quotation {
+    let quotation: Quotation;
+    this.store.take(1).subscribe(s => quotation = s.quotation);
+    return quotation;
+  }
 
-	private getCurrentUser(): User {
-		let user: User;
-		this.store.take(1).subscribe(s => user = s.user);
-		return user;
-	}
+  public getCreatedCard() {
+    let quotation: Quotation = this.getCurrentQuotation();
 
-	private getCurrentQuotation(): Quotation {
-		let quotation: Quotation;
-		this.store.take(1).subscribe(s => quotation = s.quotation);
-		return quotation;
-	}
-
-	public createCard() {
-
-		let quotation: Quotation = this.getCurrentQuotation();
-
-		let req = { quotation: { uuid: quotation.uuid } };
-
-		console.log(req);
-
-		// Post new values from API
-		return this.http.post(BASE_URL, req, HEADERS)
-			.timeout(60*1000)
-			.map(res => this.checkForError(res))
-			.map(res => res.json())
-			.map(res => {console.log(res); return res})
-			// .map(payload => ({ type: 'UPDATE_CARD', payload }))
-			// .do(action => this.store.dispatch(action));
-	}
+    return this.http.get(`${BASE_URL}?quotationUuid=${quotation.uuid}`)
+      .timeout(environment.api.timeout)
+      .map((response: Response) => response.json())
+      .map(response => ({ type: 'UPDATE_CARD', payload: response.card }))
+      .do(action => this.store.dispatch(action));
+  }
 }

@@ -1,40 +1,46 @@
-import { Component, OnInit} from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, Input } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
-import { Subscription } from 'rxjs/Subscription';
 
 import { Store } from '@ngrx/store';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import { Quotation } from '../../shared/models';
+import { Card, Quotation } from '../../shared/models';
 
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'creation-confirm',
   templateUrl: './creation-confirm.component.html',
   styleUrls: [
-  	'./creation-confirm.component.css',
-  	'../creation.component.css'
-	],
+    './creation-confirm.component.css',
+    '../creation.component.css'
+  ],
   providers: []
 })
 export class CreationConfirmComponent {
   private mainProcessTask: Observable<any>;
+  private card: Observable<Card>;
   private quotation: Observable<Quotation>;
 
-	constructor(
-		private store:Store<any>,
-    private modalService: NgbModal) {
+  private pan: string;
 
-    this.mainProcessTask = this.store.select('mainProcess');
+  @Input() ngbModalRef: NgbModalRef;
+
+  constructor(
+    private store: Store<any>) {
+
+    this.card = this.store.select<Card>('card');
     this.quotation = this.store.select<Quotation>('quotation');
+    this.mainProcessTask = this.store.select('mainProcess');
 
-	}
+    this.card.subscribe(card => {
+      this.pan = card.pan.split(/(?=(?:....)*$)/).join('-');
+    });
 
-  closeModal()
-  {
+  }
 
+  closeModal() {
+    this.ngbModalRef.close()
   }
 }

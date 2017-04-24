@@ -1,7 +1,7 @@
 {
   "project": {
-    "version": "1.0.0-beta.19-3",
-    "name": "webpage"
+    "version": "1.0.0-beta.26",
+    "name": "tarjetapp"
   },
   "apps": [
     {
@@ -24,6 +24,7 @@
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
+        "stg": "environments/environment.stg.ts",
         "prod": "environments/environment.prod.ts"
       }
     }

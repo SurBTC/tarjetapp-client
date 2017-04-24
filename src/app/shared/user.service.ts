@@ -5,52 +5,74 @@ import { Observable } from 'rxjs/Rx';
 
 import { Store } from '@ngrx/store';
 
-import { User } from '../shared/models';
+import { User, Card, Quotation } from '../shared/models';
 
-const BASE_URL = 'http://localhost:3030/users';
+import { environment } from '../../environments/environment';
+
+
+const BASE_URL = `${environment.api.url}/users`;
 const HEADERS = { headers: new Headers({ 'Content-Type': 'application/json' }) };
 
 @Injectable()
 export class UserService {
-	public user:Observable<User>;
+  public user: Observable<User>;
 
-	constructor(private http: Http, private store: Store<any>) {
-		this.user = store.select<User>('user');
-	}
+  constructor(private http: Http, private store: Store<any>) {
+    this.user = store.select<User>('user');
+  }
 
-	private checkForError(response: Response): Response {
-		if (response.status >= 200 && response.status < 300) {
-			return response;
-		} else {
-			var error = new Error(response.statusText)
-			error['response'] = response;
-			console.error(error);
-			throw error;
-		}
-	}
+  private checkForError(response: Response): Response {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    } else {
+      let error = new Error(response.statusText);
+      error['response'] = response;
+      console.error(error);
+      throw error;
+    }
+  }
 
-	private handleError(error: any): Promise<any> {
-		console.error('An error occurred', error); // for demo purposes only
-		return Promise.reject(error.message || error);
-	}
+  public getCurrentUser(): User {
+    let user: User;
+    this.store.take(1).subscribe(s => user = s.user);
+    return user;
+  }
 
-	public getCurrentUser(): User {
-		let user: User;
-		this.store.take(1).subscribe(s => user = s.user);
-		return user;
-	}
+  public postUser(): Observable<User> {
+    let currentUser = this.getCurrentUser();
+    delete currentUser.uuid;
+    let req = JSON.stringify(currentUser);
 
-	public postUser() {
-		let currentUser = this.getCurrentUser();
-		delete currentUser.uuid
-		let req = JSON.stringify(currentUser);
+    // Post new values from API
+    return this.http.post(BASE_URL, req, HEADERS)
+      .timeout(environment.api.timeout)
+      .map((response: Response) => this.checkForError(response))
+      .map((response: Response) => response.json())
+      .do((user: User) => this.store.dispatch({ type: 'UPDATE_USER', payload: user }));
+  }
 
-		// Post new values from API
-		return this.http.post(BASE_URL, req, HEADERS)
-			.timeout(10000)
-			.map(res => this.checkForError(res))
-			.map(res => res.json())
-			.map(payload => ({ type: 'UPDATE_USER', payload }))
-			.do(action => this.store.dispatch(action));
-	}
+  public getUser(userUuid): Observable<User> {
+    return this.http.get(`${BASE_URL}/${userUuid}`, HEADERS)
+      .timeout(environment.api.timeout)
+      .map((response: Response) => this.checkForError(response))
+      .map((response: Response) => response.json())
+      .do((user: User) => this.store.dispatch({ type: 'UPDATE_USER', payload: user }));
+  }
+
+  public getUserCard(userUuid): Observable<Card> {
+    return this.http.get(`${BASE_URL}/${userUuid}/card`, HEADERS)
+      .timeout(environment.api.timeout)
+      .map((response: Response) => this.checkForError(response))
+      .map((response: Response) => response.json())
+      .map((data: any) => data['card'])
+      .do((card: Card) => this.store.dispatch({ type: 'UPDATE_CARD', payload: card }));
+  }
+
+  public getActiveQuotation(userUuid): Observable<Quotation> {
+    return this.http.get(`${BASE_URL}/${userUuid}/active-quotation`, HEADERS)
+      .timeout(environment.api.timeout)
+      .map((response: Response) => this.checkForError(response))
+      .map((response: Response) => response.json())
+      .map((data: any) => data['quotation']);
+  }
 }

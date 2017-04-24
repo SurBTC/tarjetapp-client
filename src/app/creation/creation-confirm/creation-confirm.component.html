@@ -1,46 +1,75 @@
-<div class="container modal-content">
-	<div class="modal-header row">
-		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		<h4 class="modal-highlight" id="modalLabel">¡Tarjeta creada!</h4>
-	</div>
+<div class="container">
+  <div class="modal-header row">
+    <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="modal-highlight" id="modalLabel">¡Tarjeta creada exitosamente!</h4>
+  </div>
 
-	<div class="modal-description">
+  <div class="modal-description">
+    <p>Tu tarjeta ya ha sido creada y cargada con {{ (quotation|async).destinationAmount }} dólares.</p>
+  </div>
 
-	</div>
+  <div class="modal-body row">
+    <div class="container">
 
-	<div class="modal-body row">
-		<div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="cardlike container">
+            <div class="row card-number">
+              <div class="mx-auto"><p>{{ pan }}</p></div>
+            </div>
+            <div class="row card-validity">
+              <div class="col-xs-1 text monospace">
+                <p>VALID THRU</p>
+              </div>
+              <div class="col-xs-2 number monospace">
+                <p> {{ (card | async).expiryDate }}</p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="card-name monospace">
+                <input class="editable text-uppercase monospace" #userName type="text" autocomplete="off" disabled value="{{ (card | async).nameOnCard }}">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<div class="row">
+      <br>
 
-				<div class="col-xs-12">
-					<div class="row">
-						<div class="col-xs-12 logo">
-							<i class="material-icons success">check_circle</i>
-						</div>
-					</div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-10">
+          <h6>Detalles de la tarjeta:</h6>
+          <ul>
+            <li><span class="highlight">Titular: </span>{{(card|async).nameOnCard}}</li>
+            <li><span class="highlight">Tipo de tarjeta: </span>{{ (card|async).programName }}</li>
+            <li><span class="highlight">Fecha de vencimiento: </span>{{ (card|async).expiryDate }}</li>
+            <li><span class="highlight">Número de tarjeta: </span>{{ pan }}</li>
+            <li><span class="highlight">Saldo: </span>{{ (quotation|async).destinationAmount }} USD</li>
+          </ul>
+        </div>
+      </div>
 
-					<div class="row">
-						<h5>Tu tarjeta ha sido creada y cargada exitosamente con {{ (quotation|async).destinationAmount}} USD</h5>
-					</div>
+      <div class="row">
+        <div class="col-xs-12">
+          <p>Para recuperar el número completo y el código de verificación debes activar tu tarjeta ingresando el código que se te envió por correo en <a href="https://cardholderonline.com/wap/#/registervcard">https://cardholderonline.com/wap/#/registervcard</a></p>
+        </div>
+      </div>
 
-					<div class="row">
-						<div class="col-xs-12">
-							<p>Sólo falta que revises tu correo, donde te llegará un mail con instrucciones para obtener los números completos de tu tarjeta virtual.</p>
-						</div>
-					</div>
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="tex-muted small">The card is issued by Wave Crest Holdings Limited pursuant to a license from Visa Europe.</p>
+          <p class="tex-muted small">Wave Crest Holdings Limited is a licensed electronic money institution by the Financial Services Commission, Gibraltar</p>
+        </div>
+      </div>
 
-				</div>
+    </div>
 
-			</div>
+  </div>
 
-		</div>
-	</div>
-
-	<div class="modal-footer row">
-		<button class="btn" data-dismiss="modal">Listo</button>
-	</div>
+  <div class="modal-footer row">
+    <button class="btn" (click)="closeModal()">Listo</button>
+  </div>
 
 </div>

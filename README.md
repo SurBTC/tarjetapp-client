@@ -1,17 +1,26 @@
-# Webpage
+# Tarjetapp client
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.19-3.
+Tarjetapp webpage. It includes the Angular 2 app to quotate and create credit cards using `tarjetapp-api`
+
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
+
+## Setup
+
+- To run this project you need nodejs 6.9.0+
+- Install dependencies by downloading the internet using `npm install`
+- Set configuration params by editing `app/environments/*`
 
 ## Development server
+
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. 
+
+Use the `-prod` flag for a production build.
+
+Use `npm run build-testing` to create a staging build.
 
 ## Running unit tests
 
@@ -21,10 +30,6 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 Before running the tests make sure you are serving the app via `ng serve`.
-
-## Deploying to Github Pages
-
-Run `ng github-pages:deploy` to deploy to Github Pages.
 
 ## Further help
 
